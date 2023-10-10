@@ -1,0 +1,83 @@
+{{page-title "Libraries"}}
+{{!-- outlet ekhane dile porer route r content ekhane chole ashbe --}}
+
+
+<div class="container">
+    <h1 class="my-3">Libraries</h1>
+    <hr>
+
+    <BsTab as |tab|>
+        <tab.pane @title="List All">
+            {{!-- filter --}}
+            {{!-- cls component --}}
+            {{!-- @model padhiechi model nam diyei extract korte hobe shei component e padhalam shetar js e giye
+            get filtercards() {
+            const { cards } = this.args;} --}}
+            <Inputcard @model={{@model}}></Inputcard>
+
+        </tab.pane>
+
+        {{!-- second tab --}}
+        <tab.pane @title="Add new">
+            <div>
+                <h2>Create a new library</h2>
+                <div class="d-flex gap-5">
+                    <div class="w-50 ">
+                        <BsForm @model={{this.login}} @onSubmit={{this.submit}} as |form|>
+                            <form.element @controlType="text" @label="Name" @property="text" />
+                            <form.element @controlType="text" @label="Address" @property="text"
+                                @helpText="Minimum 6 characters" />
+                            <form.element @controlType="text" @label="Phone" @property="text"
+                                @helpText="Minimum 6 characters" />
+                            <form.submitButton>Create</form.submitButton>
+                        </BsForm>
+                    </div>
+
+                    <div class="w-50 pt-4 ps-5">
+                        <div class="card w-75 h-75">
+                            <div class="card-header">Header</div>
+                            <div class="card-body">
+                                {{!-- <h5 class="card-title">Card title</h5> --}}
+                                {{!-- <p class="card-text">This is a wider card with supporting text below as a natural
+                                    lead-in to
+                                    additional
+                                    content. This content is a little bit longer.</p> --}}
+                                <p>Number</p>
+                                <p>Phone</p>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-body-secondary"><span class="me-1">Number of books:</span> <span
+                                        class="mx-1 fw-bold"> 01 </span> </small>
+                                {{!-- <button type="button" class="btn btn-success">Edit</button> --}}
+                                {{!-- <button type="button" class="btn btn-danger">Delete</button> --}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tab.pane>
+    </BsTab>
+
+
+
+
+
+
+
+    {{!-- Tab --}}
+    {{!-- <div class="my-3 gap-0">
+        <button type="button" class="btn btn-primary py-2 px-3">List All</button>
+        <LinkTo @route="libraries.new"><button type="button" class="btn text-primary py-2 px-2">Add new</button>
+        </LinkTo>
+    </div>
+    <hr> --}}
+
+
+
+    {{!-- {{yield}} --}}
+    {{outlet}}
+
+
+
+
+</div>

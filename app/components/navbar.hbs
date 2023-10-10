@@ -1,0 +1,52 @@
+{{!-- {{yield}} --}}
+
+<div class="bg-black">
+    <nav class="navbar navbar-light navbar-expand-lg container text-light ">
+        <LinkTo class="navbar-brand text-light" @route="index">Library app</LinkTo>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse w-100 mt-0" id="navbarNavDropdown">
+            <ul class="navbar-nav mx-auto w-100 text-center d-flex justify-content-between container text-light">
+
+                <div class=" d-flex">
+                    <li class="nav-item active">
+                        <LinkTo @route="index" class="nav-link text-light" href="#">Home </LinkTo>
+                    </li>
+                    <li class="nav-item">
+                        <LinkTo @route="libraries" class="nav-link text-light" href="#">Libraries</LinkTo>
+                    </li>
+                    <li class="nav-item">
+                        <LinkTo @route="authors" class="nav-link text-light" href="#">Authors</LinkTo>
+                    </li>
+                    <li class="nav-item">
+                        <LinkTo @route="books" class="nav-link text-light" href="#">Books</LinkTo>
+                    </li>
+                </div>
+
+                <div class=" d-flex ">
+                    <li class="nav-item">
+                        <LinkTo @route="about" class="nav-link text-light" href="#">About</LinkTo>
+                    </li>
+                    <li class="nav-item">
+                        <LinkTo @route="contack" class="nav-link text-light">Contack</LinkTo>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link text-light dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Admin
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="#">Invitation</a>
+                            <a class="dropdown-item" href="#">Contact</a>
+                            <a class="dropdown-item" href="#">Seeder</a>
+                        </div>
+                    </li>
+                </div>
+
+
+            </ul>
+        </div>
+    </nav>
+</div>

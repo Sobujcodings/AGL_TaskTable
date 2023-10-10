@@ -1,0 +1,35 @@
+<div class="my-3">
+    <span class="btn-group">
+        <button type="button" class="btn bg-info mb-1">All</button>
+        <button type="button" class="btn text-info mb-1 border-info">Abc</button>
+    </span>
+    <label class="w-50">
+        <Input class="w-75 py-1 px-2 ms-2" @value={{this.inputValue}} {{on 'input' this.hanldeinput}}
+            placeholder="Filter by Library name"></Input>
+    </label>
+</div>
+<hr>
+
+<p>cardfound: {{this.filtercards.length}}</p>
+
+<div>
+    {{!-- cards --}}
+    <div class="card-group gap-4">
+        {{!-- @model contains what i have returned from the route file libraries.js --}}
+        {{#each this.filtercards as |card|}}
+        <div class="card border">
+            <div class="card-header">{{card.name}}</div>
+            <div class="card-body">
+                <p>Address: {{card.address}}</p>
+                <p>Phone: {{card.phone}}</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-body-secondary"><span class="me-1">Number of books:</span> <span
+                        class="mx-1 fw-bold"> 01 </span> </small>
+                <button type="button" class="btn btn-success">Edit</button>
+                <button type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>
