@@ -1,0 +1,34 @@
+<div class="container">
+    <h1 class="my-3">Libraries</h1>
+    <hr>
+    <BsTab as |tab|>
+        <tab.pane @title="List All">
+            {{!-- @active={{if this.activeTab "List All"}} --}}
+            {{!-- this.activetab r value ata hole active hobe amon --}}
+            {{!-- filter --}}
+            {{!-- cls component --}}
+            {{!-- @model padhiechi model nam diyei extract korte hobe shei component e padhalam shetar js e giye
+            get filtercards() {
+            const { cards } = this.args;} --}}
+            {{!-- ai @handleActiveTab k ai nam ei click korabo --}}
+            {{!-- <button type="button" {{on "click" @handleActiveTab}} {{on 'click' (fn this.handleEdit card._id) }}
+                class="btn btn-success">Edit</button> --}}
+            {{!-- <Inputcard @handleActiveTab={{this.switchTab}} @model={{@model}}></Inputcard> --}}
+            <Inputcard @model={{@model}}></Inputcard>
+        </tab.pane>
+
+        {{!-- second tab --}}
+        <tab.pane @title="Add new">
+            <div>
+                <h2>Create a new library</h2>
+                <div class="">
+                    <div class="">
+                        {{!-- ekhane form use korle to route e js likhte hobe sheta na kore amra akta cls compo baniye
+                        shekhane shob kaj kore ekhane sheta render kore dibo --}}
+                        <Inputform></Inputform>
+                    </div>
+                </div>
+            </div>
+        </tab.pane>
+    </BsTab>
+</div>

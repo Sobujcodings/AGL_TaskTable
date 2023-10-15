@@ -1,61 +1,100 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+// import { inject as service } from '@ember/service';
 
 export default class InputCARDComponent extends Component {
-    @tracked inputValue = '';
+  @tracked inputValue = '';
+  // @service location;
 
+  // taking input value
+  @action
+  hanldeinput(event) {
+    this.inputValue = event.target.value;
+    console.log(this.inputValue);
+  }
 
-    @action
-    hanldeinput(event) {
-        this.inputValue = event.target.value;
-        console.log(this.inputValue);
+  // ai card guloke route e fetch kore template e bebohar kore padhiye dilam inputcard component r argument hishebe r ekhane use korlam shetake filter kore padhiye dibo input e click na hole just raw cards gulai padhiye dibo shob shob gulai padhabo
+  get filtercards() {
+    const { model } = this.args;
+    // console.log(cards.length);
+    if (this.inputValue) {
+      // amdr input value ta jodi card r name r moddhe thake tahole shei whole card gula filtercard e jabe
+      let filtercards = model.filter((card) =>
+        card.name.includes(this.inputValue),
+      );
+      return filtercards;
     }
+    return model;
+  }
 
-    // ai card guloke route e fetch kore template e bebohar kore padhiye dilam inputcard component r argument hishebe r ekhane use korlam shetake filter kore padhiye dibo input e click na hole just raw cards gulai padhiye dibo shob shob gulai padhabo
-    get filtercards() {
-        const { model } = this.args;
-        // console.log(cards.length);
-        if (this.inputValue) {
-            // amdr input value ta jodi card r name r moddhe thake tahole shei whole card gula filtercard e jabe
-            let filtercards = model.filter((card) => card.name.includes(this.inputValue));
-            return filtercards;
+  // handle delete btn
+  @action
+  async handleDelete(id) {
+    console.log(id);
+    // console.log(this.id);
+    try {
+      const response = await fetch(`http://localhost:5000/deleteCard/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json', // Set the content type if needed
+        },
+      });
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          console.error('Resource not found');
+          return;
+        } else {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        return model;
+      }
+      const responseData = await response.json();
+      console.log(responseData);
+      alert(`card id ${id} has been deleted`);
+      // this.location.replace();
+    } catch (error) {
+      console.error('Error:', error);
+      throw error; // Propagate the error up the call stack for additional handling if needed
     }
+  }
 
-    // constructor() {
-    //     super(...arguments);
 
-    //     // Fetch data within the constructor
-    //     fetch('https://mocki.io/v1/88fe6e57-9555-4f6f-95c3-c84842e923cc')
-    //         .then((response) => response.json())
-    //         .then((data) => {
-    //             // Process the fetched data
-    //             console.log(data);
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error fetching data:', error);
-    //         });
-    // }
 
-    //     async function datafetching() {
-    //         let response = await fetch('https://mocki.io/v1/88fe6e57-9555-4f6f-95c3-c84842e923cc');
-    //         let parsed = await response.json();
-    //         console.log(parsed);
-    //         return parsed;
+
+  // edit r e click korle form ashbe form e data dile sheta jeye card id diye match kore update hobe
+  // request r body te form r data padhate hobe sheta jeye exist tay replace hobe
+  // udpating the card
+  @action
+  async handleEdit(id) {
+    console.log(id);
+    // try {
+    //   let response = await fetch(`http://localhost:5000/updateUser/${id}`, {
+    //     method: 'PUT',
+    //     headers: {
+    //       'Content-Type': 'application/json', // Set the content type if needed
+    //     },
+    //     // Add your request body if necessary (ekhane body r moddhe form r update data gulo dibo)
+    //     // edit e click korle pasher new user e niye jabe sekhane shob dile ata delete hoye jabe
+    //     // body: JSON.stringify(yourData),
+    //   })
+
+    //   // error checking
+    //   if (!response.ok) {
+    //     if (response.status === 404) {
+    //       console.error('Resource not found');
+    //       return;
+    //     } else {
+    //       throw new Error(`HTTP error! Status: ${response.status}`);
     //     }
-    //     datafetching();
-
-
-    //     @tracked inputValue = '';
-    //     handleinput(event) {
-    //         this.inputValue = event.target.value;
-    //         console.log(this.inputValue);
-    //     }
+    //   }
+    //   const responseData = await response.json();
+    //   console.log(responseData);
+    //   alert(`card id ${id} has been deleted`);
+    //   // this.location.replace();
+    // } catch (error) {
+    //   console.error('Error:', error);
+    //   throw error;
     // }
-    // let response = await fetch('https://mocki.io/v1/88fe6e57-9555-4f6f-95c3-c84842e923cc');
-    // let parsed = await response.json();
-    // console.log(parsed);
-    // // return parsed;
+  }
 }

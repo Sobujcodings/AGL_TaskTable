@@ -14,22 +14,32 @@
 
 <div>
     {{!-- cards --}}
-    <div class="card-group gap-4">
-        {{!-- @model contains what i have returned from the route file libraries.js --}}
-        {{#each this.filtercards as |card|}}
-        <div class="card border">
-            <div class="card-header">{{card.name}}</div>
-            <div class="card-body">
-                <p>Address: {{card.address}}</p>
-                <p>Phone: {{card.phone}}</p>
+    <div class="container">
+        <div class="row">
+            {{#each this.filtercards as |card|}}
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <div class="card-header">{{card.name}}</div>
+                    <div class="card-body">
+                        <p>Address: {{card.address}}</p>
+                        <p>Phone: {{card.phone}}</p>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">
+                            <span class="me-1">Number of books:</span>
+                            <span class="fw-bold">01</span>
+                        </small>
+                        {{!-- <p> hello{{card._id}}</p> --}}
+                        {{!-- <button type="button" {{on "click" (fn @handleActiveTab "Add new" card._id)}} {{on 'click'
+                            (fn this.handleEdit card._id) }} class="btn btn-success">Edit</button> --}}
+                        <LinkTo @route="index"><button type="button" class="btn btn-success">Edit</button></LinkTo>
+                        <button type="button" {{on 'click' (fn this.handleDelete card._id)}}
+                            class="btn btn-danger">Delete</button>
+                    </div>
+                </div>
             </div>
-            <div class="card-footer">
-                <small class="text-body-secondary"><span class="me-1">Number of books:</span> <span
-                        class="mx-1 fw-bold"> 01 </span> </small>
-                <button type="button" class="btn btn-success">Edit</button>
-                <button type="button" class="btn btn-danger">Delete</button>
-            </div>
+            {{/each}}
         </div>
-        {{/each}}
     </div>
+
 </div>
