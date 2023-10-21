@@ -1,3 +1,4 @@
+
 <div class="my-3">
     <span class="btn-group">
         <button type="button" class="btn bg-info mb-1">All</button>
@@ -29,11 +30,14 @@
                             <span class="me-1">Number of books:</span>
                             <span class="fw-bold">01</span>
                         </small>
-                        {{!-- <p> hello{{card._id}}</p> --}}
-                        {{!-- <button type="button" {{on "click" (fn @handleActiveTab "Add new" card._id)}} {{on 'click'
-                            (fn this.handleEdit card._id) }} class="btn btn-success">Edit</button> --}}
-                        <LinkTo @route="index"><button type="button" class="btn btn-success">Edit</button></LinkTo>
-                        <button type="button" {{on 'click' (fn this.handleDelete card._id)}}
+                        {{!-- <p>{{card.id}}</p> --}}
+                        <LinkTo @route="library" @model={{card.id}}><button type="button"
+                                class="btn btn-success">Edit</button></LinkTo>
+                        {{!-- ai route r nam libaray jeta route.js eo dici, ai route e @model diye id padhalale sheta
+                        route.js file :id automatic ai id k niye nibe from library route --}}
+                        {{!-- ai route e ai model diye id k padhalam shei route e jeye oi id diye dynamic fetch korbo
+                        --}}
+                        <button type="button" {{on 'click' (fn this.handleDelete card.id)}}
                             class="btn btn-danger">Delete</button>
                     </div>
                 </div>

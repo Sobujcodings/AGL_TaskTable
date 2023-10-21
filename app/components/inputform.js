@@ -1,8 +1,11 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import { inject as service } from '@ember/service';
 
 export default class InputformComponent extends Component {
+  @service router;
+
   // login ta two way binding hobe okhane change kore ekhane change abar ekhaen hole oikhane change
   //form r value this.login diye ekhane rekhe dilam shetake pore extract kore form r prottek ta value ber korbo obj theke
   @tracked login = {};
@@ -17,14 +20,11 @@ export default class InputformComponent extends Component {
     // akhn ai ogin e set kora data guloke extract kore ber kore nibo
     // form theke this.login e padhaichi sheta theke every input field value ber kore nilam
     const { name, address, phone } = this.login;
+    // console.log(name,address,phone);
     this.name = name;
     this.address = address;
     this.phone = phone;
-    // // necher getter funciton e pass kore dilam
-    // this.data(text, address, phone);
-    // console.log(this.login);
-    console.log(JSON.stringify(this.login));
-    // console.log(text, address, phone);
+    // tracked eo value gula boshiye dilam jate abar ai value guloke shei hbs file eo use kora jay tracked thake
 
     // post this form value to the backend then database
     async function postData(login) {
@@ -52,6 +52,7 @@ export default class InputformComponent extends Component {
 
     this.login = '';
     alert('card added');
+    location.reload();
   }
 
   // getter funciton diye abar ai khaner data gulo compo/temp niye dekhabo

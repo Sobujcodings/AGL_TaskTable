@@ -1,9 +1,11 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-// import { inject as service } from '@ember/service';
+import { inject as service } from '@ember/service';
 
 export default class InputCARDComponent extends Component {
+  @service router;
+
   @tracked inputValue = '';
   // @service location;
 
@@ -11,13 +13,15 @@ export default class InputCARDComponent extends Component {
   @action
   hanldeinput(event) {
     this.inputValue = event.target.value;
-    console.log(this.inputValue);
+    // console.log(this.inputValue);
+    // const { model } = this.args;
+    // console.log(model);
   }
 
   // ai card guloke route e fetch kore template e bebohar kore padhiye dilam inputcard component r argument hishebe r ekhane use korlam shetake filter kore padhiye dibo input e click na hole just raw cards gulai padhiye dibo shob shob gulai padhabo
   get filtercards() {
     const { model } = this.args;
-    // console.log(cards.length);
+    // console.log(model);
     if (this.inputValue) {
       // amdr input value ta jodi card r name r moddhe thake tahole shei whole card gula filtercard e jabe
       let filtercards = model.filter((card) =>
@@ -52,49 +56,47 @@ export default class InputCARDComponent extends Component {
       const responseData = await response.json();
       console.log(responseData);
       alert(`card id ${id} has been deleted`);
-      // this.location.replace();
+
+      location.reload();
     } catch (error) {
       console.error('Error:', error);
       throw error; // Propagate the error up the call stack for additional handling if needed
     }
   }
 
-
-
-
   // edit r e click korle form ashbe form e data dile sheta jeye card id diye match kore update hobe
   // request r body te form r data padhate hobe sheta jeye exist tay replace hobe
   // udpating the card
-  @action
-  async handleEdit(id) {
-    console.log(id);
-    // try {
-    //   let response = await fetch(`http://localhost:5000/updateUser/${id}`, {
-    //     method: 'PUT',
-    //     headers: {
-    //       'Content-Type': 'application/json', // Set the content type if needed
-    //     },
-    //     // Add your request body if necessary (ekhane body r moddhe form r update data gulo dibo)
-    //     // edit e click korle pasher new user e niye jabe sekhane shob dile ata delete hoye jabe
-    //     // body: JSON.stringify(yourData),
-    //   })
+  // @action
+  // async handleEdit(id) {
+  //   console.log(id);
+  // try {
+  //   let response = await fetch(`http://localhost:5000/updateUser/${id}`, {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-Type': 'application/json', // Set the content type if needed
+  //     },
+  //     // Add your request body if necessary (ekhane body r moddhe form r update data gulo dibo)
+  //     // edit e click korle pasher new user e niye jabe sekhane shob dile ata delete hoye jabe
+  //     // body: JSON.stringify(yourData),
+  //   })
 
-    //   // error checking
-    //   if (!response.ok) {
-    //     if (response.status === 404) {
-    //       console.error('Resource not found');
-    //       return;
-    //     } else {
-    //       throw new Error(`HTTP error! Status: ${response.status}`);
-    //     }
-    //   }
-    //   const responseData = await response.json();
-    //   console.log(responseData);
-    //   alert(`card id ${id} has been deleted`);
-    //   // this.location.replace();
-    // } catch (error) {
-    //   console.error('Error:', error);
-    //   throw error;
-    // }
-  }
+  //   // error checking
+  //   if (!response.ok) {
+  //     if (response.status === 404) {
+  //       console.error('Resource not found');
+  //       return;
+  //     } else {
+  //       throw new Error(`HTTP error! Status: ${response.status}`);
+  //     }
+  //   }
+  //   const responseData = await response.json();
+  //   console.log(responseData);
+  //   alert(`card id ${id} has been deleted`);
+  //   // this.location.replace();
+  // } catch (error) {
+  //   console.error('Error:', error);
+  //   throw error;
+  // }
+  // }
 }

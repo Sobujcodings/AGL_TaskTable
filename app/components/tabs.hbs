@@ -1,0 +1,27 @@
+<div class="container">
+    <h1 class="my-3">Libraries</h1>
+    <hr>
+
+    {{!-- tab --}}
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <LinkTo @route="libraries" class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-1">List All
+            </LinkTo>
+        </li>
+        <li class="nav-item">
+            <LinkTo @route="library" class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-2">Add new</LinkTo>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        {{!-- ai tab kei active rekhe jei data drkr sheta dekhiye diyechi form e abar list e click korle ager
+        libraries route e niye gechi jekhane shob card gula ache --}}
+        {{!-- form r js file e jabe shekhan theke tracked kore then shetake use korte hobe hbs e --}}
+        <div class="tab-pane active" id="tab-2">
+            <Form @model={{@model}}></Form>
+        </div>
+    </div>
+
+
+
+</div>

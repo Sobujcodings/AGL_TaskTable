@@ -1,9 +1,9 @@
 <div class="d-flex">
     <div class="w-50">
         <BsForm @model={{this.login}} @onSubmit={{this.submit}} as |form|>
-            <form.element  @value="hello" @controlType="text" @label="Name"  />
-            <form.element @controlType="text" @label="Address" @helpText="Minimum 6 characters" />
-            <form.element @controlType="text" @label="Phone" @helpText="Minimum 6 characters" />
+            <form.element @property="name" @controlType="text" @label="Name"  />
+            <form.element @property="address" @controlType="text" @label="Address" @helpText="Minimum 6 characters" />
+            <form.element @property="phone" @controlType="text" @label="Phone" @helpText="Minimum 6 characters" />
             <form.submitButton>Create</form.submitButton>
         </BsForm>
     </div>
@@ -15,7 +15,7 @@
     {{!-- sidecard --}}
     <div class="w-50 pt-4 ps-5">
         <div class="card w-75 h-75">
-            <div class="card-header">Header</div>
+            <div class="card-header h-25">{{this.name}}</div>
             <div class="card-body">
                 <p>Address: {{this.address}}</p>
                 <p>Phone: {{this.phone}}</p>

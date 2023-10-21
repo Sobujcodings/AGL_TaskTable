@@ -1,0 +1,59 @@
+{{!-- {{#each @model.filterCard as |filteredItem|}}
+<p>hello {{filteredItem.address}}</p>
+<p>Name: {{filteredItem.name}}</p>
+{{/each}} --}}
+
+<div class="">
+    <h2>Create a new library</h2>
+    <div class="">
+        <div class="">
+            <div class="d-flex">
+                {{!-- filtercard r output ta kata array howay iterate kore pore use korte hobe karon ekhane
+                koyekta array/datao thakte pare --}}
+                {{#each @model as |filteredItem|}}
+                <div class="w-50">
+                    {{!-- @model: It's set to filteredItem, which means that the filteredItem data is associated
+                    with this form, and the form elements will interact with the properties of the filteredItem --}}
+                    {{!-- the relationship is that filteredItem is tracking changes to args, and
+                    @model={{filteredItem}} is a way to pass the tracked filteredItem as the model to another
+                    component or template, enabling data flow and reactivity between them. --}}
+
+                    <BsForm @model={{filteredItem}} @onSubmit={{this.submit}} as |form|>
+                        <form.element @property="name" @value={{this.filteredItem.name}} @controlType="text"
+                            @label="Name" />
+                        <form.element @property='address' @value={{this.filteredItem.address}} @controlType="text"
+                            @label="Address" @helpText="Minimum 6 characters" />
+                        <form.element @property='phone' @value={{this.filteredItem.phone}} @controlType="text"
+                            @label="Phone" @helpText="Minimum 6 characters" />
+                        <form.submitButton>Submit</form.submitButton>
+                    </BsForm>
+
+                </div>
+
+
+                {{!-- sidecard --}}
+                <div class="w-50 pt-4 ps-5">
+                    <div class="card w-75 h-75">
+                        <div class="card-header">{{this.name}}</div>
+                        <div class="card-body">
+                            <p>Address: {{this.updatedata.address}}</p>
+                            <p>Phone: {{this.updatedata.phone}}</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-body-secondary"><span class="me-1">Number of books:</span>
+                                <span class="mx-1 fw-bold"> 01
+                                </span>
+                            </small>
+                            {{!-- <button type="button" class="btn btn-success">Edit</button> --}}
+                            {{!-- <button type="button" class="btn btn-danger">Delete</button> --}}
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
