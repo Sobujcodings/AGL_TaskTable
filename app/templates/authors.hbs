@@ -1,48 +1,6 @@
 {{page-title "Authors"}}
 {{outlet}}
 
-<div class="container my-3">
+{{!-- onno component cls e niye gelam jate js r kaj gula kora jay --}}
 
-    <div class="">
-        {{!-- TABLE --}}
-        <div class="">
-            <div>
-                <h1>Authors</h1>
-            </div>
-            <table class="table border">
-                <thead>
-                    <tr class="col">
-                        {{!-- <th scope="col">#</th> --}}
-                        <th class="border pb-4 col-4 ps-3">Name <br> <span class="fw-normal d-inline"> (click on
-                                name for editing)</span> </th>
-                        <th class="border pb-5 col-8 ps-3">Books</th>
-                    </tr>
-                </thead>
-                {{!-- joto gulo author pabo totogulo each hobe
-                tar moddhe joto gula books pabo totogulo bullet point hobe --}}
-                {{#each @model as |LibraryItem|}}
-                <tbody class="">
-                    <tr class="border-2">
-                        <td class="bg-body-secondary">Alec Sch</td>
-                        <td class="bg-body-secondary border">
-                            <ul class="ps-5">
-                                <li>Tasty Frozen Sausages Cookbook</li>
-                                <li>Handmade Fresh Hat Cookbook</li>
-                                <li>Tasty Frozen Sausages Cookbook</li>
-                                <li>Ergonomic Metal Bike Cookbook</li>
-                                <li>Tasty Frozen Sausages Cookbook</li>
-                                <li>Practical Fresh Chips Cookbook</li>
-                                <li>Small Soft Chair Cookbook</li>
-                                <li>Tasty Frozen Sausages Cookbook</li>
-                                <li>Tasty Frozen Sausages Cookbook</li>
-                                <li>Tasty Frozen Sausages Cookbook</li>
-                            </ul>
-                        </td>
-                        {{!-- <td>{{LibraryItem.name}}</td> --}}
-                    </tr>
-                </tbody>
-                {{/each}}
-            </table>
-        </div>
-    </div>
-</div>
+<Authors @model={{@model}}></Authors>

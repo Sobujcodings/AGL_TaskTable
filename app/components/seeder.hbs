@@ -1,0 +1,63 @@
+{{!-- seeder(template) > seeder(component) --}}
+
+<div class="container my-3">
+    <h1>Seeder, our Data Center</h1>
+    {{!-- card --}}
+    <div class="d-flex gap-4">
+        <div class="card card-body bg-info">
+            <div class="card-body">
+                <h3 class="text-center">Libraries <br>
+                    <span class="fs-1">
+                        {{#if this.loading}}
+                        {{this.libraryData}}
+                        {{else}}
+                        <div class="spinner-border border-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        {{/if}}
+                    </span>
+                </h3>
+            </div>
+        </div>
+        <div class="card card-body bg-info">
+            <div class="card-body">
+                <h3 class="text-center">Authors <br> <span class="fs-1">{{this.authorLength}}</span></h3>
+            </div>
+        </div>
+        <div class="card card-body bg-info">
+            <div class="card-body">
+                <h3 class="text-center">Books <br> <span class="fs-1">{{this.booksLength}}</span> </h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="my-5">
+        <div class=" mb-2">
+            <h2>Libraries</h2>
+            <div class="d-flex">
+                <p class="my-auto">Number of new records: </p>
+                <label>
+                    <Input @value={{this.Library}} placeholder="Max 100" class="ps-2 py-2 border rounded"></Input>
+                </label>
+                <button {{on 'click' this.generateLib}} class="btn btn-primary" type="button">Generate
+                    Libraries</button>
+                <button type="button" class="btn btn-danger" {{on "click" this.handleDelete}}>Delete all
+                    Libraries</button>
+            </div>
+        </div>
+
+        <div class="">
+            <h2>Author of Books</h2>
+            <div class="d-flex">
+                <p class="my-auto">Number of new records: </p>
+                <label>
+                    <Input @value={{this.generateAuthor}} placeholder="Max 100"
+                        class="ps-2 py-2 border rounded"></Input>
+                </label>
+                <button {{on 'click' this.generateAuthors}} class="btn btn-primary" type="button">Generate Authors with
+                    Books</button>
+                <button {{on 'click' this.DeleteAllAuthors}} class="btn btn-danger" type="button">Delete all Authors with Books</button>
+            </div>
+        </div>
+    </div>
+</div>

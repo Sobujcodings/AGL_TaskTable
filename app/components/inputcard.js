@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 
 export default class InputCARDComponent extends Component {
   @service router;
+  @service store;
 
   @tracked inputValue = '';
   // @service location;
@@ -32,37 +33,59 @@ export default class InputCARDComponent extends Component {
     return model;
   }
 
-  // handle delete btn
+  // deleting a record using Ember data
+  // Deleting records is as straightforward as creating records. Call deleteRecord() on any instance of Model. This flags the record as isDeleted. The deletion can then be persisted using save(). Alternatively, you can use the destroyRecord method to delete and persist at the same time.
+  // post = store.peekRecord('post', 2);
+  // post.destroyRecord(); // => DELETE to /posts/2
+
   @action
   async handleDelete(id) {
     console.log(id);
-    // console.log(this.id);
-    try {
-      const response = await fetch(`http://localhost:5000/deleteCard/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json', // Set the content type if needed
-        },
-      });
-
-      if (!response.ok) {
-        if (response.status === 404) {
-          console.error('Resource not found');
-          return;
-        } else {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-      }
-      const responseData = await response.json();
-      console.log(responseData);
-      alert(`card id ${id} has been deleted`);
-
-      location.reload();
-    } catch (error) {
-      console.error('Error:', error);
-      throw error; // Propagate the error up the call stack for additional handling if needed
+    // DELETE to /library/2  library will become libraries  /libraries/id
+    const library = this.store.peekRecord('library', id);
+    if (library) {
+      library
+        .destroyRecord()
+        .then(() => {
+          alert('This id has been deleted');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }
+
+  // handle delete btn
+  // @action
+  // async handleDelete(id) {
+  //   console.log(id);
+  //   // console.log(this.id);
+  //   try {
+  //     const response = await fetch(`http://localhost:5000/deleteCard/${id}`, {
+  //       method: 'DELETE',
+  //       headers: {
+  //         'Content-Type': 'application/json', // Set the content type if needed
+  //       },
+  //     });
+
+  //     if (!response.ok) {
+  //       if (response.status === 404) {
+  //         console.error('Resource not found');
+  //         return;
+  //       } else {
+  //         throw new Error(`HTTP error! Status: ${response.status}`);
+  //       }
+  //     }
+  //     const responseData = await response.json();
+  //     console.log(responseData);
+  //     alert(`card id ${id} has been deleted`);
+  //     // reload this page
+  //     location.reload();
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     throw error; // Propagate the error up the call stack for additional handling if needed
+  //   }
+  // }
 
   // edit r e click korle form ashbe form e data dile sheta jeye card id diye match kore update hobe
   // request r body te form r data padhate hobe sheta jeye exist tay replace hobe

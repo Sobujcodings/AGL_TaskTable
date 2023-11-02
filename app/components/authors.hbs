@@ -1,0 +1,47 @@
+<div class="container my-3">
+
+    <div class="">
+        {{!-- TABLE --}}
+        <div class="">
+            <div>
+                <h1>Authors</h1>
+            </div>
+            <table class="table border">
+                <thead>
+                    <tr class="col">
+                        <th class="border pb-4 col-5 ps-3">Name <br> <span class="fw-normal d-inline"> (click onname for editing)</span> </th>
+                        <th class="border pb-5 col-7 ps-3">Books</th>
+                    </tr>
+                </thead>
+                {{!-- joto gulo author pabo totogulo each hobe tar moddhe joto gula books pabo totogulo bullet point hobe --}}
+                {{#each @model as |authorItem|}}
+                <tbody class="">
+                    <tr class="border-2">
+                        {{#if this.clicked}}
+                        {{!-- click(korle true hobe) kole ak rokom click na korle arekrokom --}}
+                        <td class="flex bg-body-secondary ">
+                            <label class="w-50">
+                                <Input class="w-100 d-inline px-3 py-2 border-0 rounded-1" @value={{authorItem.author}}></Input>
+                            </label>
+                            <button class="btn btn-success mb-2" type="button">Save</button>
+                            <button class="btn btn-danger mb-2" type="button">Cancel</button>
+                        </td>
+                        {{else}}
+                        <td class="bg-body-secondary"><button class="border-0" type="button" {{on 'click'
+                                this.handleEdit}}>{{authorItem.author}}</button></td>
+                        {{/if}}
+
+                        <td class="bg-body-secondary border">
+                            <ul class="ps-5">
+                                {{#each authorItem.booksArraay as |book|}}
+                                <li>{{book}}</li>
+                                {{/each}}
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+                {{/each}}
+            </table>
+        </div>
+    </div>
+</div>

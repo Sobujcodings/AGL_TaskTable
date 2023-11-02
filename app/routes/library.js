@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 
-// Route Naming: Route names should be in kebab-case, plural form of the model name. 
+// Route Naming: Route names should be in kebab-case, plural form of the model name.
 // If the model is Library, the route should be libraries.
 
 export default class LibraryRoute extends Route {
@@ -19,11 +19,11 @@ export default class LibraryRoute extends Route {
     // library (model name)
     // age j get kore store e rekhecilam shei store theke shei model(library) nam diye niye nilam get r data
     let parsed = await this.store.peekAll('library');
-    console.log(parsed);
+    // console.log(parsed);
 
     // filtering the click card by the id
     let filterCard = parsed.filter((card) => card.id.includes(params.id));
-    console.log(filterCard);
+    // console.log(filterCard);
     // parsed means all filtercard means filterdcards
     return { parsed, filterCard };
   }

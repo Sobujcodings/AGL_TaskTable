@@ -15,7 +15,7 @@ Router.map(function () {
   this.route('authors');
   this.route('books');
   this.route('library', { path: 'library/:id' });
-  // :id dile params e likhbo params.id  :card dile lekhbo params.card; 
+  // :id dile params e likhbo params.id  :card dile lekhbo params.card;
   // route r nam library path holo url
   // * ekkhane jei params diye route banabo route.js e shei nam ei params pabo (jamon id dile params.id lekhle pabo id k)
 
@@ -25,4 +25,5 @@ Router.map(function () {
     this.route('seeder');
   });
   this.route('edit');
+  this.route('seeder');
 });

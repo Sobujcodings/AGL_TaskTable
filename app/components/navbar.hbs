@@ -1,6 +1,6 @@
 {{!-- {{yield}} --}}
 
-<div class="bg-black">
+<div class="bg-dark">
     <nav class="navbar navbar-light navbar-expand-lg container text-light ">
         <LinkTo class="navbar-brand text-light" @route="index">Library app</LinkTo>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
@@ -12,37 +12,43 @@
 
                 <div class=" d-flex">
                     <li class="nav-item active">
-                        <LinkTo @route="index" class="nav-link text-light" href="#">Home </LinkTo>
+                        <LinkTo @route="index" class="nav-link text-light">Home </LinkTo>
                     </li>
                     <li class="nav-item">
-                        <LinkTo @route="libraries" class="nav-link text-light" href="#">Libraries</LinkTo>
+                        <LinkTo @route="libraries" class="nav-link text-light">Libraries</LinkTo>
                     </li>
                     <li class="nav-item">
-                        <LinkTo @route="authors" class="nav-link text-light" href="#">Authors</LinkTo>
+                        <LinkTo @route="authors" class="nav-link text-light">Authors</LinkTo>
                     </li>
                     <li class="nav-item">
-                        <LinkTo @route="books" class="nav-link text-light" href="#">Books</LinkTo>
+                        <LinkTo @route="books" class="nav-link text-light">Books</LinkTo>
                     </li>
                 </div>
 
                 <div class=" d-flex ">
                     <li class="nav-item">
-                        <LinkTo @route="about" class="nav-link text-light" href="#">About</LinkTo>
+                        <LinkTo @route="about" class="nav-link text-light">About</LinkTo>
                     </li>
                     <li class="nav-item">
                         <LinkTo @route="contack" class="nav-link text-light">Contack</LinkTo>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link text-light dropdown-toggle" href="#" id="navbarDropdownMenuLink"
-                            role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Admin
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+
+
+                    <BsDropdown as |dd|>
+                        <dd.toggle class="text-decoration-none">
+                            <button class="btn btn-dark" type="button">Admin</button>
+                        </dd.toggle>
+                        <dd.menu>
                             <a class="dropdown-item" href="#">Invitation</a>
                             <a class="dropdown-item" href="#">Contact</a>
-                            <a class="dropdown-item" href="#">Seeder</a>
-                        </div>
-                    </li>
+                            <LinkTo @route="admin.seeder" class="dropdown-item">Seeder</LinkTo>
+                        </dd.menu>
+                    </BsDropdown>
+
+
+
+
+
                 </div>
 
 
