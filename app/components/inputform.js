@@ -43,11 +43,11 @@ export default class InputformComponent extends Component {
         // The record has been saved successfully
         // savedLibrary is the JSON api response we get from the beckend server
         console.log('Saved library:', savedLibrary);
-        // Access the values you posted
-        const name = savedLibrary.name;
-        const address = savedLibrary.address;
-        const phone = savedLibrary.phone;
-        console.log(name, address, phone);
+        // // Access the values you posted
+        // const name = savedLibrary.name;
+        // const address = savedLibrary.address;
+        // const phone = savedLibrary.phone;
+        // console.log(name, address, phone);
         alert('card added');
         location.reload();
       })
@@ -55,38 +55,5 @@ export default class InputformComponent extends Component {
         // Handle the error in case of failure
         console.error('Error saving library:', error);
       });
-
-    // noraml fetch for post request this form value to the backend then database
-    //   async function postData(login) {
-    //     try {
-    //       const response = await fetch('http://localhost:5000/addCards', {
-    //         method: 'POST',
-    //         headers: {
-    //           'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify(login),
-    //       });
-
-    //       if (!response.ok) {
-    //         throw new Error(`HTTP error! Status: ${response.status}`);
-    //       }
-
-    //       const responseData = await response.json();
-    //       console.log(responseData);
-    //     } catch (error) {
-    //       console.error('Error:', error);
-    //     }
-    //   }
-    //   // Call the async function to send the POST request
-    //  - postData(this.login);
-
-    //   this.login = '';
-    //   alert('card added');
-    //   location.reload();
-    // }
-
-    // getter funciton diye abar ai khaner data gulo compo/temp niye dekhabo
-    // get data() {
-    //     return this.text, this.address, this.phone;
   }
 }

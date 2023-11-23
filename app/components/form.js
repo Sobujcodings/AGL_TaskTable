@@ -59,37 +59,5 @@ export default class FormComponent extends Component {
           console.error('Error updating library:', error);
         });
     });
-    // Navigate to another route
-    // this.router.transitionTo('libraries');
-    // this.router.refresh();
-
-    // PUT request using normal fetch
-    // Construct the dynamic URL with the ID
-    // const url = `http://localhost:5000/editCard/${id}`;
-
-    // // Perform the PUT request
-    // try {
-    //   const response = await fetch(url, {
-    //     method: 'PUT',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify(updatedData), // Send the updated data
-    //   });
-
-    //   if (!response.ok) {
-    //     throw new Error(`HTTP error! Status: ${response.status}`);
-    //   }
-
-    //   const responseData = await response.json();
-    //   console.log(responseData);
-    //   alert('Form has been edited');
-    //   // Navigate to another route
-    //   this.router.transitionTo('libraries');
-
-    // } catch (error) {
-    //   console.error('Error:', error);
-    //   // here got the problem now for posting
-    // }
   }
 }

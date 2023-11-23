@@ -1,0 +1,75 @@
+{{yield}}
+
+
+<div class="container my-3">
+    <h1>Books</h1>
+    <table class="table border">
+        <thead>
+            <tr class="">
+                <th class="border" scope="col">Authors <br> <span class="fw-normal fs-6">(Click on the title for
+                        editing)</span></th>
+                <th class="border" scope="col">Title <br> <span class="fw-normal fs-6">(Click on the title for
+                        editing)</span></th>
+                <th class="border" scope="col">Release year <br> <span class="fw-normal fs-6"></span></th>
+                <th class="border" scope="col">Library <br> <span class="fw-normal fs-6">(Click on the title for
+                        editing)</span></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            {{!-- eibhabe loop inside loop korle amra shei single author pabo --}}
+            {{#each @model as |element|}}
+            {{!-- jotogula sinlge books ache totogula korbo row then shei element author relaese o shob use korte
+            parbo--}}
+            {{!-- iterate korbo element r totalbooks r upor r use korbo shei element r author r bakigulake --}}
+            {{#each element.totalBooks as |book|}}
+            <tr class="bg-body-secondary">
+                {{#if this.Clicked}}
+                <BsDropdown as |dd|>
+                    <dd.button>
+                        Dropdown
+                        <span class="caret"></span>
+                    </dd.button>
+                    <dd.menu as |menu|>
+                        <menu.item>
+                            <menu.linkTo @route="index">Home</menu.linkTo>
+                        </menu.item>
+                        <menu.item>
+                            <menu.linkTo @route="demo.dropdown">Dropdowns</menu.linkTo>
+                        </menu.item>
+                    </dd.menu>
+                </BsDropdown>
+                {{else}}
+                <td class="border bg-body-secondary ps-3">
+                    <button type="button" class="border-0" {{on 'click' (fn this.handleAuthor
+                        element)}}>{{element.author}}
+                    </button>
+                </td>
+                {{/if}}
+
+                {{!-- 2nd column --}}
+                {{!-- <p>hello{{this.clickedBook}}</p> --}}
+                {{#if this.tastyClicked}}
+                <td class="flex bg-body-secondary ">
+                    <label class="w-50">
+                        <Input class="w-100 d-inline px-3 py-2 border-0 rounded-1" @value={{book}}></Input>
+                    </label>
+                    <button class="btn btn-success mb-2" type="button">Save</button>
+                    <button class="btn btn-danger mb-2" type="button">Cancel</button>
+                </td>
+
+                {{else}}
+                <td class="border bg-body-secondary ps-3">
+                    <button class="border-0" type="button" {{on 'click' (fn this.handleTitle element element.totalBooks
+                        element.author book)}}>{{book}}</button>
+                </td>
+                {{/if}}
+
+                <td class="border bg-body-secondary ps-3">{{element.release}}</td>
+                <td class="border bg-body-secondary ps-3">{{element.library}}</td>
+            </tr>
+            {{/each}}
+            {{/each}}
+        </tbody>
+    </table>
+</div>

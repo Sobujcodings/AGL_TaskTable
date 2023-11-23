@@ -12,7 +12,10 @@ export default class AuthorsRoute extends Route {
     // return parsed;
     // return this.store.findAll('library');
     let parsed = await this.store.findAll('author');
-    console.log(parsed);
+    // console.log(parsed);
+    // parsed.forEach((item) => {
+    //   console.log(item);
+    // });
     // In your model hook, you fetch the parsed data and create an array of objects from it. For each object in this array, you generate the booksArray by splitting the books string.
     // In your template, you can now access both parsed and parsed.booksArray
     parsed.forEach((element) => {

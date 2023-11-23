@@ -1,34 +1,3 @@
-<div class="container my-3">
-    <h1>Books</h1>
-    <table class="table border">
-        <thead>
-            <tr class="">
-                <th class="border" scope="col">Authors <br> <span class="fw-normal fs-6">(Click on the title for
-                        editing)</span></th>
-                <th class="border" scope="col">Title <br> <span class="fw-normal fs-6">(Click on the title for
-                        editing)</span></th>
-                <th class="border" scope="col">Release year <br> <span class="fw-normal fs-6">(Click on the title for
-                        editing)</span></th>
-                <th class="border" scope="col">Library <br> <span class="fw-normal fs-6">(Click on the title for
-                        editing)</span></th>
-            </tr>
-        </thead>
-        <tbody>
 
-            {{!-- eibhabe loop inside loop korle amra shei single author pabo --}}
-            {{#each @model as |element|}}
-            {{!-- jotogula sinlge books ache totogula korbo row then shei element author relaese o shob use korte
-            parbo--}}
-            {{!-- iterate korbo element r totalbooks r upor r use korbo shei element r author r bakigulake --}}
-            {{#each element.totalBooks as |book|}}
-            <tr class="bg-body-secondary">
-                <td class="border bg-body-secondary">{{element.author}}</td>
-                <td class="border bg-body-secondary">{{book}}</td>
-                <td class="border bg-body-secondary">{{element.release}}</td>
-                <td class="border bg-body-secondary">{{element.library}}</td>
-            </tr>
-            {{/each}}
-            {{/each}}
-        </tbody>
-    </table>
-</div>
+
+<Books @model={{@model}}></Books>

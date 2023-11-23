@@ -1,7 +1,7 @@
 <div class="d-flex">
     <div class="w-50">
         <BsForm @model={{this.login}} @onSubmit={{this.submit}} as |form|>
-            <form.element @property="name" @controlType="text" @label="Name"  />
+            <form.element @property="name" @controlType="text" @label="Name" />
             <form.element @property="address" @controlType="text" @label="Address" @helpText="Minimum 6 characters" />
             <form.element @property="phone" @controlType="text" @label="Phone" @helpText="Minimum 6 characters" />
             <form.submitButton>Create</form.submitButton>
