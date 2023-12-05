@@ -1,2 +1,35 @@
 {{page-title "Contacts"}}
 {{outlet}}
+
+
+<div class="container mt-3">
+    <h1>Contacks</h1>
+    <table class="table table-striped border">
+        <thead>
+            <tr>
+                <th class="border" scope="col">ID</th>
+                <th class="border" scope="col">E-mail</th>
+                <th scope="col">Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each @model as |item|}}
+            <tr>
+                <td class="border">{{item.id}}</td>
+                <td class="border">{{item.email}}</td>
+                <td>{{item.message}}</td>
+            </tr>
+            {{/each}}
+            {{!-- <tr>
+                <td class="border">Jacob</td>
+                <td class="border">Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <td class="border">Larry the Bird</td>
+                <td class="border">sdbsb</td>
+                <td>@twitter</td>
+            </tr> --}}
+        </tbody>
+    </table>
+</div>

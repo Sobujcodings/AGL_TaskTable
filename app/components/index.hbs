@@ -1,13 +1,14 @@
 <div class="border bg-body-secondary mx-5 my-4 p-5 text-center">
     <div class="pt-3 pb-1">
         <h1 class="fs-1">Demo Home Page</h1>
-        <p class="mt-3">This is an example form for invitation. <br>
-            Start building your own application today, follow our free Ember.js Tutorial.</p>
+        <p class="mt-3 fw-lighter fs-5">This is an example form for invitation. <br>
+            Start building your own application today, follow our free <span class="text-primary">Ember.js
+                Tutorial</span>.</p>
     </div>
     <hr>
     <div class="py-3 my-auto">
-        <p class="">Don't forget to check out other menu points as well. ;</p>
-        <label class=" w-50">
+        <p class="">Don't forget to check out other menu points as well. ;<span>)</span></p>
+        <label class="w-50">
             <Input @value={{this.inputemail}} {{on "input" this.handleInput }}
                 class="w-100 py-2 px-2 my-auto border-0 rounded" placeholder="Please type a fake e-mail address" />
         </label>
@@ -22,9 +23,10 @@
 
         {{!-- computed property get isvalidemail true hole active noyto disable btn --}}
         {{#if this.isValidEmail}}
-        <button type="button" {{on 'click' this.handlebtn}} class="btn btn-primary rounded">Request Invitation</button>
+        <button type="button" {{on 'click' this.handlebtn}} class="btn btn-primary rounded ms-2 mb-2">Request
+            Invitation</button>
         {{else}}
-        <button type="button" class="btn btn-primary" disabled>Request Invitation</button>
+        <button type="button" class="btn btn-primary ms-2 mb-2" disabled>Request Invitation</button>
         {{/if}}
 
     </div>

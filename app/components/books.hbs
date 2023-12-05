@@ -1,5 +1,8 @@
 {{yield}}
 
+{{!-- TODO: TITLE e cancel/save dile blank hoye jacche it should be just the condition changed --}}
+{{!-- TODO: make a random number then generate different library name according to the rand number and set the rand
+library name in a diff time seeder.js e jate ak ak bar ak diff diff nam pai --}}
 
 <div class="container my-3">
     <h1>Books</h1>
@@ -18,57 +21,88 @@
         <tbody>
 
             {{!-- eibhabe loop inside loop korle amra shei single author pabo --}}
-            {{#each @model as |element|}}
+            {{!-- {{#each this.Data as |element|}} --}}
             {{!-- jotogula sinlge books ache totogula korbo row then shei element author relaese o shob use korte
             parbo--}}
             {{!-- iterate korbo element r totalbooks r upor r use korbo shei element r author r bakigulake --}}
-            {{#each element.totalBooks as |book|}}
+            {{#each @model as |element|}}
             <tr class="bg-body-secondary">
-                {{#if this.Clicked}}
-                <BsDropdown as |dd|>
-                    <dd.button>
-                        Dropdown
-                        <span class="caret"></span>
-                    </dd.button>
-                    <dd.menu as |menu|>
-                        <menu.item>
-                            <menu.linkTo @route="index">Home</menu.linkTo>
-                        </menu.item>
-                        <menu.item>
-                            <menu.linkTo @route="demo.dropdown">Dropdowns</menu.linkTo>
-                        </menu.item>
-                    </dd.menu>
-                </BsDropdown>
+
+                {{#if element.authorClicked}}
+                <select name="cars" id="cars" class="w-75 mt-2 ms-3 rounded-1" {{on 'change' (fn
+                    this.handleAuthorSelection element)}}>
+                    {{#each element.totalauthors as |SingleAuthor|}}
+                    <option value={{SingleAuthor}}>{{SingleAuthor}}</option>
+                    {{/each}}
+                </select>
+                <button class="btn bg-danger ms-3 text-white relative mb-2" type="button" {{on 'click' (fn
+                    this.handleCancel element)}}>Cancel</button>
+
                 {{else}}
                 <td class="border bg-body-secondary ps-3">
+                    {{!-- {{on 'click' (fn this.handleAuthor element)}} --}}
                     <button type="button" class="border-0" {{on 'click' (fn this.handleAuthor
                         element)}}>{{element.author}}
                     </button>
                 </td>
                 {{/if}}
 
-                {{!-- 2nd column --}}
-                {{!-- <p>hello{{this.clickedBook}}</p> --}}
-                {{#if this.tastyClicked}}
-                <td class="flex bg-body-secondary ">
-                    <label class="w-50">
-                        <Input class="w-100 d-inline px-3 py-2 border-0 rounded-1" @value={{book}}></Input>
-                    </label>
-                    <button class="btn btn-success mb-2" type="button">Save</button>
-                    <button class="btn btn-danger mb-2" type="button">Cancel</button>
-                </td>
 
+
+                {{!-- 2nd column --}}
+                {{!-- <p>hello{{element.isClicked}}</p> --}}
+                {{#if element.isClicked}}
+                <td class="flex bg-body-secondary">
+                    <label class="w-50">
+                        {{!-- @value={{element.books}} --}}
+                        <Input class="w-100 d-inline px-3 py-2 border-0 rounded-1" {{on 'input' this.handleInput}}
+                            @value={{if this.save element.books element.books }}></Input>
+                    </label>
+                    <button class="btn btn-success mb-2" type="button" {{on 'click' (fn this.handleSave true
+                        element)}}>Save</button>
+                    <button class="btn btn-danger mb-2 " type="button" {{on 'click' (fn this.handleSave false
+                        element)}}>Cancel</button>
+                </td>
                 {{else}}
-                <td class="border bg-body-secondary ps-3">
-                    <button class="border-0" type="button" {{on 'click' (fn this.handleTitle element element.totalBooks
-                        element.author book)}}>{{book}}</button>
+                <td class="bg-body-secondary border mx-auto text-center">
+                    {{!-- {{element.books}} --}}
+                    <button type="button" class="border-0 btn-sm text-center text-decoration-none bg-body-secondary"
+                        {{on 'click' (fn this.handleTitle element)}}>
+                        {{if this.save this.inputValue element.books}}
+                    </button>
                 </td>
                 {{/if}}
 
-                <td class="border bg-body-secondary ps-3">{{element.release}}</td>
-                <td class="border bg-body-secondary ps-3">{{element.library}}</td>
+                <td class="bg-body-secondary ps-3">{{element.release}}</td>
+
+
+                {{!-- libray dropdown --}}
+                {{!-- TODO: library names array that contains all the library data --}}
+                {{!-- *** library keo array list banante hobe route e then shetake ekhane show korabo as a dropdown--}}
+                <td class="bg-body-secondary ">
+                    {{#if element.libarayClicked}}
+                    <select name="cars" id="cars" class="w-75 rounded-1 ms-3 p-2" {{on 'change' (fn
+                        this.handleLibrarySelection element)}}>
+                        {{#each element.totalibraries as |Singlelibrary|}}
+                        <option class="p-2" value={{Singlelibrary}}>{{Singlelibrary}}</option>
+                        {{/each}}
+                    </select>
+
+                    <button class="btn bg-danger text-white relative ms-3 mb-2" type="button" {{on 'click' (fn
+                        this.handleCancelLibrary element)}}>Cancel
+                    </button>
+                    {{else}}
+                <td class=" bg-body-secondary ps-3">
+                    {{!-- {{on 'click' (fn this.handleAuthor element)}} --}}
+                    <button type="button" class="border-0 text-decoration-none bg-body-secondary" {{on 'click' (fn
+                        this.handleLibraray element)}}>{{element.library}}
+                    </button>
+                </td>
+                {{/if}}
+                </td>
+
+
             </tr>
-            {{/each}}
             {{/each}}
         </tbody>
     </table>

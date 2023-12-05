@@ -38,10 +38,6 @@ export default class SeederComponent extends Component {
       const arrayLength = libraries.length;
       // console.log(arrayLength);
       this.libraryData = arrayLength;
-      // console.log(this.libraryData);
-      // location.reload();
-      // console.log('hello');
-      // console.log(this.loading);
       if (libraries) {
         // console.log('loading');
         this.loading = !this.loading;
@@ -121,32 +117,15 @@ export default class SeederComponent extends Component {
     // location.reload();
   }
 
-  // get authors with books data
-  // // get the data automatically by construct
-  // const author = this.store.findAll('author');
-  // console.log(author);
-
-  // constructor() {
-  //     super(...arguments);
-  //     this.loadAuthorData();
-  // }
-
   @action
   async loadAuthorData() {
     try {
       // store findall means fetching here through store
       const authors = await this.store.findAll('author');
-      // console.log(authors);
-      // console.log(authors.length);
-
       // setting the length to the state to use it in the component
       this.authorLength = authors.length;
       let totalBooks = 0;
       authors.forEach((author, index) => {
-        // console.log(author);
-        // console.log(typeof (author.books));
-        // database theke ashle abar string hoye jay so atake abr split kore array banate hobe
-        // console.log(index);
         if (typeof author.books === 'string') {
           const booksArray = author.books.split(',');
           // console.log(booksArray);
@@ -159,15 +138,6 @@ export default class SeederComponent extends Component {
       // loop r bayre jeye akbare final state declare kore dite hobe
       this.booksLength = totalBooks;
       console.log(totalBooks);
-      // console.log(this.libraryData);
-      // location.reload();
-      // console.log('hello');
-      // console.log(this.loading);
-      // if (libraries) {
-      //     // console.log('loading');
-      //     this.loading = !this.loading;
-      //     // console.log(this.loading);
-      // }
     } catch (error) {
       console.error('Error fetching library data:', error);
       // Handle errors if needed
@@ -201,13 +171,14 @@ export default class SeederComponent extends Component {
       const newAuthor = this.store.createRecord('author', {
         idd: '1',
         author: 'Alec Sch',
-        books: [
-          'Tasty Frozen Sausages Cookbook',
-          'Ergonomic Metal Bike Cookbook',
-          'Small Soft Chair Cookbook',
-          'Practical Plastic Chair Cookbook',
-          'Unbranded Metal Towels Cookbook',
-        ],
+        // books: [
+        //   'Tasty Frozen Sausages Cookbook',
+        //   'Ergonomic Metal Bike Cookbook',
+        //   'Small Soft Chair Cookbook',
+        //   'Practical Plastic Chair Cookbook',
+        //   'Unbranded Metal Towels Cookbook',
+        // ],
+        books: 'Tasty Frozen Sausages Cookbook',
         release: 'Wed Jan 01 1969 06:00:00 GMT+0600 (Bangladesh Standard Time)',
         library: 'vicic',
       });

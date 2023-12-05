@@ -20,10 +20,11 @@ Router.map(function () {
   // * ekkhane jei params diye route banabo route.js e shei nam ei params pabo (jamon id dile params.id lekhle pabo id k)
 
   this.route('admin', function () {
-    this.route('Invitation');
-    this.route('Contacts');
+    this.route('invitation');
+    this.route('contacts');
     this.route('seeder');
   });
   this.route('edit');
   this.route('seeder');
+  this.route('contacks');
 });

@@ -1,0 +1,24 @@
+<section class="container my-4 ">
+    <h1>Contact Page</h1>
+    <p>If you have any question or feedback please leave a message with your email address.</p>
+
+    <form {{on 'submit' this.handleSubmit}}>
+        <div class="mb-3 w-50">
+            <label class="mb-2">Your email Address*:</label>
+            <label class=" w-100">
+                <Input @type="email" class="form-control w-100" placeholder="Your Email Address"
+                    @value={{this.email}}></Input>
+            </label>
+        </div>
+
+        <div class="w-50 mb-2">
+            <label class="mb-2">Your message*:</label>
+            <label class="w-100 ">
+                <textarea {{on 'change' this.handleTextArea}} class="form-control w-100 " rows="5"
+                    placeholder="Your message. (at least 5 characters)">{{this.message}}</textarea>
+            </label>
+        </div>
+
+        <button type="submit" class="btn bg-success bg-opacity-75 text-white">Send</button>
+    </form>
+</section>

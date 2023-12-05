@@ -1,6 +1,6 @@
 {{!-- {{yield}} --}}
 
-<div class="bg-dark">
+<div class="bg-dark position-fixed top-0 w-100">
     <nav class="navbar navbar-light navbar-expand-lg container text-light ">
         <LinkTo class="navbar-brand text-light" @route="index">Library app</LinkTo>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
@@ -34,24 +34,27 @@
                     </li>
 
 
+                    {{!-- fix the same name router name --}}
                     <BsDropdown as |dd|>
-                        <dd.toggle class="text-decoration-none">
-                            <button class="btn btn-dark" type="button">Admin</button>
+                        <dd.toggle class="text-decoration-none text-white pb-3 border border-dark">
+                            {{!-- <btn class="btn border-dark text-light pe-0">Admin</btn> --}}
+                            <btn class="btn border-dark text-light">Admin</btn>
                         </dd.toggle>
-                        <dd.menu>
-                            <a class="dropdown-item" href="#">Invitation</a>
-                            <a class="dropdown-item" href="#">Contact</a>
-                            <LinkTo @route="admin.seeder" class="dropdown-item">Seeder</LinkTo>
+                        <dd.menu class="link-underline-dark text-decoration-none" as |menu|>
+                            <menu.item>
+                                <menu.linkTo @route="admin.invitation">Invitation</menu.linkTo>
+                            </menu.item>
+                            <menu.item>
+                                <menu.linkTo @route="admin.contacts">Contack</menu.linkTo>
+                            </menu.item>
+                            <menu.item>
+                                <menu.linkTo @route="admin.seeder">Seeder</menu.linkTo>
+                            </menu.item>
                         </dd.menu>
                     </BsDropdown>
 
 
-
-
-
                 </div>
-
-
             </ul>
         </div>
     </nav>

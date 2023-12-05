@@ -29,7 +29,7 @@
                                 {{!-- input filed r jonno ekhan r value tai use korbo r handler diye shei update value
                                 abar funciton e nibo event.target.value te --}}
                                 <Input class="w-100 d-inline px-3 py-2 border-0 rounded-1" {{on 'input'
-                                    this.handleInput}} @value={{if this.save this.inputValue authorItem.author }}>
+                                    this.handleInput}} @value={{if this.save authorItem.author authorItem.author }}>
                                 </Input>
                             </label>
                             <button class="btn btn-success mb-2" type="button" {{on 'click' (fn this.handleSave true
@@ -38,15 +38,15 @@
                                 authorItem )}}>Cancel</button>
                         </td>
                         {{else}}
-                        <td class="bg-body-secondary">
+                        <td class="bg-body-secondary py-3 w-25 ps-3">
                             {{!-- <p>hello:{{authorItem.isClicked}}</p> --}}
-                            <button class="border-0" type="button" {{on 'click' (fn this.handleEdit authorItem)}}>
-                                {{if this.save this.inputValue authorItem.author}}
+                            <button class="border-0 bg-body-secondary" type="button" {{on 'click' (fn this.handleEdit authorItem)}}>
+                                {{if this.save authorItem.author authorItem.author}}
                             </button>
                         </td>
                         {{/if}}
 
-                        <td class="bg-body-secondary border">
+                        <td class="bg-body-secondary border py-3">
                             <ul class="ps-5">
                                 {{#each authorItem.booksArraay as |book|}}
                                 <li>{{book}}</li>

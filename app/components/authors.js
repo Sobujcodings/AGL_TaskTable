@@ -33,12 +33,12 @@ export default class AuthorsComponent extends Component {
       // with this value this.inputvalue to be posted
 
       // property set kore model e record ta set korlam sheta diyei abar template e set korlam
-      this.clicked = !this.clicked;
+      // this.clicked = !this.clicked;
       item.set('isClicked', this.clicked);
       console.log('posted');
-      // setTimeout(() => {
-      //     location.reload();
-      // }, 100);
+
+      // *** edit kore database e save korbo tar age model eo data update kore dibo jate refresh kora na lage
+      item.set('author', name);
 
       // DO some operation if needed (POST) (id to pashe diyei dibo)
       this.store.findRecord('author', item.id).then(function (author) {
@@ -54,7 +54,7 @@ export default class AuthorsComponent extends Component {
             // The record has been successfully updated on the server.
             console.log('Updated library:', savedLibrary);
             // alert('Author has been edited');
-            location.reload();
+            // location.reload();
           })
           .catch(function (error) {
             // Handle any errors that may occur during the save operation.
@@ -65,14 +65,10 @@ export default class AuthorsComponent extends Component {
       // this.inputData = allAuthors;
     } else {
       // that means input file hide kore felo
-      this.clicked = !this.clicked;
-      console.log('canceled');
-      console.log(item.id);
-      // item.set('isClicked', this.clicked);
+      // this.clicked = !this.clicked;
+      item.set('isClicked', this.clicked);
     }
   }
-
-
 
   // // to get the input value data
   @action
@@ -81,8 +77,6 @@ export default class AuthorsComponent extends Component {
     this.inputValue = event.target.value;
     console.log(this.inputValue);
   }
-
-  
 
   // just to change the UI
   // ai actio funcitn r sathe oi input value data ta padhiye diyechi
@@ -94,9 +88,11 @@ export default class AuthorsComponent extends Component {
 
     // Set the isClicked property on the authorItem
     authorItem.set('isClicked', this.clicked);
-    // console.log(authorItem);
+    console.log(authorItem);
 
     let parsed = this.store.peekAll('author');
     this.inputData = parsed;
+
+    this.clicked = !this.clicked; // or any specific boolean value
   }
 }
