@@ -1,0 +1,183 @@
+{{yield}}
+{{!-- updatedArray bad diye dici tai ata r execute hobe na false hobe tokhon columArray neche ta execute hobe --}}
+
+
+{{!-- destroy na kore pop korle bhalo hoto tahole array gula thakto shei array te abar add kora jeo --}}
+
+<div class="container mb-3 mt-5">
+    <table class="table border border-1 table-striped">
+        <thead>
+            <tr class="border">
+                {{!-- Concern: col remove r shob gula ak function e newar try korte hobe --}}
+                {{!-- <th scope="col" class="border">No</th> --}}
+
+                {{!-- {{#each @model as |item|}} --}}
+                {{!-- name r address r shob jaygay amr ai condion use korte hobe nahole value r field roye jabe --}}
+                {{#if this.RemoveName}}
+                    <th scope="col" class="border w-25">Name <button type="button"
+                            class="text-danger border btn btn-danger btn-sm text-white text-center" {{on 'click' (fn
+                            this.NameAddressRemove 'name' @model)}}>X</button>
+                    </th>
+                {{/if}}
+
+                {{#if this.RemoveAddress}}
+                    <th scope="col" class="border w-25">Address <button type="button"
+                            class="text-danger border btn btn-danger btn-sm text-white text-center" {{on 'click' (fn
+                            this.NameAddressRemove 'address' @model)}}>X</button>
+                    </th>
+                {{/if}}
+
+                {{!-- {{/each}} --}}
+
+
+
+                {{!--TOSOLVED: 1ta col add korle shei aktai dlt kore dile updated array 0 hoye jay tai ai condition kaj
+                kore na --}}
+               
+
+                    {{#if this.createCol}}
+                        {{#each this.ColumnArray as |item|}}
+                        {{!-- <th scope="col" class="border">three</th> --}}
+                        {{!-- {{#each this.ColumnArray as |item|}} --}}
+                            {{#each-in item as |key value|}}
+                            <th scope="col" colspan="1" class="border w-25 mx-auto text-center">{{key}}
+                                <button type="button" class="text-danger border btn btn-danger text-white text-center" {{on 'click'
+                                    (fn this.handleColRemove item)}}>X</button>
+                            </th>
+                            {{/each-in}}
+                        {{!-- {{/each}} --}}
+                        {{/each}}
+                    {{/if}}
+
+
+                {{!-- TODO: akta btn e click korle ekhane add hobe akta single column --}}
+                <th scope="col" colspan="1" class="border w-25 text-danger fw-bold text-center">Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{!-- safe e click korar por peekAll('table') hoye data te set hobe shei saved data ekhane dekhabo then --}}
+
+            
+
+
+            {{!-- {{else}} --}}
+
+
+            {{!-- safe r age ja ja thakbe --}}
+            {{!-- save e click korle akrokom notun gula pabo data after save shegula dekhabo r necher ta save chara --}}
+            {{#each @model as |item|}}
+            <tr class="border my-auto">
+                {{!-- <th scope="row" class="border">{{item.id}}</th> --}}
+
+                {{#if item.isEdited}}
+                    {{#if this.RemoveName}}
+                        <td class="my-auto border mx-auto w-25">
+                        <label>
+                            <Input @value={{item.name}} class="form-control" aria-describedby="emailHelp" {{on 'input'
+                                this.HandleInputeOne}}></Input>
+                        </label>
+                        </td>            
+                    {{/if}}
+
+                    {{#if this.RemoveAddress}}
+                        <td class="my-auto border w-25">
+                            <label>
+                                <Input @value={{item.address}} class="form-control" aria-describedby="emailHelp" {{on 'input'
+                                    this.HandleInputeTwo}}></Input>
+                            </label>
+                        </td>
+                    {{/if}}
+
+                
+                    {{!-- after deleting column rest col will be shown here --}}
+                    {{!-- shob thik thakbe shudhu data ta ekhan theke na ene oi updated array mane bad dewar por baki gula
+                    dekhabo shetake updatedcolvalue te set kore dici after deleting --}}
+                    {{!-- others data when edit is clicked--}}
+                    {{!-- edit clicked hole 2rokom hobe col bad dewar pore and age ata holo col na thakle --}}
+                    {{!-- * ai three bar bar change hobe ak akta add korar por --}}
+                    {{!-- input r value guloke k niye model e set korchi --}}
+                    {{!-- updatedArray bad diye dici tai ata r execute hobe na false hobe tokhon columArray neche ta execute hobe --}}
+                  
+
+                    {{!-- others data when edit is clicked--}}
+                    {{!-- col add korar por shei col thakle click na hole ja ache tai thakbe--}}
+                    {{#if this.createCol}}
+                        {{#each this.ColumnArray as |item|}}
+                        {{#each-in item as |key value|}}
+                        <td class="my-auto border w-25 mx-auto">
+                            <label>
+                                <Input @value={{value}} class="form-control" aria-describedby="emailHelp" 
+                                {{on 'input' (fn this.HandleInputeThree key)}}
+                                {{!-- {{on 'change' (fn this.handleKeyValue)}} --}}
+                                ></Input>
+                            </label>
+                        </td>
+                        {{/each-in}}
+                        {{/each}}
+                    {{/if}}
+
+
+
+                {{!-- when edit is not clicked tokhon just jeibhabe ache sheibhabe dekhiye dibo--}}
+                {{else}}
+
+                    {{#if this.RemoveName}}
+                        <td class="my-auto border w-25">{{item.name}}</td>
+                    {{/if}}
+                    {{#if this.RemoveAddress}}
+                        <td class="w-25">{{item.address}}</td>
+                    {{/if}}
+                    {{!-- createcol btn e click korle zipe code r ata dekhabe otherwise dekhabe na --}}
+                    {{!-- ai item.somthing ai nam gulao dibo ami jei nam diye click korchi shei nam e --}}
+
+                
+
+                    {{#if this.createCol}}
+                        {{#each this.ColumnArray as |item|}}
+                            {{#each-in item as |key value|}}
+                            <td class="w-25 mx-auto text-center">{{value}}</td>
+                            {{/each-in}}
+                        {{/each}}
+                    {{/if}}
+
+                    {{!-- 
+                    {{#if this.createCol}}
+                        {{#each @model as |item|}}
+                            {{#each-in item.ColumnArray as |key value|}}
+                            <td class="w-25 mx-auto text-center">{{value}}</td>
+                            {{/each-in}}
+                        {{/each}}
+                    {{/if}} --}}
+
+                    {{!-- prothome toyri kora value gula age dekhate hobe pore save kore changed korte hobe --}}
+
+
+                {{/if}}
+                {{!-- last if --}}
+
+                <td class="border border mx-auto text-center d-flex flex-column gap-2">
+                    <button type="button" class="btn btn-secondary w-50 mx-auto" {{on 'click' (fn this.handleEdit item
+                        @model)}}>Edit</button>
+                    <button type="button" class="btn btn-success w-50 mx-auto" {{on 'click' (fn this.handleSave item
+                        @model)}}>Save</button>
+                    <button type="button" class="btn btn-danger w-50 mx-auto" {{on 'click' (fn this.handleDelete item
+                        @model)}}>Delete</button>
+                </td>
+            </tr>
+            {{/each}}
+            {{!-- {{/if}} --}}
+
+        </tbody>
+    </table>
+
+    {{!-- --}}
+
+    <button type="button" class="btn btn-secondary" {{on 'click' (fn this.CreateRow @model)}}>Add Row</button>
+    <label>
+        <Input class="form-control" aria-describedby="emailHelp" {{on 'input' this.handleCoLInput}}></Input>
+    </label>
+    <button type="button" class="btn btn-primary" {{on 'click' (fn this.CreateColumn @model)}}>Add Column</button>
+</div>
+
+
