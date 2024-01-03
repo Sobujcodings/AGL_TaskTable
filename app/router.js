@@ -1,11 +1,16 @@
 import EmberRouter from '@ember/routing/router';
+<<<<<<< HEAD
 import config from 'library-app/config/environment';
+=======
+import config from 'agltask/config/environment';
+>>>>>>> origin/main
 
 export default class Router extends EmberRouter {
   location = config.locationType;
   rootURL = config.rootURL;
 }
 
+<<<<<<< HEAD
 Router.map(function () {
   this.route('about');
   this.route('contack');
@@ -28,3 +33,6 @@ Router.map(function () {
   this.route('seeder');
   this.route('contacks');
 });
+=======
+Router.map(function () {});
+>>>>>>> origin/main
