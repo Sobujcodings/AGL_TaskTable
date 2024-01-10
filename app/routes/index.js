@@ -35,8 +35,8 @@ export default class IndexRoute extends Route {
       console.log(data);
       // Create a new record for each object
       data.ColumnArray = [];
+      data.FirstColumnArray = [];
       let newRecord = this.store.createRecord('table', data);
-
       // Save the record to the store
       newRecord.save();
     });

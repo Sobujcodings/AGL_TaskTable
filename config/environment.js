@@ -2,11 +2,7 @@
 
 module.exports = function (environment) {
   const ENV = {
-<<<<<<< HEAD
     modulePrefix: 'library-app',
-=======
-    modulePrefix: 'agltask',
->>>>>>> origin/main
     environment,
     rootURL: '/',
     locationType: 'history',

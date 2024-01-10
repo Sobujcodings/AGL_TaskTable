@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 # library-app
-=======
-# agltask
->>>>>>> origin/main
 
 This README outlines the details of collaborating on this Ember application.
 A short introduction of this app could easily go here.
@@ -19,20 +15,12 @@ You will need the following things properly installed on your computer.
 ## Installation
 
 * `git clone <repository-url>` this repository
-<<<<<<< HEAD
 * `cd library-app`
-=======
-* `cd agltask`
->>>>>>> origin/main
 * `npm install`
 
 ## Running / Development
 
-<<<<<<< HEAD
 * `ember serve`
-=======
-* `npm run start`
->>>>>>> origin/main
 * Visit your app at [http://localhost:4200](http://localhost:4200).
 * Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
 
@@ -42,13 +30,8 @@ Make use of the many generators for code, try `ember help generate` for more det
 
 ### Running Tests
 
-<<<<<<< HEAD
 * `ember test`
 * `ember test --server`
-=======
-* `npm run test`
-* `npm run test:ember -- --server`
->>>>>>> origin/main
 
 ### Linting
 
@@ -57,13 +40,8 @@ Make use of the many generators for code, try `ember help generate` for more det
 
 ### Building
 
-<<<<<<< HEAD
 * `ember build` (development)
 * `ember build --environment production` (production)
-=======
-* `npm exec ember build` (development)
-* `npm run build` (production)
->>>>>>> origin/main
 
 ### Deploying
 
