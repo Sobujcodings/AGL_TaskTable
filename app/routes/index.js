@@ -3,36 +3,55 @@ import { inject as service } from '@ember/service';
 
 export default class IndexRoute extends Route {
   @service store;
+  @service myService;
 
   async model() {
-    let datas = [
-      {
-        id: '1',
-        name: 'John Doe',
-        address: '123 Main Street, Cityville',
-        isEdited: false,
-      },
-      {
-        id: '2',
-        name: 'Jane Smith',
-        address: '456 Oak Avenue, Townsville',
-        isEdited: false,
-      },
-      {
-        id: '3',
-        name: 'Bob Johnson',
-        address: '789 Pine Road, Villagetown',
-        isEdited: false,
-      },
-    ];
+    // let datas = [
+    //   {
+    //     id: '1',
+    //     name: 'John Doe',
+    //     address: '123 Main Street, Cityville',
+    //     isEdited: false,
+    //   },
+    //   {
+    //     id: '2',
+    //     name: 'Jane Smith',
+    //     address: '456 Oak Avenue, Townsville',
+    //     isEdited: false,
+    //   },
+    //   {
+    //     id: '3',
+    //     name: 'Bob Johnson',
+    //     address: '789 Pine Road, Villagetown',
+    //     isEdited: false,
+    //   },
+    // ];
+
+
+    // Use the service method
+    const datas = this.myService.datas();
+    console.log(datas);
+
+    // console.log(this.store.peekAll('table'));
+    // const modelLength = this.store.peekAll('table');
+    // console.log(modelLength.length);
+
+    // let newdata = {
+    //   id: '4',
+    //   name: 'sobuj',
+    //   address: '789 Pine Road, Villagetown',
+    //   isEdited: false,
+    // };
+    // datas.unshift(newdata);
 
     // // Load data into the 'item' model
     // this.store.pushPayload('table', data);
 
+
     // Assuming 'table' is your model name
     // datas.ColumnArray = [];
     datas.forEach((data) => {
-      console.log(data);
+      console.log(typeof data);
       // Create a new record for each object
       data.ColumnArray = [];
       data.FirstColumnArray = [];
@@ -40,6 +59,30 @@ export default class IndexRoute extends Route {
       // Save the record to the store
       newRecord.save();
     });
+
+
+    // if (datas.length == modelLength.length) {
+    //   console.log('same');
+    //   console.log(datas);
+    //   console.log(this.store.peekAll('table'));
+    // } else {
+    //   console.log('not same');
+    //   console.log(datas);
+    //   console.log(this.store.peekAll('table'));
+    // }
+
+
+    // const obj = {name: 'sobuj', address: '123 Main Street, Cityville', isEdited: false, ColumnArray: [] };
+    // const newdata = this.store.createRecord('table', obj);
+    // // console.log(newdata);
+    // console.log(this.store.peekAll('table'));
+    // let oldMOdel = this.store.peekAll('table');
+    // oldMOdel.push(newdata);
+
+    // console.log(oldMOdel);
+    //  oldMOdel.forEach(element => {
+    //   console.log(element);
+    //  });
 
     // console.log(this.store.peekAll('table'));
 

@@ -3,7 +3,7 @@
 
 {{!-- destroy na kore pop korle bhalo hoto tahole array gula thakto shei array te abar add kora jeo --}}
 
-<div class="container mb-3 mt-5">
+<div class="container mb-3 mt-4">
     <table class="table border border-1 table-striped">
         <thead>
             <tr class="border">
@@ -74,7 +74,7 @@
         <tbody>
             {{!-- safe r age ja ja thakbe --}}
             {{!-- save e click korle akrokom notun gula pabo data after save shegula dekhabo r necher ta save chara --}}
-            {{#each @model as |item|}}
+            {{#each this.modelData as |item|}}
             <tr class="border my-auto">
 
                 {{#if item.isEdited}}
@@ -198,6 +198,7 @@
    {{!-- ak e function e first e add korle unshift korbo, last e add korle(click) push korbo record e --}}
     <button type="button" class="btn btn-secondary" {{on 'click' (fn this.CreateRow 'first' @model)}}>Add First Row</button>
     <button type="button" class="btn btn-secondary" {{on 'click' (fn this.CreateRow 'last' @model)}}>Add Last Row</button>
+    {{!-- <button type="button" class="btn btn-secondary" {{on 'click' (fn this.CreateRow 'last' @model)}}>Add Row</button> --}}
   
     <button type="button" class="btn btn-primary" {{on 'click' (fn this.AddColFL 'first' @model)}}>Add First Col</button>
     <label>

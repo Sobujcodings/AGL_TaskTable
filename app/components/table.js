@@ -3,6 +3,8 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { isEqual } from '@ember/utils';
+import { A } from '@ember/array';
+
 // import { push } from 'qunit';
 // import { ChunkGraph } from 'webpack';
 
@@ -15,12 +17,12 @@ import { isEqual } from '@ember/utils';
 // TODO: aksathe korle cholbe nah protteck ta check korte hobe konta null r konta null nah then sheibhabe
 // insert korte hobe otherwise ager motoi thakbe
 
-
 // *** create remove col ak function ei korbo prothom r last r array r jonno
 // check kore nibo j prothom er jonno korche naki last e add korar jonn then shei condition r kajta korbo
 
 export default class TableComponent extends Component {
     @service store;
+    @service myService;
 
     @tracked modelData = this.args.model;
 
@@ -46,9 +48,9 @@ export default class TableComponent extends Component {
 
     @tracked createCol = false;
 
-    @tracked ColumnArray = [];
-
     @tracked FirstArray = [];
+    // 2nd col array after name,address
+    @tracked ColumnArray = [];
 
     // ata array [] hoteo pare jodi age na kora thake ba prothom e array hoteo pare check it
     // faka array mane true e howa karon faka holeo to ache
@@ -63,6 +65,7 @@ export default class TableComponent extends Component {
     @tracked KeyValue;
 
     @tracked ToChangedObj = [];
+    @tracked ToChangedObjTwo = [];
 
     @tracked changedObj = [];
 
@@ -70,6 +73,7 @@ export default class TableComponent extends Component {
 
     // @tracked Array = [];
 
+    @tracked newArrayofObj = [];
 
     @action
     handleEdit(item, data) {
@@ -102,7 +106,6 @@ export default class TableComponent extends Component {
         // this.handleInput(item.name, item.address, item.ColumnArray);
     }
 
-
     @action
     // name and address come from edit function
     handleInput(name, address, ThreeValue) {
@@ -116,7 +119,6 @@ export default class TableComponent extends Component {
         // akhn handle safe e ai 2ta k compare korbo khali hole ager ta nahole new ta(input filed r ta)
     }
 
-
     // save
     @action
     HandleInputeOne(event) {
@@ -128,7 +130,6 @@ export default class TableComponent extends Component {
         this.handleOne = event.target.value;
     }
 
-
     @action
     HandleInputeTwo(event, name) {
         // this.inputValue = ;
@@ -137,7 +138,6 @@ export default class TableComponent extends Component {
         this.handleTwo = event.target.value;
         console.log(name);
     }
-
 
     @action
     HandleInputeThree(FirstOrLast, key, event) {
@@ -153,54 +153,105 @@ export default class TableComponent extends Component {
 
         let KeyValue = { [keyName]: ValueName };
 
-
         if (FirstOrLast == 'first') {
             console.log('first');
-        }
-        else {
-            // *** ekhane shugulai ache input jegular value change hoice baki jgula change hoi nai segula to sheibhabai rakhte hobe ata check korte hobe j change hoice kina 
-            // *** shob push korle cholbe na last e e jeta input nici event sheta k add korte hobe
-            this.ToChangedObj.push(KeyValue);
+            this.ToChangedObjTwo.push(KeyValue);
             // *** jeta input dewa hoy nai sheta keo add korte hobe input value
-            console.log(this.ToChangedObj);
-
+            console.log(this.ToChangedObjTwo);
+            // this.FirstArray = this.ToChangedObjTwo;
 
             // Create a map to store the last occurrence of each value
             let lastOccurrences = {};
-
-            this.ToChangedObj.forEach(obj => {
+            this.ToChangedObjTwo.forEach((obj) => {
                 let key = Object.keys(obj)[0]; // Get the property name dynamically
                 lastOccurrences[key] = obj;
             });
             // Extract the values (last occurrences) from the map
             let uniqueObjects = Object.values(lastOccurrences);
 
+            console.log(uniqueObjects);
+            // event r uniqe gula tochange e rakhlam ai tochange k abar columnarray baniye dibo save korle
+            this.ToChangedObjTwo = uniqueObjects;
+            console.log(this.FirstArray);
+            console.log(this.ToChangedObjTwo);
+
+            // Merge arrays(jate change jgula hoy nai shegulo keo array te pai as it is)
+            let mergedArray = this.FirstArray.map((obj1) => {
+                let updatedObj = this.ToChangedObjTwo.find(
+                    (obj2) => Object.keys(obj1)[0] === Object.keys(obj2)[0],
+                );
+                // return updatedObj;
+                if (updatedObj) {
+                    return updatedObj;
+                } else {
+                    return obj1;
+                }
+                //   return updatedObj ? updatedObj : obj1;
+            });
+            console.log(mergedArray);
+
+            // this.ToChangedObjTwo = mergedArray;
+            // this.FirstArray = mergedArray;
+
+            // Create a map to track the last occurrence of each key
+            let lastOccurrenceMap = new Map();
+
+            // Iterate over the array in reverse order
+            for (let i = mergedArray.length - 1; i >= 0; i--) {
+                let currentObject = mergedArray[i];
+                let key = Object.keys(currentObject)[0];
+
+                // If the key is not in the map, or if it is, but the current entry is the last occurrence
+                if (!lastOccurrenceMap.has(key) || lastOccurrenceMap.get(key) === i) {
+                    lastOccurrenceMap.set(key, i);
+                } else {
+                    // If the key is already in the map and this is not the last occurrence, remove the duplicate
+                    mergedArray.splice(i, 1);
+                }
+            }
+            console.log(mergedArray);
+
+            this.ToChangedObjTwo = mergedArray;
+            console.log(this.ToChangedObjTwo);
+        } else {
+            // *** ekhane shugulai ache input jegular value change hoice baki jgula change hoi nai segula to sheibhabai rakhte hobe ata check korte hobe j change hoice kina
+            // *** shob push korle cholbe na last e e jeta input nici event sheta k add korte hobe
+            this.ToChangedObj.push(KeyValue);
+            // *** jeta input dewa hoy nai sheta keo add korte hobe input value
+            console.log(this.ToChangedObj);
+
+            // Create a map to store the last occurrence of each value
+            let lastOccurrences = {};
+            this.ToChangedObj.forEach((obj) => {
+                let key = Object.keys(obj)[0]; // Get the property name dynamically
+                lastOccurrences[key] = obj;
+            });
+            // Extract the values (last occurrences) from the map
+            let uniqueObjects = Object.values(lastOccurrences);
 
             console.log(uniqueObjects);
             // event r uniqe gula tochange e rakhlam ai tochange k abar columnarray baniye dibo save korle
             this.ToChangedObj = uniqueObjects;
-
             console.log(this.ColumnArray);
             console.log(this.ToChangedObj);
 
             // let array1 = [{ df: 3675 }, { dfdfg: 3930 }];
             // let array2 = [{ df: 36751 }, { dfdfg: 3930 }];
-
             // Merge arrays
-            let mergedArray = this.ColumnArray.map(obj1 => {
-                let updatedObj = this.ToChangedObj.find(obj2 => Object.keys(obj1)[0] === Object.keys(obj2)[0]);
+            let mergedArray = this.ColumnArray.map((obj1) => {
+                let updatedObj = this.ToChangedObj.find(
+                    (obj2) => Object.keys(obj1)[0] === Object.keys(obj2)[0],
+                );
                 // return updatedObj;
                 if (updatedObj) {
-                    return updatedObj
-                }
-                else {
-                    return obj1
+                    return updatedObj;
+                } else {
+                    return obj1;
                 }
                 //   return updatedObj ? updatedObj : obj1;
             });
             console.log(mergedArray);
             // merged korar por duplicate gula bad dite hobe same data last value wala ta rakhte hobe
-
 
             // Create a map to track the last occurrence of each key
             let lastOccurrenceMap = new Map();
@@ -223,12 +274,7 @@ export default class TableComponent extends Component {
             this.ToChangedObj = mergedArray;
             console.log(this.ToChangedObj);
         }
-
-
     }
-
-
-
 
     @action
     handleSave(item, model) {
@@ -256,20 +302,27 @@ export default class TableComponent extends Component {
         console.log(this.ColumnArray);
 
         // ai to change r gula this.comluarray r sathe update korbo ekanen sehgulauai ache jgula input change hoice
-        // r baki gula k thik rakhte hobe colarray r 
-        // ekhane shugulai ache input jegular value change hoice baki jgula change hoi nai segula to sheibhabai rakhte hobe ata check korte hobe j change hoice kina 
+        // r baki gula k thik rakhte hobe colarray r
+        // ekhane shugulai ache input jegular value change hoice baki jgula change hoi nai segula to sheibhabai rakhte hobe ata check korte hobe j change hoice kina
         // *** ekhane jhamela ache
-        console.log(this.ToChangedObj);
-        this.ColumnArray = this.ToChangedObj;
-        console.log(this.ColumnArray);
+
+        if (this.ToChangedObj.length == 0) {
+            this.ColumnArray = this.ColumnArray;
+        } else {
+            console.log('not zero');
+            console.log(this.ToChangedObj);
+            this.ColumnArray = this.ToChangedObj;
+            console.log(this.ColumnArray);
+        }
 
         // ata shudhu ekhanei add hobe ai funciton call hole
         // na hole jodi add col kori tahole ager colarray r sathei add hoye jacceh ager bhao r moto
 
-
+        // for 1st array column
+        console.log(this.ToChangedObjTwo);
+        console.log(this.FirstArray);
+        this.FirstArray = this.ToChangedObjTwo;
     }
-
-
 
     // destroy
     // jei item e click hoice id diye filter kore ber korbo and shei item k destroy kore dibo from the model/store
@@ -292,19 +345,109 @@ export default class TableComponent extends Component {
     }
 
 
-
     // CreateRow
     @action
     CreateRow(FirstOrLast, wholeData) {
         // next
-        console.log(wholeData);
-        console.log('created row');
+        // console.log(wholeData);
+        // wholeData.forEach((element) => {
+        //     console.log(element);
+        // });
+        // console.log('created row');
 
         if (FirstOrLast == 'first') {
             console.log('add to first');
+
             // row r prothome add korte hobe mane record r prothome akdom age jegula che tar prothome add korbo
-        }
-        else {
+            // console.log('add to last');
+            // const random4DigitNumber = Math.floor(Math.random() * 900) + 10;
+            // console.log(random4DigitNumber);
+
+            const datas = this.myService.datas();
+            // console.log(datas);
+
+
+            // ager gulake k pore rekhe notun ta k prothom e rekhe tarpor model r shob delete kore notun kore create kore
+            // dibo prothom e ai obj diye
+            // notun kore amon akta obj banabo shetay model r gula dibo last e r obj(notun ta dibo prothom e then 
+            // record r shob gula deelte kore ai new data guloke create record kore dibo)
+
+
+            // random number for the name
+            const random4DigitNumber = Math.floor(Math.random() * 9) + 1;
+            console.log(random4DigitNumber);
+            const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob',];
+            const Name = RandomName[random4DigitNumber];
+            // console.log(RandomName[random4DigitNumber]);
+
+
+            // random number for the number
+            const random4DigitNumber2 = Math.floor(Math.random() * 900) + 1;
+            console.log(random4DigitNumber);
+
+
+            console.log(this.newArrayofObj);
+            if (this.newArrayofObj.length > 0) {
+                // age kichu thakle ata korba, na thakle necher ta korba
+                const obj = { id: random4DigitNumber2, name: Name, address: '123 Main Street, Cityville', isEdited: false };
+                // let newArrayofObj = [];
+                this.newArrayofObj.unshift(obj);
+            } else {
+                // prothome kichu na thakle ata korbo
+                const obj = { id: random4DigitNumber2, name: Name, address: '123 Main Street, Cityville', isEdited: false };
+                // let newArrayofObj = [];
+                this.newArrayofObj.push(obj);
+                wholeData.forEach(element => {
+                    console.log(element);
+                    let singleObj = { 'id': element.id, 'name': element.name, 'address': element.address, 'isEdited': element.isEdited };
+                    console.log(singleObj);
+                    this.newArrayofObj.push(singleObj);
+                });
+            }
+            console.log(this.newArrayofObj);
+
+
+            // delete the all old model isntance and then later create the newly made record 
+            console.log(wholeData.length, 'wholeData');
+            wholeData.forEach((element) => {
+                console.log(element);
+                // TODO: pura element destroy na kore dekha lagbe shudhu oi item ta ki delete kora jay naki shudhu ba whole model ta thaklo just item gula delte holo
+                element.destroyRecord();
+                // this.index = this.index - 1;
+            });
+            console.log('deleted');
+            // console.log(wholeData);
+            // console.log(this.store.peekAll('table'));
+
+
+            // // creating all the record with the new data (prothom e thakbe last e create korar ta)
+            console.log(this.newArrayofObj, 'updated obj of array');
+            if (wholeData.length == 0) {
+                console.log('khali');
+                this.newArrayofObj.forEach((data) => {
+                    console.log(typeof data);
+                    // Create a new record for each object
+                    data.ColumnArray = [];
+                    data.FirstColumnArray = [];
+                    let newRecord = this.store.createRecord('table', data);
+                    // Save the record to the store
+                    // newRecord.save();
+                    console.log(newRecord);
+                });
+                console.log(this.modelData);
+            }
+
+
+
+            // console.log(newAuthor);
+            if (this.RemoveName == false) {
+                // to show the name and address after creating a row
+                this.RemoveName = !this.RemoveName;
+                this.RemoveAddress = !this.RemoveAddress;
+            }
+
+
+        } else {
             console.log('add to last');
             const random4DigitNumber = Math.floor(Math.random() * 900) + 10;
             console.log(random4DigitNumber);
@@ -314,7 +457,7 @@ export default class TableComponent extends Component {
                 name: 'Mike Doe',
                 address: '123 Main Street, Cityville',
                 isEdited: false,
-                ColumnArray: []
+                ColumnArray: [],
             });
             newAuthor.save();
 
@@ -325,10 +468,7 @@ export default class TableComponent extends Component {
                 this.RemoveAddress = !this.RemoveAddress;
             }
         }
-
     }
-
-
 
     // create col r input field r value jei nam e col create korbo tar input value
     @action
@@ -336,12 +476,9 @@ export default class TableComponent extends Component {
         this.InputValueCol = event.target.value;
     }
 
-
-
     // add column t o first column
     @action
     AddColFL(FirstLast, model) {
-
         if (!this.InputValueCol) {
             alert('Insert a Column name first!');
             return;
@@ -366,7 +503,6 @@ export default class TableComponent extends Component {
             this.FirstArray.unshift({ [this.InputValueCol]: random4DigitNumber });
             this.FirstArray = this.FirstArray;
             console.log(this.FirstArray);
-
         } else {
             console.log(this.FirstArray);
             console.log('item aktao chilo na');
@@ -374,16 +510,11 @@ export default class TableComponent extends Component {
             this.FirstArray = this.FirstArray;
         }
 
-
-        model.forEach(element => {
+        model.forEach((element) => {
             console.log(element);
             element.FirstColumnArray = this.FirstArray;
         });
-
     }
-
-
-
 
     @action
     CreateColumn(ModelData) {
@@ -396,21 +527,17 @@ export default class TableComponent extends Component {
         //     console.log(element);
         // });
 
-
         if (!this.InputValueCol) {
             alert('Insert a Column name first!');
             return;
         }
 
-
         // if (condition) {
         this.createCol = true;
         // }
 
-
         // random number generation
         const random4DigitNumber = Math.floor(Math.random() * 9000) + 1000;
-
 
         let array = [];
         if (this.ColumnArray.length > 0) {
@@ -426,8 +553,7 @@ export default class TableComponent extends Component {
             // console.log('age chilo na');
             // console.log(this.ColumnArray);
             // console.log(this.createCol);
-        }
-        else {
+        } else {
             // console.log(typeof this.modelData);
             // var afterinsertOne;
             this.modelData.forEach((element) => {
@@ -457,7 +583,6 @@ export default class TableComponent extends Component {
                 // console.log(element.ColumnArray.length);
                 // console.log(element.ColumnArray);]
 
-
                 // jodi ager thake mane age col create kora thake tokthon ager tay dibo noyto atay dibo
                 // if (this.ColumnArray.length > 0) {
                 //     console.log('age chilo');
@@ -481,11 +606,7 @@ export default class TableComponent extends Component {
                 // }
             });
         }
-
     }
-
-
-
 
     // Remove Name and Address
     // * EveryThing should be dynamically connected to the model
@@ -508,7 +629,11 @@ export default class TableComponent extends Component {
 
                 // onk time e null dile kaj kore nah tai dekho destry name r ai field ata k destroy kora jay kina
                 item.set('name', null);
-                this.RemoveName = !this.RemoveName;
+
+                if (this.RemoveName == true) {
+                    this.RemoveName = !this.RemoveName;
+                }
+
                 console.log(item);
                 // Save the record to persist the changes to the server
                 item
@@ -521,7 +646,6 @@ export default class TableComponent extends Component {
                         // Handle the error
                         console.error('Error updating record:', error);
                     });
-
             });
         } else {
             // const address = 'address';
@@ -531,7 +655,11 @@ export default class TableComponent extends Component {
                 console.log(item.address);
 
                 item.set('address', null);
-                this.RemoveAddress = !this.RemoveAddress;
+
+                if (this.RemoveAddress == true) {
+                    this.RemoveAddress = !this.RemoveAddress;
+                }
+
                 console.log(item);
                 // Save the record to persist the changes to the server
                 item
@@ -547,7 +675,6 @@ export default class TableComponent extends Component {
             });
         }
     }
-
 
 
     @action
@@ -579,7 +706,6 @@ export default class TableComponent extends Component {
                 console.log('col array after deleting a col', this.FirstArray);
                 this.FirstArray = this.FirstArray;
             });
-
         } else {
             console.log('last');
             console.log(this.ColumnArray);
@@ -601,9 +727,4 @@ export default class TableComponent extends Component {
             });
         }
     }
-
-
-
-
-
 }
