@@ -4,146 +4,68 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { isEqual } from '@ember/utils';
 import { A } from '@ember/array';
+import { set } from '@ember/object';
 
-// import { push } from 'qunit';
-// import { ChunkGraph } from 'webpack';
+// todo: col dile row r data auto chole ashbe col 2ta hole row r value o 2ta hobe
+// name k edit kore update koro database e 
+// same table k abar change korle shei full table k abar updte koro DB te
+// spinner should be set while delete all row is loading untill all data is deleted
 
-// TODO: Add Row and Add Column
-// create record kore pura object/whole record ta dhukiye dite hobe whole datay ba record e then sheta shei bhabei dekhab jabe
-// r shei function e true false kore action r age shei table k dekhabo true hole r shei table e value thakbe jgula ami add korlam ai function createRecord diye
-
-// TODO: add column r bame akta input field thakbe jetay jei column add korbo tar nam lekhbo shei nam e column add hobe
-// joto khushi column add kora jabe and shob column delete kora jabe execpt action column
-// TODO: aksathe korle cholbe nah protteck ta check korte hobe konta null r konta null nah then sheibhabe
-// insert korte hobe otherwise ager motoi thakbe
-
-// *** create remove col ak function ei korbo prothom r last r array r jonno
-// check kore nibo j prothom er jonno korche naki last e add korar jonn then shei condition r kajta korbo
 
 export default class TableComponent extends Component {
+    // @service myService;
     @service store;
-    @service myService;
 
-    @tracked modelData = this.args.model;
+    // @tracked row = [ [{'michel': 1},{'mile': 1},{'make': 1}], [{'mike': 2},{'pompe': 2},{'jompe': 2}], [ {'doe': 3},{'hoe': 3},{'moe': 3}]];
+    @tracked TabelModel = this.store.peekAll('table');
 
-    // data contains all json data via peekAll('table');
-    @tracked Data;
-    // @tracked Data;
-
-    @tracked edit = false;
-
-    @tracked handleOne;
-    @tracked handleTwo;
-    @tracked handleThreeOne;
-    @tracked handleThreeTwo;
-    @tracked handleThreeThree;
-
-    @tracked OldInputName;
-    @tracked OldInputAddress;
-    @tracked OldInputThereValue;
-
-    // @tracked index;
+    @tracked FirstColArray = [];
+    @tracked row = [];
 
     @tracked InputValueCol;
-
-    @tracked createCol = false;
-
-    @tracked FirstArray = [];
-    // 2nd col array after name,address
-    @tracked ColumnArray = [];
-
-    // ata array [] hoteo pare jodi age na kora thake ba prothom e array hoteo pare check it
-    // faka array mane true e howa karon faka holeo to ache
-    // @tracked updatedColArray = [];
-
-    // for thirt input value function
-    @tracked UpdatedEvent = [{}];
-
-    @tracked RemoveName = true;
-    @tracked RemoveAddress = true;
-
-    @tracked KeyValue;
-
-    @tracked ToChangedObj = [];
     @tracked ToChangedObjTwo = [];
 
-    @tracked changedObj = [];
 
-    @tracked ColFirst = false;
+    @tracked id;
+    @tracked table = false;
+    @tracked item;
 
-    // @tracked Array = [];
+    @tracked oldInput;
+    @tracked TableInput;
 
-    @tracked newArrayofObj = [];
+    @tracked TableName;
+
+    @tracked tableShow = false;
+
 
     @action
-    handleEdit(item, data) {
+    handleEdit(item, wholeData) {
         console.log(item);
+        console.log(this.row);
 
-        // jei id match khay shetay add korbo then shetay akta edited true kore dibo and true hole input field dekhabo
-        const result = data.filter((singledata) => singledata.id == item.id);
-        console.log(result);
-        result.forEach((element) => {
-            console.log(element);
-            this.handleInput(element.name, element.address, element.ColumnArray);
-            // ager bar true thakay false kore dilam akhn karon false na thakle notun kore opren hobe na true thakle abar false korte hobe then true korte hobe double click kore
-            if (element.isEdited == true) {
-                element.set('isEdited', false);
-                // this.edit = false;
-            } else {
-                element.set('isEdited', !this.edit);
+        this.row.forEach(element => {
+            if (element == item) {
+                console.log('matched');
+                // to update the array property permanently
+                // true thakle false koro false thakle true koro
+                if (element.isEdited == true) {
+                    set(element, 'isEdited', false);
+                } else {
+                    set(element, 'isEdited', true);
+                }
             }
             console.log(element);
         });
-
-        console.log(item.ColumnArray);
-
-        // TODO: Shudu zip ba aktar value padhale hobe nah jetay lekhchi sheta khuje ber kore then set korte hobe oto
-        // no index value match kore
-
-        // ConcernEdit
-        // handleinput e padhiye dilam shethan theke check korbo same ache kina value
-        // ager value guloke padhiye dilam
-        // this.handleInput(item.name, item.address, item.ColumnArray);
+        console.log(this.row);
+        this.row = this.row;
     }
 
-    @action
-    // name and address come from edit function
-    handleInput(name, address, ThreeValue) {
-        console.log(name, address);
-
-        // save r shomoy jodi oi input field khali pai tahole ager ta kei set kore dibo
-        // r jodi na pai tahole event diye jeta pelam sheta set kore dibo
-        this.OldInputName = name;
-        this.OldInputAddress = address;
-        this.OldInputThereValue = ThreeValue;
-        // akhn handle safe e ai 2ta k compare korbo khali hole ager ta nahole new ta(input filed r ta)
-    }
-
-    // save
-    @action
-    HandleInputeOne(event) {
-        let eventname = event.target.value;
-        console.log(eventname);
-        // input r kono field khali thakle shei object r ager value takei shetar value hishebe set kore dibo
-
-        // akhn jodi ai event r value notun kichu ashe tahole shetakei handleone e set korbo noyto ager tai set kore dibo
-        this.handleOne = event.target.value;
-    }
-
-    @action
-    HandleInputeTwo(event, name) {
-        // this.inputValue = ;
-        console.log(event.target.value);
-        // input r kono field khali thakle shei object r ager value takei shetar value hishebe set kore dibo
-        this.handleTwo = event.target.value;
-        console.log(name);
-    }
 
     @action
     HandleInputeThree(FirstOrLast, key, event) {
-        console.log(FirstOrLast);
+        // console.log(FirstOrLast);
 
-        console.log(key);
+        // console.log(key);
 
         let eventname = event.target.value;
         console.log(eventname);
@@ -158,7 +80,7 @@ export default class TableComponent extends Component {
             this.ToChangedObjTwo.push(KeyValue);
             // *** jeta input dewa hoy nai sheta keo add korte hobe input value
             console.log(this.ToChangedObjTwo);
-            // this.FirstArray = this.ToChangedObjTwo;
+            // this.FirstColArray = this.ToChangedObjTwo;
 
             // Create a map to store the last occurrence of each value
             let lastOccurrences = {};
@@ -170,13 +92,13 @@ export default class TableComponent extends Component {
             let uniqueObjects = Object.values(lastOccurrences);
 
             console.log(uniqueObjects);
-            // event r uniqe gula tochange e rakhlam ai tochange k abar columnarray baniye dibo save korle
+            // event r uniqe gula tochange e rakhlam ai tochange k abar lastColArray baniye dibo save korle
             this.ToChangedObjTwo = uniqueObjects;
-            console.log(this.FirstArray);
+            console.log(this.FirstColArray);
             console.log(this.ToChangedObjTwo);
 
             // Merge arrays(jate change jgula hoy nai shegulo keo array te pai as it is)
-            let mergedArray = this.FirstArray.map((obj1) => {
+            let mergedArray = this.row.map((obj1) => {
                 let updatedObj = this.ToChangedObjTwo.find(
                     (obj2) => Object.keys(obj1)[0] === Object.keys(obj2)[0],
                 );
@@ -190,8 +112,6 @@ export default class TableComponent extends Component {
             });
             console.log(mergedArray);
 
-            // this.ToChangedObjTwo = mergedArray;
-            // this.FirstArray = mergedArray;
 
             // Create a map to track the last occurrence of each key
             let lastOccurrenceMap = new Map();
@@ -214,517 +134,688 @@ export default class TableComponent extends Component {
             this.ToChangedObjTwo = mergedArray;
             console.log(this.ToChangedObjTwo);
         } else {
-            // *** ekhane shugulai ache input jegular value change hoice baki jgula change hoi nai segula to sheibhabai rakhte hobe ata check korte hobe j change hoice kina
-            // *** shob push korle cholbe na last e e jeta input nici event sheta k add korte hobe
-            this.ToChangedObj.push(KeyValue);
-            // *** jeta input dewa hoy nai sheta keo add korte hobe input value
-            console.log(this.ToChangedObj);
+            // // *** ekhane shugulai ache input jegular value change hoice baki jgula change hoi nai segula to sheibhabai rakhte hobe ata check korte hobe j change hoice kina
+            // // *** shob push korle cholbe na last e e jeta input nici event sheta k add korte hobe
+            // this.ToChangedObj.push(KeyValue);
+            // // *** jeta input dewa hoy nai sheta keo add korte hobe input value
+            // console.log(this.ToChangedObj);
 
-            // Create a map to store the last occurrence of each value
-            let lastOccurrences = {};
-            this.ToChangedObj.forEach((obj) => {
-                let key = Object.keys(obj)[0]; // Get the property name dynamically
-                lastOccurrences[key] = obj;
-            });
-            // Extract the values (last occurrences) from the map
-            let uniqueObjects = Object.values(lastOccurrences);
+            // // Create a map to store the last occurrence of each value
+            // let lastOccurrences = {};
+            // this.ToChangedObj.forEach((obj) => {
+            //     let key = Object.keys(obj)[0]; // Get the property name dynamically
+            //     lastOccurrences[key] = obj;
+            // });
+            // // Extract the values (last occurrences) from the map
+            // let uniqueObjects = Object.values(lastOccurrences);
 
-            console.log(uniqueObjects);
-            // event r uniqe gula tochange e rakhlam ai tochange k abar columnarray baniye dibo save korle
-            this.ToChangedObj = uniqueObjects;
-            console.log(this.ColumnArray);
-            console.log(this.ToChangedObj);
+            // console.log(uniqueObjects);
+            // // event r uniqe gula tochange e rakhlam ai tochange k abar lastColArray baniye dibo save korle
+            // this.ToChangedObj = uniqueObjects;
+            // console.log(this.lastColArray);
+            // console.log(this.ToChangedObj);
 
-            // let array1 = [{ df: 3675 }, { dfdfg: 3930 }];
-            // let array2 = [{ df: 36751 }, { dfdfg: 3930 }];
-            // Merge arrays
-            let mergedArray = this.ColumnArray.map((obj1) => {
-                let updatedObj = this.ToChangedObj.find(
-                    (obj2) => Object.keys(obj1)[0] === Object.keys(obj2)[0],
-                );
-                // return updatedObj;
-                if (updatedObj) {
-                    return updatedObj;
-                } else {
-                    return obj1;
-                }
-                //   return updatedObj ? updatedObj : obj1;
-            });
-            console.log(mergedArray);
-            // merged korar por duplicate gula bad dite hobe same data last value wala ta rakhte hobe
+            // // let array1 = [{ df: 3675 }, { dfdfg: 3930 }];
+            // // let array2 = [{ df: 36751 }, { dfdfg: 3930 }];
+            // // Merge arrays
+            // let mergedArray = this.lastColArray.map((obj1) => {
+            //     let updatedObj = this.ToChangedObj.find(
+            //         (obj2) => Object.keys(obj1)[0] === Object.keys(obj2)[0],
+            //     );
+            //     // return updatedObj;
+            //     if (updatedObj) {
+            //         return updatedObj;
+            //     } else {
+            //         return obj1;
+            //     }
+            //     //   return updatedObj ? updatedObj : obj1;
+            // });
+            // console.log(mergedArray);
+            // // merged korar por duplicate gula bad dite hobe same data last value wala ta rakhte hobe
 
-            // Create a map to track the last occurrence of each key
-            let lastOccurrenceMap = new Map();
 
-            // Iterate over the array in reverse order
-            for (let i = mergedArray.length - 1; i >= 0; i--) {
-                let currentObject = mergedArray[i];
-                let key = Object.keys(currentObject)[0];
+            // // Create a map to track the last occurrence of each key
+            // let lastOccurrenceMap = new Map();
+            // // Iterate over the array in reverse order
+            // for (let i = mergedArray.length - 1; i >= 0; i--) {
+            //     let currentObject = mergedArray[i];
+            //     let key = Object.keys(currentObject)[0];
 
-                // If the key is not in the map, or if it is, but the current entry is the last occurrence
-                if (!lastOccurrenceMap.has(key) || lastOccurrenceMap.get(key) === i) {
-                    lastOccurrenceMap.set(key, i);
-                } else {
-                    // If the key is already in the map and this is not the last occurrence, remove the duplicate
-                    mergedArray.splice(i, 1);
-                }
-            }
-            console.log(mergedArray);
+            //     // If the key is not in the map, or if it is, but the current entry is the last occurrence
+            //     if (!lastOccurrenceMap.has(key) || lastOccurrenceMap.get(key) === i) {
+            //         lastOccurrenceMap.set(key, i);
+            //     } else {
+            //         // If the key is already in the map and this is not the last occurrence, remove the duplicate
+            //         mergedArray.splice(i, 1);
+            //     }
+            // }
+            // console.log(mergedArray);
 
-            this.ToChangedObj = mergedArray;
-            console.log(this.ToChangedObj);
+            // this.ToChangedObj = mergedArray;
+            // console.log(this.ToChangedObj);
         }
     }
 
+
     @action
     handleSave(item, model) {
-        // console.log(this.KeyValue);
-        // safe e click korle kontar jonno save click korchi sheta age ber koro match kore
-        // shei item r ColumnArray r kon object ta change hoice sheta ber koro and shetake
-        // replace kore dew new value diye
+        console.log(this.ToChangedObjTwo);
 
         // value gula k element e set kore then true k false kore dibe atai or kaj
-        const result = model.filter((singledata) => singledata.id == item.id);
+        const result = model.filter((singledata) => singledata == item);
         // console.log(result);
         result.forEach((element) => {
             // console.log(element);
             // ager bar true thakay false kore dilam akhn karon false na thakle notun kore opren hobe na true thakle abar false korte hobe then true korte hobe double click kore
             if (element.isEdited == true) {
-                element.set('isEdited', false);
-                // this.edit = false;
+                set(element, 'isEdited', false);
             }
         });
+        console.log(this.lastColArray);
 
-        // ***
-        // age thekei to columnarray te jegula add korchi shegula add ache akhn shegula replace korte hobe abar push
-        // kore jabe nah
+        // // for last array col
+        // if (this.ToChangedObj.length == 0) {
+        //     this.lastColArray = this.lastColArray;
+        // } else {
+        //     console.log('not zero');
+        //     console.log(this.ToChangedObj);
+        //     this.lastColArray = this.ToChangedObj;
+        //     console.log(this.lastColArray);
+        // }
 
-        console.log(this.ColumnArray);
-
-        // ai to change r gula this.comluarray r sathe update korbo ekanen sehgulauai ache jgula input change hoice
-        // r baki gula k thik rakhte hobe colarray r
-        // ekhane shugulai ache input jegular value change hoice baki jgula change hoi nai segula to sheibhabai rakhte hobe ata check korte hobe j change hoice kina
-        // *** ekhane jhamela ache
-
-        if (this.ToChangedObj.length == 0) {
-            this.ColumnArray = this.ColumnArray;
-        } else {
-            console.log('not zero');
-            console.log(this.ToChangedObj);
-            this.ColumnArray = this.ToChangedObj;
-            console.log(this.ColumnArray);
-        }
-
-        // ata shudhu ekhanei add hobe ai funciton call hole
-        // na hole jodi add col kori tahole ager colarray r sathei add hoye jacceh ager bhao r moto
-
-        // for 1st array column
-        console.log(this.ToChangedObjTwo);
-        console.log(this.FirstArray);
-        this.FirstArray = this.ToChangedObjTwo;
+        // // for 1st array column
+        // console.log(this.ToChangedObjTwo);
+        // console.log(this.row);
+        // console.log(this.FirstColArray);
+        // this.row = this.ToChangedObjTwo;
     }
+
 
     // destroy
     // jei item e click hoice id diye filter kore ber korbo and shei item k destroy kore dibo from the model/store
     @action
-    handleDelete(item, wholeData) {
+    async handleDelete(item, wholeData) {
         console.log('destroy');
+        // console.log(this.newArrayofObj);
 
         console.log(item);
 
-        const result = wholeData.filter((singledata) => singledata.id == item.id);
-
+        const result = this.row.filter((singleData) => singleData == item);
         result.forEach((element) => {
             console.log(element);
-            // TODO: pura element destroy na kore dekha lagbe shudhu oi item ta ki delete kora jay naki shudhu ba whole model ta thaklo just item gula delte holo
-            element.destroyRecord();
-            this.index = this.index - 1;
+            // index ber kore then shei index r value k splice kore delete kore dibo
+            const indexofElement = this.row.indexOf(element);
+            if (indexofElement !== -1) {
+                // just aktai delete korte chaile 1 dibo
+                this.row.splice(indexofElement, 1);
+                // shei element r pura index ta delete kore dibo
+            }
+            this.row = this.row;
         });
-        // TODO: shob gula delete hoye gele amon akta bebostha korte hobe jate array/obj ba model ta thake jate sekhane
-        // abar kichu row/col add kora jay
+        console.log(this.row);
+    }
+
+
+
+    @action
+    async DeleteAllRow() {
+
+        alert('Click yes to delete all the data')
+
+        // console.log(this.FirstColArray, this.row);
+        this.FirstColArray = [];
+        // this.lastColArray = [];
+        this.row = [];
+        console.log(this.FirstColArray, this.row);
+
+        // shob delete korle abar remove name,address true kore dibo jate then row add korle name,address tableShow kore
+        // if (this.RemoveName === false && this.RemoveAddress == false) {
+        // this.RemoveName = true;
+        // this.RemoveAddress = true;
+        // }
+
+        this.InputValueCol = '';
+
+        // Delete all records using Ember Data
+        const tables = await this.store.peekAll('table');
+
+        // Use Promise.all to wait for all destroyRecord operations
+        const deletionPromises = tables.map(async table => {
+            await table.destroyRecord();
+        });
+
+        // Wait for all destroyRecord operations to complete
+        await Promise.all(deletionPromises);
+
+        // Save changes after confirming the deletion on the server side
+        tables.forEach(async table => {
+            try {
+                await table.save();
+            } catch (error) {
+                console.error('Error saving record:', error);
+            }
+        });
+
+        console.log(tables);
+
     }
 
 
     // CreateRow
     @action
     CreateRow(FirstOrLast, wholeData) {
-        // next
-        // console.log(wholeData);
-        // wholeData.forEach((element) => {
-        //     console.log(element);
-        // });
-        // console.log('created row');
+        console.log('create row');
 
-        if (FirstOrLast == 'first') {
-            console.log('add to first');
+        if (this.FirstColArray.length == 0) {
+            // console.log('no first col array');
+            // alert('add column first');
+            // return
+            let array = [];
+            for (let index = 0; index < 2; index++) {
+                const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob', 'dfd', 'dhea', 'aba'];
+                const random4DigitNumber2 = Math.floor(Math.random() * 9) + 1;
+                const Name = RandomName[random4DigitNumber2];
+                const data = { [Name]: random4DigitNumber2 };
+                console.log(data);
+                array.push(data);
+            }
+            console.log(array);
+            this.row.unshift(array);
+            this.row = this.row;
+            console.log(this.row);
+        }
 
-            // row r prothome add korte hobe mane record r prothome akdom age jegula che tar prothome add korbo
-            // console.log('add to last');
-            // const random4DigitNumber = Math.floor(Math.random() * 900) + 10;
-            // console.log(random4DigitNumber);
+        else {
+            if (FirstOrLast == 'first') {
+                let array = [];
+                for (let index = 0; index < this.FirstColArray.length; index++) {
+                    const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob', 'dfd', 'dhea', 'aba'];
+                    const random4DigitNumber2 = Math.floor(Math.random() * 9) + 1;
+                    const Name = RandomName[random4DigitNumber2];
+                    const data = { [Name]: random4DigitNumber2 };
+                    console.log(data);
+                    array.push(data);
+                }
+                console.log(array);
+                this.row.unshift(array);
+                this.row = this.row;
+                console.log(this.row);
 
-            const datas = this.myService.datas();
-            // console.log(datas);
-
-
-            // ager gulake k pore rekhe notun ta k prothom e rekhe tarpor model r shob delete kore notun kore create kore
-            // dibo prothom e ai obj diye
-            // notun kore amon akta obj banabo shetay model r gula dibo last e r obj(notun ta dibo prothom e then 
-            // record r shob gula deelte kore ai new data guloke create record kore dibo)
-
-
-            // random number for the name
-            const random4DigitNumber = Math.floor(Math.random() * 9) + 1;
-            console.log(random4DigitNumber);
-            const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob',];
-            const Name = RandomName[random4DigitNumber];
-            // console.log(RandomName[random4DigitNumber]);
-
-
-            // random number for the number
-            const random4DigitNumber2 = Math.floor(Math.random() * 900) + 1;
-            console.log(random4DigitNumber);
-
-
-            console.log(this.newArrayofObj);
-            if (this.newArrayofObj.length > 0) {
-                // age kichu thakle ata korba, na thakle necher ta korba
-                const obj = { id: random4DigitNumber2, name: Name, address: '123 Main Street, Cityville', isEdited: false };
-                // let newArrayofObj = [];
-                this.newArrayofObj.unshift(obj);
             } else {
-                // prothome kichu na thakle ata korbo
-                const obj = { id: random4DigitNumber2, name: Name, address: '123 Main Street, Cityville', isEdited: false };
-                // let newArrayofObj = [];
-                this.newArrayofObj.push(obj);
-                wholeData.forEach(element => {
-                    console.log(element);
-                    let singleObj = { 'id': element.id, 'name': element.name, 'address': element.address, 'isEdited': element.isEdited };
-                    console.log(singleObj);
-                    this.newArrayofObj.push(singleObj);
-                });
-            }
-            console.log(this.newArrayofObj);
 
-
-            // delete the all old model isntance and then later create the newly made record 
-            console.log(wholeData.length, 'wholeData');
-            wholeData.forEach((element) => {
-                console.log(element);
-                // TODO: pura element destroy na kore dekha lagbe shudhu oi item ta ki delete kora jay naki shudhu ba whole model ta thaklo just item gula delte holo
-                element.destroyRecord();
-                // this.index = this.index - 1;
-            });
-            console.log('deleted');
-            // console.log(wholeData);
-            // console.log(this.store.peekAll('table'));
-
-
-            // // creating all the record with the new data (prothom e thakbe last e create korar ta)
-            console.log(this.newArrayofObj, 'updated obj of array');
-            if (wholeData.length == 0) {
-                console.log('khali');
-                this.newArrayofObj.forEach((data) => {
-                    console.log(typeof data);
-                    // Create a new record for each object
-                    data.ColumnArray = [];
-                    data.FirstColumnArray = [];
-                    let newRecord = this.store.createRecord('table', data);
-                    // Save the record to the store
-                    // newRecord.save();
-                    console.log(newRecord);
-                });
-                console.log(this.modelData);
-            }
-
-
-
-            // console.log(newAuthor);
-            if (this.RemoveName == false) {
-                // to show the name and address after creating a row
-                this.RemoveName = !this.RemoveName;
-                this.RemoveAddress = !this.RemoveAddress;
-            }
-
-
-        } else {
-            console.log('add to last');
-            const random4DigitNumber = Math.floor(Math.random() * 900) + 10;
-            console.log(random4DigitNumber);
-
-            const newAuthor = this.store.createRecord('table', {
-                id: random4DigitNumber,
-                name: 'Mike Doe',
-                address: '123 Main Street, Cityville',
-                isEdited: false,
-                ColumnArray: [],
-            });
-            newAuthor.save();
-
-            console.log(newAuthor);
-            if (this.RemoveName == false) {
-                // to show the name and address after creating a row
-                this.RemoveName = !this.RemoveName;
-                this.RemoveAddress = !this.RemoveAddress;
+                let array = [];
+                for (let index = 0; index < this.FirstColArray.length; index++) {
+                    const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob', 'dfd', 'dhea', 'aba'];
+                    const random4DigitNumber2 = Math.floor(Math.random() * 9) + 1;
+                    const Name = RandomName[random4DigitNumber2];
+                    const data = { [Name]: random4DigitNumber2 };
+                    console.log(data);
+                    array.push(data);
+                }
+                console.log(array);
+                this.row.push(array);
+                this.row = this.row;
+                console.log(this.row);
             }
         }
+
+
     }
+
 
     // create col r input field r value jei nam e col create korbo tar input value
     @action
     handleCoLInput(event) {
         this.InputValueCol = event.target.value;
+        console.log(this.InputValueCol);
     }
+
 
     // add column t o first column
     @action
-    AddColFL(FirstLast, model) {
-        if (!this.InputValueCol) {
-            alert('Insert a Column name first!');
-            return;
-        }
-
-        this.ColFirst = true;
-
-        // random number generation
-        const random4DigitNumber = Math.floor(Math.random() * 9000) + 1000;
-
-        // let array = [];
-        // if (array.length > 0) {
-        // array.unshift({ [this.InputValueCol]: random4DigitNumber });
-        // this.Array.push({ [this.InputValueCol]: random4DigitNumber });
-        // console.log(this.Array);
-        // this.Array = this.Array;
-        console.log(this.FirstArray);
-
-        if (this.FirstArray.length > 0) {
-            console.log(this.FirstArray);
-            console.log('item 1ta chilo');
-            this.FirstArray.unshift({ [this.InputValueCol]: random4DigitNumber });
-            this.FirstArray = this.FirstArray;
-            console.log(this.FirstArray);
-        } else {
-            console.log(this.FirstArray);
-            console.log('item aktao chilo na');
-            this.FirstArray.push({ [this.InputValueCol]: random4DigitNumber });
-            this.FirstArray = this.FirstArray;
-        }
-
-        model.forEach((element) => {
-            console.log(element);
-            element.FirstColumnArray = this.FirstArray;
-        });
-    }
-
-    @action
-    CreateColumn(ModelData) {
-        console.log('createCol');
-
-        // jodi kono row e na thaken tokhon kisher opor col boshabo tai row na thakle mane name,address na thakle
-        // bolbo age first e name and address add koro alert diye
-        // drkr hole abar ekhane create row kore dite pari akta then shetar opore create column korte pari
-        // ModelData.forEach(element => {
-        //     console.log(element);
-        // });
+    AddCol(FirstLast, coldata) {
 
         if (!this.InputValueCol) {
-            alert('Insert a Column name first!');
-            return;
+            alert('add column Name');
+            return
         }
+        // *** shob add korar por arekta col add korle col bere jacche row thakceh tai row keo bariye balance korte hobe
+        // *** row abar dile same tay push hocche ami chacchi ager ta niye notun akta array baniye shetay [[],[]]
+        // arekta notun tr dibo
 
-        // if (condition) {
-        this.createCol = true;
-        // }
+        // first hole ak array te korbo last hole arek array te korbo push/unshift then shei 2 array k render korbo
+        console.log(FirstLast);
 
-        // random number generation
+        // // random number generation
         const random4DigitNumber = Math.floor(Math.random() * 9000) + 1000;
+        console.log(this.FirstColArray);
+        console.log(this.row);
 
-        let array = [];
-        if (this.ColumnArray.length > 0) {
-            array.push({ [this.InputValueCol]: random4DigitNumber });
-            console.log(this.ColumnArray);
-            // console.log(arraytwo);
-            this.ColumnArray = [...this.ColumnArray, ...array];
-            console.log(this.ColumnArray);
-            // console.log(arraytwo);
-            // element.ColumnArray.push({ [this.InputValueCol]: random4DigitNumber });
-            // console.log(element.ColumnArray);
-            // this.ColumnArray = element.ColumnArray;
-            // console.log('age chilo na');
-            // console.log(this.ColumnArray);
-            // console.log(this.createCol);
-        } else {
-            // console.log(typeof this.modelData);
-            // var afterinsertOne;
-            this.modelData.forEach((element) => {
-                console.log(element);
+        // const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob', 'dfd', 'dhea', 'aba'];
+        // const random4DigitNumber2 = Math.floor(Math.random() * 9) + 1;
+        // const Name = RandomName[random4DigitNumber2];
+        // const data = { [Name]: random4DigitNumber2 };
 
-                element.ColumnArray.push({ [this.InputValueCol]: random4DigitNumber });
-                console.log(element.ColumnArray);
-                this.ColumnArray = element.ColumnArray;
-                console.log('age chilo na');
-                console.log(this.ColumnArray);
-                console.log(this.createCol);
-                // TODO: row akbare khali kore dile col r add hoy nah
-                // if (!element.ColumnArray) {
-                //     element.ColumnArray = [];
-                //     element.ColumnArray.push({ [this.InputValueCol]: 46436 });
-                //     this.ColumnArray = element.ColumnArray;
+        if (FirstLast == 'first') {
+
+            // this.FirstColArray.unshift({ [this.InputValueCol]: random4DigitNumber });
+            // this.FirstColArray = this.FirstColArray;
+
+            if (this.row.length > 0 && this.FirstColArray.length == 0) {
+                console.log('col nai so joto gula row r value ache totogula col create korbo');
+                // row ache col nai tokhon row r lenght onyyai totota col baniye dibo
+                // this.FirstColArray.unshift({ [this.InputValueCol]: random4DigitNumber });
+                // this.FirstColArray = this.FirstColArray;
+                let LengthRow;
+                console.log(this.row);
+                this.row.forEach(element => {
+                    console.log(element);
+                    LengthRow = element.length;
+                });
+                console.log(LengthRow);
+
+                for (let index = 0; index < LengthRow; index++) {
+                    console.log('this times col will be created');
+                    const random4DigitNumber2 = Math.floor(Math.random() * 9000) + 1000;
+                    this.FirstColArray.unshift({ [this.InputValueCol]: random4DigitNumber2 });
+                    this.FirstColArray = this.FirstColArray;
+                }
+            }
+            else {
+                console.log('col ache');
+                this.FirstColArray.unshift({ [this.InputValueCol]: random4DigitNumber });
+                this.FirstColArray = this.FirstColArray;
+                // normally jamon kori akta akta kore add kori jokhon col ache ager 
+            }
+
+            // shobar jonno kintu prothom jokhon shudhu row thakbe col thakbe na tokhon nah
+            // this.FirstColArray.unshift({ [this.InputValueCol]: random4DigitNumber });
+            // this.FirstColArray = this.FirstColArray;
+
+
+
+            // let array = [];
+            if (this.row.length > 0) {
+                // for (let index = 0; index <= this.FirstColArray.length; index++) {
+                //     const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob', 'dfd', 'dhea', 'aba'];
+                //     const random4DigitNumber2 = Math.floor(Math.random() * 9) + 1;
+                //     const Name = RandomName[random4DigitNumber2];
+                //     const data = { [Name]: random4DigitNumber2 };
+                //     console.log('here is the place to be concerned about', data);
+                //     array.push(data);
                 // }
-                // shob col delete kore felle akta faka array set kore dilam model r columarray te jate poreo
-                // data push kora jay ai array te (optional)
-                // if (element.ColumnArray == undefined) {
-                // // element.set('ColumnArray', []);
-                // element.ColumnArray = [];
-                // }
-                // element.ColumnArray.push({ [this.InputValueCol]: random4DigitNumber });
-                // afterinsertOne = element.ColumnArray;
-                // console.log(afterinsertOne);
-                // console.log(element.ColumnArray.length);
-                // console.log(element.ColumnArray);]
+                // console.log(array);
+                // this.row.unshift(array);
+                // this.row = this.row;
+                // console.log(this.row);
 
-                // jodi ager thake mane age col create kora thake tokthon ager tay dibo noyto atay dibo
-                // if (this.ColumnArray.length > 0) {
-                //     console.log('age chilo');
-                //     element.ColumnArray.push({ [this.InputValueCol]: random4DigitNumber });
-                //     console.log(this.ColumnArray);
-                //     console.log(element.ColumnArray);
-                //     // const newobj = [...this.ColumnArray, ...element.ColumnArray];
-                //     // console.log(newobj);
-                //     // this.ColumnArray = newobj;
-                //     this.ColumnArray = element.ColumnArray;
-                //     // console.log(element.ColumnArray);
-                //     // console.log(this.ColumnArray);
-                //     console.log(this.createCol);
-                // }
-                // else {
 
-                // else {
+                // Your array
+                // const this.row = [
+                //     [{ id: 1 }, { id: 2 }, { id: 3 }],
+                //     [{ id: 4 }, { id: 5 }],
+                //     [{ id: 6 }, { id: 7 }, { id: 8 }]
+                // ];
+                console.log('before row', this.row);
 
-                // }
+                const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob', 'dfd', 'dhea', 'aba'];
+                const random4DigitNumber2 = Math.floor(Math.random() * 9) + 1;
+                const Name = RandomName[random4DigitNumber2];
+                const data = { [Name]: random4DigitNumber2 };
 
-                // }
-            });
+                // Object data you want to add to fill the arrays
+                // const objectData = { id: 0, value: 'example' };
+
+                console.log(this.FirstColArray.length);
+                // Find the maximum length among the subarrays
+                const maxLength = this.FirstColArray.length;
+
+                console.log(maxLength);
+
+                // Define a function to fill the array with the object data
+                const fillArray = (arr, maxLength, data) => {
+                    const diff = maxLength - arr.length;
+                    return arr.concat(Array(diff).fill(data));
+                };
+
+                // Update all subarrays to have the same length as the maximum
+                const resultArray = this.row.map(arr => fillArray(arr, maxLength, data));
+
+                console.log('resultArray', resultArray);
+
+                this.row = resultArray;
+                console.log('after row', this.row);
+            }
+
+
         }
+        else {
+
+            this.FirstColArray.push({ [this.InputValueCol]: random4DigitNumber });
+            this.FirstColArray = this.FirstColArray;
+
+            if (this.row.length > 0) {
+                // let array = [];
+                // for (let index = 0; index <= this.FirstColArray.length; index++) {
+                //     const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob', 'dfd', 'dhea', 'aba'];
+                //     const random4DigitNumber2 = Math.floor(Math.random() * 9) + 1;
+                //     const Name = RandomName[random4DigitNumber2];
+                //     const data = { [Name]: random4DigitNumber2 };
+                //     console.log(data);
+                //     array.push(data);
+                // }
+                // console.log(array);
+                // this.row.unshift(array);
+                // this.row = this.row;
+                // console.log(this.row);
+
+
+                // to have all length of array be same to fill the row of the table
+                const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob', 'dfd', 'dhea', 'aba'];
+                const random4DigitNumber2 = Math.floor(Math.random() * 9) + 1;
+                const Name = RandomName[random4DigitNumber2];
+                const data = { [Name]: random4DigitNumber2 };
+
+                // Object data you want to add to fill the arrays
+                // const objectData = { id: 0, value: 'example' };
+
+                // Find the maximum length among the subarrays
+                // const maxLength = Math.max(...this.row.map(arr => arr.length));
+                const maxLength = this.FirstColArray.length;
+
+                // Define a function to fill the array with the object data
+                const fillArray = (arr, maxLength, data) => {
+                    const diff = maxLength - arr.length;
+                    return arr.concat(Array(diff).fill(data));
+                };
+
+                // Update all subarrays to have the same length as the maximum
+                const resultArray = this.row.map(arr => fillArray(arr, maxLength, data));
+                console.log('resultArray', resultArray);
+                this.row = resultArray;
+            }
+
+        }
+
+
     }
 
-    // Remove Name and Address
-    // * EveryThing should be dynamically connected to the model
+
+
     @action
-    NameAddressRemove(NameOrAddress, AllItem) {
-        // console.log('name/add removed');
-        // name and address jetay pabo name pele shob item r name field delete kore dibo
+    handleColRemove(itemToRemove) {
 
-        console.log(typeof NameOrAddress);
-        console.log(AllItem);
+        let IndexRemove;
+        // Find the index of the matching object in FirstColArray
+        const indexToRemove = this.FirstColArray.findIndex((obj) =>
+            isEqual(obj, itemToRemove),
+        );
 
-        if (NameOrAddress == 'name') {
-            console.log('name');
-            // const name = 'name';
-            AllItem.forEach((item) => {
-                // const name = item.get('name');
-                console.log(item);
-                // console.log(item.get('name'));
-                // }
+        IndexRemove = indexToRemove;
 
-                // onk time e null dile kaj kore nah tai dekho destry name r ai field ata k destroy kora jay kina
-                item.set('name', null);
+        // // If the object is found, remove it (optional)
+        if (indexToRemove !== -1) {
+            this.FirstColArray.splice(indexToRemove, 1);
+            // item.FirstColArray.removeObject(itemToRemove);
+        }
+        this.FirstColArray = this.FirstColArray;
 
-                if (this.RemoveName == true) {
-                    this.RemoveName = !this.RemoveName;
-                }
 
-                console.log(item);
-                // Save the record to persist the changes to the server
-                item
-                    .save()
-                    .then(() => {
-                        // Record updated successfully
-                        console.log('Record updated successfully');
-                    })
-                    .catch((error) => {
-                        // Handle the error
-                        console.error('Error updating record:', error);
-                    });
+        // row removed
+        // Assuming IndexRemove is the index you want to remove (sheta bad e bakigula k neche)
+        this.row = this.row.map(element => element.filter((_, index) => index !== IndexRemove));
+        this.row = this.row;
+    }
+
+
+
+    @action
+    SaveModel() {
+        if (!this.InputValueCol) {
+            alert('add data first');
+            return
+        }
+
+        console.log(this.id);
+
+        // jodi ata existed kono table hoy jeta age chilo akhn value change korchi tahole existed tay e replace kore dibo
+        // r jodi age na tahke notun kore kortechi save tahole normally hobe
+        const result = this.TabelModel.filter((singledata) => singledata.id == this.id);
+        console.log(result);
+
+
+        if (result.length !== 0) {
+            // replace the model data -> col and row // same hole create korba nah shetakei update kore diba
+            console.log(result.column);
+            result.forEach(element => {
+                element.name = 'Table';
+                element.column = this.FirstColArray;
+                element.row = this.row;
+                this.InputValueCol = '';
+                alert('Data has been saved to the Model');
+                console.log('element', element);
+                // ata edit hobe ai value diye DB r value replace hobe
+                // noyto sheta delete hoye ata insert hobe so ekhane create/put korte hobe
+                // TODO: existing data k replace korte hobe update kore DB te
+
             });
         } else {
-            // const address = 'address';
-            AllItem.forEach((item) => {
-                console.log('address');
-                console.log(item);
-                console.log(item.address);
+            // notun kore data add korle
+            console.log(this.FirstColArray);
+            console.log(this.row);
 
-                item.set('address', null);
+            let data = {
+                id: '',
+                name: 'Table',
+                column: this.FirstColArray,
+                row: this.row,
+                idd: Math.floor(Math.random() * 9) + 1000
+            };
+            console.log('data', data);
 
-                if (this.RemoveAddress == true) {
-                    this.RemoveAddress = !this.RemoveAddress;
-                }
 
-                console.log(item);
-                // Save the record to persist the changes to the server
-                item
-                    .save()
-                    .then(() => {
-                        // Record updated successfully
-                        console.log('Record updated successfully');
-                    })
-                    .catch((error) => {
-                        // Handle the error
-                        console.error('Error updating record:', error);
-                    });
+            // post
+            let newRecord = this.store.createRecord('table', data);
+            newRecord.save().then((response) => {
+                // Handle success
+                console.log('Record saved successfully', response);
+                // location.reload();
+            }).catch((error) => {
+                // Handle error
+                console.error('Error saving record', error);
             });
+
+            console.log(this.InputValueCol);
+            this.InputValueCol = '';
+            this.InputValueCol = this.InputValueCol;
+            console.log(this.InputValueCol);
+            // console.log(newRecord);
+            alert('Data has been saved to the Model');
+            // location.reload();
+            // TODO: add korar shomoy id pacche nah abar refresh dile id ashche tokhon pacche id get kore tokhon delete hocche
         }
+
+
+        // to clear the UI 
+        console.log(this.FirstColArray, this.row);
+        this.FirstColArray = [];
+        this.row = [];
+        console.log(this.FirstColArray, this.row);
+
+        this.id = '';
+        console.log(this.TabelModel);
+
+
+    }
+
+
+
+    @action
+    handleSelectTable(item, ModelTable) {
+        console.log(item);
+
+        // item.tableShow = this.tableShow;
+
+        if (!item.tableShow) {
+            item.tableShow = true;
+            this.tableShow = true;
+            // 2 sec pore ata abar false kore dibo jate abar jeye hide/false kora na lage
+            setTimeout(() => {
+                item.tableShow = false;
+                // this.tableShow = false;
+            }, 3000);
+        }
+        else {
+            if (item.tableShow == true) {
+                item.tableShow = false;
+                this.tableShow = false;
+            }
+        }
+
+
+        if (item.tableShow) {
+            this.FirstColArray = item.column;
+            this.row = item.row;
+            // this.tableShow = !this.tableShow;
+        }
+        else {
+            this.FirstColArray = [];
+            this.row = [];
+        }
+
+        // console.log(item.id);
+        this.id = item.id;
+        this.item = item;
+
+        this.TableName = item.name;
     }
 
 
     @action
-    handleColRemove(FirstOrLast, itemToRemove) {
-        // this.createCol = !this.createCol;
+    handleTableInput(event) {
+        // console.log(item);
+        this.TableInput = event.target.value;
+        console.log(event.target.value);
+    }
 
-        // jei column r click korbe shei col r nam joto value ache prottek row te segulo delete korbo shei nam e
-        // ZipCode: 23842, zipcode dlt korte chaile shob row te zipcode khuje dlt kore dibo
-        console.log(this.modelData);
-        console.log('col removed');
-        console.log(itemToRemove);
-        console.log(FirstOrLast);
 
-        if (FirstOrLast == 'first') {
-            console.log(this.FirstArray);
-            this.FirstArray.forEach((item) => {
+    @action
+    handleTableEdit(item) {
+        console.log('edited');
+        // this.table = true;
+        console.log(item);
+        // item.isTableEdited = !this.table;
+        // set(isTableEdited, 'isTableEdited', !this.table);
+        item.set('isTableEdited', !this.table);
+        console.log(item.name);
+        this.oldInput = item.name;
+    }
+
+
+    @action
+    handleTableSave(item, SaveOrCancel) {
+        console.log(SaveOrCancel);
+
+        // TODO: ai table save e click korle name ta change hoye put/update request hobe
+
+        console.log(this.table);
+        if (SaveOrCancel === 'cancel') {
+            console.log(item);
+            if (this.table == true) {
+                item.set('isTableEdited', !this.table);
                 console.log(item);
-                // Find the index of the matching object in FirstArray
-                const indexToRemove = this.FirstArray.findIndex((obj) =>
-                    isEqual(obj, itemToRemove),
-                );
-                console.log(indexToRemove);
-                // If the object is found, remove it
-                if (indexToRemove !== -1) {
-                    this.FirstArray.splice(indexToRemove, 1);
-                    // item.FirstArray.removeObject(itemToRemove);
-                }
-                // console.log(item);
-                console.log('col array after deleting a col', this.FirstArray);
-                this.FirstArray = this.FirstArray;
-            });
-        } else {
-            console.log('last');
-            console.log(this.ColumnArray);
-            this.ColumnArray.forEach((item) => {
-                console.log(item);
-                // Find the index of the matching object in ColumnArray
-                const indexToRemove = this.ColumnArray.findIndex((obj) =>
-                    isEqual(obj, itemToRemove),
-                );
-                console.log(indexToRemove);
-                // If the object is found, remove it
-                if (indexToRemove !== -1) {
-                    this.ColumnArray.splice(indexToRemove, 1);
-                    // item.ColumnArray.removeObject(itemToRemove);
-                }
-                // console.log(item);
-                console.log('col array after deleting a col', this.ColumnArray);
-                this.ColumnArray = this.ColumnArray;
+            }
+            else {
+                item.set('isTableEdited', this.table);
+            }
+            const result = this.TabelModel.filter((singledata) => singledata.id == item.id);
+            result.forEach(element => {
+                // element.Name = this.TableInput;
+                console.log(item.name);
+                element.set('name', this.oldInput)
             });
         }
+        else {
+            console.log('saved');
+            // save korleo ager ta change na korle ager tai  set kore dibo
+            if (!this.TableInput || this.TableInput === undefined || this.TableInput === null) {
+                if (this.table == true) {
+                    item.set('isTableEdited', !this.table);
+                    console.log(item);
+                }
+                else {
+                    item.set('isTableEdited', this.table);
+                }
+                const result = this.TabelModel.find((singledata) => singledata.id == item.id);
+                console.log(result);
+                // result.forEach(element => {
+                // element.Name = this.TableInput;
+                // console.log(item.name);
+                result.set('name', this.oldInput)
+                // });
+            }
+
+            else {
+                // if table name is changed
+                const result = this.TabelModel.filter((singledata) => singledata.id == item.id);
+                result.forEach(async element => {
+                    // element.Name = this.TableInput;
+                    console.log('element that has to be changed', element);
+                    element.set('name', this.TableInput);
+
+                    // to hide the input field
+                    console.log(element.isTableEdited);
+                    if (element.isTableEdited == true) {
+                        element.set('isTableEdited', false);
+                    }
+                    console.log('element that has been changed', element);
+                    this.TabelModel = this.TabelModel;
+                    // console.log(result);
+                    // set(element, 'isEdited', false);
+                    // update ai element k edit korte hobe replace korte hobe from the server
+
+
+                    // update the name field
+                    try {
+                        let tableInstance = this.store.peekRecord('table', element.id);
+                        tableInstance.set('name', this.TableInput);
+                        await tableInstance.save();
+                        console.log('Record updated successfully');
+                    } catch (error) {
+                        console.error('Error updating record', error);
+                    }
+                    
+                });
+                console.log(this.table);
+                // save r poreo new name k set kore dilam
+                this.TableName = item.name;
+            }
+        }
+
     }
+
+
+    // X delete
+    @action
+    async handleTableDelete(item) {
+        console.log(item);
+        console.log('deleted');
+
+        try {
+            await item.destroyRecord(); // This will mark the record as deleted
+        } catch (error) {
+            console.error('Error during delete:', error);
+        }
+
+        console.log(this.TabelModel);
+        if (this.TabelModel.length == 0) {
+            this.FirstColArray = [];
+            this.row = [];
+        }
+    }
+
+
+
+
 }
+

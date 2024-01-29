@@ -27,4 +27,5 @@ Router.map(function () {
   this.route('edit');
   this.route('seeder');
   this.route('contacks');
+  this.route('table');
 });
