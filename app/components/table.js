@@ -6,11 +6,6 @@ import { isEqual } from '@ember/utils';
 import { A } from '@ember/array';
 import { set } from '@ember/object';
 
-// todo: col dile row r data auto chole ashbe col 2ta hole row r value o 2ta hobe
-// name k edit kore update koro database e 
-// same table k abar change korle shei full table k abar updte koro DB te
-// spinner should be set while delete all row is loading untill all data is deleted
-
 
 export default class TableComponent extends Component {
     // @service myService;
@@ -19,23 +14,47 @@ export default class TableComponent extends Component {
     // @tracked row = [ [{'michel': 1},{'mile': 1},{'make': 1}], [{'mike': 2},{'pompe': 2},{'jompe': 2}], [ {'doe': 3},{'hoe': 3},{'moe': 3}]];
     @tracked TabelModel = this.store.peekAll('table');
 
+    // for col and row
     @tracked FirstColArray = [];
     @tracked row = [];
 
+
+
+    // for data edit 
     @tracked InputValueCol;
     @tracked ToChangedObjTwo = [];
 
-
+    // to track id, table and item
     @tracked id;
     @tracked table = false;
     @tracked item;
 
+    // for input field
     @tracked oldInput;
     @tracked TableInput;
 
-    @tracked TableName;
 
+    @tracked TableName;
     @tracked tableShow = false;
+    @tracked loading = false;
+
+    // when all is deleted
+    @tracked NoData = true;
+
+    // when no col and row is exist
+    @tracked NoColRow = true;
+
+
+    constructor() {
+        super(...arguments);
+        console.log(this.TabelModel);
+        // after resfresing or starting the page delete all data btn will be deactive due to not having any model instance
+        if (this.TabelModel.length > 0) {
+            console.log('data ache');
+            this.NoData = false;
+        }
+    }
+
 
 
     @action
@@ -260,19 +279,19 @@ export default class TableComponent extends Component {
     @action
     async DeleteAllRow() {
 
-        alert('Click yes to delete all the data')
+        // alert('Click yes to delete all the data');
+
+        const result = window.confirm('Click OK to delete all the data');
+        if (!result) {
+            console.log('User clicked cancel');
+            return
+        }
 
         // console.log(this.FirstColArray, this.row);
         this.FirstColArray = [];
         // this.lastColArray = [];
         this.row = [];
         console.log(this.FirstColArray, this.row);
-
-        // shob delete korle abar remove name,address true kore dibo jate then row add korle name,address tableShow kore
-        // if (this.RemoveName === false && this.RemoveAddress == false) {
-        // this.RemoveName = true;
-        // this.RemoveAddress = true;
-        // }
 
         this.InputValueCol = '';
 
@@ -282,6 +301,10 @@ export default class TableComponent extends Component {
         // Use Promise.all to wait for all destroyRecord operations
         const deletionPromises = tables.map(async table => {
             await table.destroyRecord();
+            console.log('loading');
+            this.loading = true;
+            this.tableShow = false;
+            console.log(this.loading);
         });
 
         // Wait for all destroyRecord operations to complete
@@ -291,12 +314,28 @@ export default class TableComponent extends Component {
         tables.forEach(async table => {
             try {
                 await table.save();
+                alert('All data has been deleted Succesfully');
             } catch (error) {
                 console.error('Error saving record:', error);
             }
         });
-
         console.log(tables);
+
+
+        // all data delete korar por delete all button disable and tableName(this.tableShow) dekhabe nah
+        if (tables.length < 1) {
+            console.log('no tblename should be shown');
+            this.tableShow = false;
+
+            // delete all data btn disable
+            if (this.NoData == false) {
+                this.NoData = !this.NoData;
+            }
+        }
+
+        // make this.loading false (deactive spinner) after deleting all the data
+        this.loading = false;
+        console.log(this.loading);
 
     }
 
@@ -307,11 +346,8 @@ export default class TableComponent extends Component {
         console.log('create row');
 
         if (this.FirstColArray.length == 0) {
-            // console.log('no first col array');
-            // alert('add column first');
-            // return
             let array = [];
-            for (let index = 0; index < 2; index++) {
+            for (let index = 0; index < 1; index++) {
                 const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob', 'dfd', 'dhea', 'aba'];
                 const random4DigitNumber2 = Math.floor(Math.random() * 9) + 1;
                 const Name = RandomName[random4DigitNumber2];
@@ -359,8 +395,15 @@ export default class TableComponent extends Component {
             }
         }
 
+        if (this.FirstColArray || this.row) {
+            console.log('no row / no col');
+            if (this.NoColRow == true) {
+                this.NoColRow = !this.NoColRow;
+            }
+        }
 
     }
+
 
 
     // create col r input field r value jei nam e col create korbo tar input value
@@ -371,6 +414,7 @@ export default class TableComponent extends Component {
     }
 
 
+
     // add column t o first column
     @action
     AddCol(FirstLast, coldata) {
@@ -379,11 +423,6 @@ export default class TableComponent extends Component {
             alert('add column Name');
             return
         }
-        // *** shob add korar por arekta col add korle col bere jacche row thakceh tai row keo bariye balance korte hobe
-        // *** row abar dile same tay push hocche ami chacchi ager ta niye notun akta array baniye shetay [[],[]]
-        // arekta notun tr dibo
-
-        // first hole ak array te korbo last hole arek array te korbo push/unshift then shei 2 array k render korbo
         console.log(FirstLast);
 
         // // random number generation
@@ -391,21 +430,9 @@ export default class TableComponent extends Component {
         console.log(this.FirstColArray);
         console.log(this.row);
 
-        // const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob', 'dfd', 'dhea', 'aba'];
-        // const random4DigitNumber2 = Math.floor(Math.random() * 9) + 1;
-        // const Name = RandomName[random4DigitNumber2];
-        // const data = { [Name]: random4DigitNumber2 };
-
         if (FirstLast == 'first') {
-
-            // this.FirstColArray.unshift({ [this.InputValueCol]: random4DigitNumber });
-            // this.FirstColArray = this.FirstColArray;
-
             if (this.row.length > 0 && this.FirstColArray.length == 0) {
                 console.log('col nai so joto gula row r value ache totogula col create korbo');
-                // row ache col nai tokhon row r lenght onyyai totota col baniye dibo
-                // this.FirstColArray.unshift({ [this.InputValueCol]: random4DigitNumber });
-                // this.FirstColArray = this.FirstColArray;
                 let LengthRow;
                 console.log(this.row);
                 this.row.forEach(element => {
@@ -428,34 +455,8 @@ export default class TableComponent extends Component {
                 // normally jamon kori akta akta kore add kori jokhon col ache ager 
             }
 
-            // shobar jonno kintu prothom jokhon shudhu row thakbe col thakbe na tokhon nah
-            // this.FirstColArray.unshift({ [this.InputValueCol]: random4DigitNumber });
-            // this.FirstColArray = this.FirstColArray;
-
-
-
             // let array = [];
             if (this.row.length > 0) {
-                // for (let index = 0; index <= this.FirstColArray.length; index++) {
-                //     const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob', 'dfd', 'dhea', 'aba'];
-                //     const random4DigitNumber2 = Math.floor(Math.random() * 9) + 1;
-                //     const Name = RandomName[random4DigitNumber2];
-                //     const data = { [Name]: random4DigitNumber2 };
-                //     console.log('here is the place to be concerned about', data);
-                //     array.push(data);
-                // }
-                // console.log(array);
-                // this.row.unshift(array);
-                // this.row = this.row;
-                // console.log(this.row);
-
-
-                // Your array
-                // const this.row = [
-                //     [{ id: 1 }, { id: 2 }, { id: 3 }],
-                //     [{ id: 4 }, { id: 5 }],
-                //     [{ id: 6 }, { id: 7 }, { id: 8 }]
-                // ];
                 console.log('before row', this.row);
 
                 const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob', 'dfd', 'dhea', 'aba'];
@@ -491,36 +492,38 @@ export default class TableComponent extends Component {
         }
         else {
 
-            this.FirstColArray.push({ [this.InputValueCol]: random4DigitNumber });
-            this.FirstColArray = this.FirstColArray;
+            if (this.row.length > 0 && this.FirstColArray.length == 0) {
+                console.log('col nai so joto gula row r value ache totogula col create korbo');
+                let LengthRow;
+                console.log(this.row);
+                this.row.forEach(element => {
+                    console.log(element);
+                    LengthRow = element.length;
+                });
+                console.log(LengthRow);
+
+                for (let index = 0; index < LengthRow; index++) {
+                    console.log('this times col will be created');
+                    const random4DigitNumber2 = Math.floor(Math.random() * 9000) + 1000;
+                    this.FirstColArray.push({ [this.InputValueCol]: random4DigitNumber2 });
+                    this.FirstColArray = this.FirstColArray;
+                }
+            }
+            else {
+                console.log('col ache');
+                this.FirstColArray.push({ [this.InputValueCol]: random4DigitNumber });
+                this.FirstColArray = this.FirstColArray;
+                // normally jamon kori akta akta kore add kori jokhon col ache ager 
+            }
 
             if (this.row.length > 0) {
-                // let array = [];
-                // for (let index = 0; index <= this.FirstColArray.length; index++) {
-                //     const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob', 'dfd', 'dhea', 'aba'];
-                //     const random4DigitNumber2 = Math.floor(Math.random() * 9) + 1;
-                //     const Name = RandomName[random4DigitNumber2];
-                //     const data = { [Name]: random4DigitNumber2 };
-                //     console.log(data);
-                //     array.push(data);
-                // }
-                // console.log(array);
-                // this.row.unshift(array);
-                // this.row = this.row;
-                // console.log(this.row);
-
-
                 // to have all length of array be same to fill the row of the table
                 const RandomName = ['john', 'aice', 'mike', 'pompe', 'alex', 'doe', 'michel', 'leice', 'jhonshon', 'bob', 'dfd', 'dhea', 'aba'];
                 const random4DigitNumber2 = Math.floor(Math.random() * 9) + 1;
                 const Name = RandomName[random4DigitNumber2];
                 const data = { [Name]: random4DigitNumber2 };
 
-                // Object data you want to add to fill the arrays
-                // const objectData = { id: 0, value: 'example' };
-
                 // Find the maximum length among the subarrays
-                // const maxLength = Math.max(...this.row.map(arr => arr.length));
                 const maxLength = this.FirstColArray.length;
 
                 // Define a function to fill the array with the object data
@@ -537,7 +540,12 @@ export default class TableComponent extends Component {
 
         }
 
-
+        if (this.FirstColArray || this.row) {
+            console.log('no row / no col');
+            if (this.NoColRow == true) {
+                this.NoColRow = !this.NoColRow;
+            }
+        }
     }
 
 
@@ -560,7 +568,6 @@ export default class TableComponent extends Component {
         }
         this.FirstColArray = this.FirstColArray;
 
-
         // row removed
         // Assuming IndexRemove is the index you want to remove (sheta bad e bakigula k neche)
         this.row = this.row.map(element => element.filter((_, index) => index !== IndexRemove));
@@ -571,24 +578,20 @@ export default class TableComponent extends Component {
 
     @action
     SaveModel() {
-        if (!this.InputValueCol) {
-            alert('add data first');
-            return
-        }
-
         console.log(this.id);
 
         // jodi ata existed kono table hoy jeta age chilo akhn value change korchi tahole existed tay e replace kore dibo
         // r jodi age na tahke notun kore kortechi save tahole normally hobe
         const result = this.TabelModel.filter((singledata) => singledata.id == this.id);
-        console.log(result);
+        console.log('result means matched with the selected item', result);
 
 
         if (result.length !== 0) {
+            console.log('ata ager datar sathe milche so replace korte hobe new create korbo na');
             // replace the model data -> col and row // same hole create korba nah shetakei update kore diba
             console.log(result.column);
             result.forEach(element => {
-                element.name = 'Table';
+                element.name = this.TableInput;
                 element.column = this.FirstColArray;
                 element.row = this.row;
                 this.InputValueCol = '';
@@ -598,9 +601,30 @@ export default class TableComponent extends Component {
                 // noyto sheta delete hoye ata insert hobe so ekhane create/put korte hobe
                 // TODO: existing data k replace korte hobe update kore DB te
 
+
+                // try {
+                //     let tableInstance = this.store.peekRecord('table', element.id);
+                //     tableInstance.set('name', this.TableInput);
+                //     await tableInstance.save();
+                //     console.log('Record updated successfully');
+                // } catch (error) {
+                //     console.error('Error updating record', error);
+                // }
+
+
+                // existing table guloke edit kore save korle table name dekhabe nah and item r tableshow true theke false hobe
+                if (this.tableShow == true) {
+                    this.tableShow = false;
+                    this.TabelModel.forEach(element => {
+                        console.log(element);
+                        element.set('tableShow', false);
+                    });
+                }
+
             });
-        } else {
-            // notun kore data add korle
+        }
+        else {
+            // notun kore data add korle jokhon ager tar sathe kono match e hobe nah item r
             console.log(this.FirstColArray);
             console.log(this.row);
 
@@ -635,7 +659,6 @@ export default class TableComponent extends Component {
             // TODO: add korar shomoy id pacche nah abar refresh dile id ashche tokhon pacche id get kore tokhon delete hocche
         }
 
-
         // to clear the UI 
         console.log(this.FirstColArray, this.row);
         this.FirstColArray = [];
@@ -646,49 +669,89 @@ export default class TableComponent extends Component {
         console.log(this.TabelModel);
 
 
+        // save r pore col row thake nah tokhon savemodel k dekhabo nah
+        if (this.FirstColArray.length == 0 && this.row.length == 0) {
+            console.log('no row / no col');
+            if (this.NoColRow == false) {
+                this.NoColRow = !this.NoColRow;
+            }
+        }
+
+        // save korar por deleteAll k active kore dibo
+        if (this.TabelModel.length > 0) {
+            console.log('data ache');
+            if (this.NoData == true) {
+                this.NoData = !this.NoData;
+            }
+        }
+
     }
 
 
 
     @action
     handleSelectTable(item, ModelTable) {
-        console.log(item);
-
-        // item.tableShow = this.tableShow;
+        // console.log(item);
 
         if (!item.tableShow) {
+            console.log(item);
+            console.log('age item.tableshow chilo na');
             item.tableShow = true;
             this.tableShow = true;
-            // 2 sec pore ata abar false kore dibo jate abar jeye hide/false kora na lage
-            setTimeout(() => {
-                item.tableShow = false;
-                // this.tableShow = false;
-            }, 3000);
         }
         else {
+            console.log('age item.tableshow chilo');
+            console.log(item);
             if (item.tableShow == true) {
                 item.tableShow = false;
                 this.tableShow = false;
+                // tokhon shob item r tableshow gulo o false hoye jabe
+                this.TabelModel.forEach(element => {
+                    console.log(element);
+                    element.set('tableShow', false)
+                });
             }
         }
 
 
+        // to set and hide the row and column
         if (item.tableShow) {
+            console.log('ache tableshow');
             this.FirstColArray = item.column;
             this.row = item.row;
-            // this.tableShow = !this.tableShow;
+            // ai id jokhon thakbe tokhon last open table tai update hobe result e jeye match hobe first if e dhukbe
+            // tai ai id k tokhon set korte hobe jokhon existed kono table open thake and closed hole r ai id set korbo nah
+            this.id = item.id;
         }
         else {
+            console.log('nai tableshow');
             this.FirstColArray = [];
             this.row = [];
+            // table unselect kore dile id close kore dibo fole new create hobe ager ta update hobe nah table
+            this.id = '';
         }
 
-        // console.log(item.id);
-        this.id = item.id;
-        this.item = item;
 
+        // this.id = item.id;
+        this.item = item;
         this.TableName = item.name;
+
+
+        // save model disable according to SelectTable
+        if (this.tableShow == true) {
+            console.log('row / col');
+            if (this.NoColRow == true) {
+                this.NoColRow = !this.NoColRow;
+            }
+        }
+        else {
+            console.log('row / col');
+            if (this.NoColRow == false) {
+                this.NoColRow = !this.NoColRow;
+            }
+        }
     }
+
 
 
     @action
@@ -697,6 +760,7 @@ export default class TableComponent extends Component {
         this.TableInput = event.target.value;
         console.log(event.target.value);
     }
+
 
 
     @action
@@ -712,15 +776,15 @@ export default class TableComponent extends Component {
     }
 
 
+
     @action
     handleTableSave(item, SaveOrCancel) {
         console.log(SaveOrCancel);
 
-        // TODO: ai table save e click korle name ta change hoye put/update request hobe
-
         console.log(this.table);
         if (SaveOrCancel === 'cancel') {
             console.log(item);
+            // jokhon table name input field open thakbe mane tableisEdited thakbe tokhon true
             if (this.table == true) {
                 item.set('isTableEdited', !this.table);
                 console.log(item);
@@ -737,7 +801,7 @@ export default class TableComponent extends Component {
         }
         else {
             console.log('saved');
-            // save korleo ager ta change na korle ager tai  set kore dibo
+            // save korleo ager ta change na korle this.tableinput nai ager tai  set kore dibo
             if (!this.TableInput || this.TableInput === undefined || this.TableInput === null) {
                 if (this.table == true) {
                     item.set('isTableEdited', !this.table);
@@ -748,15 +812,11 @@ export default class TableComponent extends Component {
                 }
                 const result = this.TabelModel.find((singledata) => singledata.id == item.id);
                 console.log(result);
-                // result.forEach(element => {
-                // element.Name = this.TableInput;
-                // console.log(item.name);
                 result.set('name', this.oldInput)
-                // });
             }
 
             else {
-                // if table name is changed
+                // if table name is changed tableinput has value
                 const result = this.TabelModel.filter((singledata) => singledata.id == item.id);
                 result.forEach(async element => {
                     // element.Name = this.TableInput;
@@ -770,11 +830,9 @@ export default class TableComponent extends Component {
                     }
                     console.log('element that has been changed', element);
                     this.TabelModel = this.TabelModel;
-                    // console.log(result);
-                    // set(element, 'isEdited', false);
+
+
                     // update ai element k edit korte hobe replace korte hobe from the server
-
-
                     // update the name field
                     try {
                         let tableInstance = this.store.peekRecord('table', element.id);
@@ -784,7 +842,7 @@ export default class TableComponent extends Component {
                     } catch (error) {
                         console.error('Error updating record', error);
                     }
-                    
+
                 });
                 console.log(this.table);
                 // save r poreo new name k set kore dilam
@@ -793,6 +851,7 @@ export default class TableComponent extends Component {
         }
 
     }
+
 
 
     // X delete
@@ -812,6 +871,14 @@ export default class TableComponent extends Component {
             this.FirstColArray = [];
             this.row = [];
         }
+
+        if (this.TabelModel.length < 1) {
+            console.log('no data');
+            this.tableShow = false;
+            this.NoData = !this.NoData;
+            // data thakle disable korbo nah delete button
+        }
+
     }
 
 

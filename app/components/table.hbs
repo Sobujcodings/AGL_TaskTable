@@ -3,15 +3,22 @@
 
 <div class="container mb-3 mt-4">
         <ol>
-            {{#each this.TabelModel as |item|}}
-                    <li class="gap-2 my-2">
-                        <button type="button" class="btn btn-md border bg-secondary text-white" 
-                            {{on 'click' (fn this.handleSelectTable item this.TabelModel)}}>{{item.name}} 
-                        </button>
-                        {{!-- <button type="button" {{on 'click' (fn this.handleTableEdit item)}} class="btn btn-primary">Edit</button> --}}
-                        <button type="button" {{on 'click' (fn this.handleTableDelete item) }} class="btn btn-danger">X</button>
-                    </li>
-            {{/each}}
+           
+           {{#if this.loading}}
+                <div class="spinner-border text-dark" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+           {{else}}
+                {{#each this.TabelModel as |item|}}
+                        <li class="gap-2 my-2">
+                            <button type="button" class="btn btn-md border bg-secondary text-white" 
+                                {{on 'click' (fn this.handleSelectTable item this.TabelModel)}}>{{item.name}} 
+                            </button>
+                            {{!-- <button type="button" {{on 'click' (fn this.handleTableEdit item)}} class="btn btn-primary">Edit</button> --}}
+                            <button type="button" {{on 'click' (fn this.handleTableDelete item) }} class="btn btn-danger">X</button>
+                        </li>
+                {{/each}}
+           {{/if}}
 
             {{!-- if edited or not --}}
             {{#if this.item.isTableEdited}}
@@ -26,12 +33,14 @@
             {{else}}
                 {{!-- TODO: atay click kore edit option ta ashbe and save cancel hobe --}}
                 <h3>
-                    {{#if this.tableShow}}
-                            <button type="button" {{on 'click' (fn this.handleTableEdit this.item)}} data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top" class="mt-4 border-0 bg-white">
-                            {{this.TableName}}
-                                <BsTooltip @placement="top">Click to Edit</BsTooltip>
-                            </button>
-                    {{/if}}
+                    {{!-- {{#if this.NoData}} --}}
+                        {{#if this.tableShow}}
+                                <button type="button" {{on 'click' (fn this.handleTableEdit this.item)}} data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top" class="mt-4 border-0 bg-white">
+                                {{this.TableName}}
+                                    <BsTooltip @placement="top">Click to Edit</BsTooltip>
+                                </button>
+                        {{/if}}
+                    {{!-- {{/if}} --}}
                 </h3>
             {{/if}}
 
@@ -51,17 +60,17 @@
                     {{/each}}
 
                     {{#if this.FirstColArray}}
-                        <th scope="col" class="border text-danger fw-bold text-center">Action</th>
+                        <th scope="col" class="border text-danger fw-bold text-center w-50">Action</th>
                     {{/if}}
             </tr>
         </thead>
         <tbody>
                 {{#each this.row as |item|}}
-                    <tr>
+                    <tr class="">
                         {{#each item as |element|}}
                             {{#each-in element as |key value|}}
                                 {{#if item.isEdited}}
-                                        <td class="my-auto border mx-auto w-25">
+                                        <td class="my-auto border mx-auto w-25 text-center">
                                             <label>
                                                 <Input @value={{value}} class="form-control" aria-describedby="emailHelp" 
                                                 {{on 'input' (fn this.HandleInputeThree 'first' key)}}
@@ -76,13 +85,13 @@
 
                         <td class="border border mx-auto text-center d-flex flex-column gap-2">
                             {{#if item.isEdited}}
-                                <button type="button" class="btn btn-success w-50 mx-auto" {{on 'click'
+                                <button type="button" class="btn btn-success btn-md px-4 mx-auto" {{on 'click'
                                     (fn this.handleSave item this.row)}}>Save</button>
                             {{else}}
-                                 <button type="button" class="btn btn-secondary w-50 mx-auto" {{on 'click'
+                                 <button type="button" class="btn btn-secondary btn-md px-4 mx-auto" {{on 'click'
                                 (fn this.handleEdit item this.row)}}>Edit</button>
                             {{/if}}
-                            <button type="button" class="btn btn-danger w-50 mx-auto" {{on 'click'
+                            <button type="button" class="btn btn-danger btn-md px-3 mx-auto" {{on 'click'
                                 (fn this.handleDelete item this.row)}}>Delete</button>
                         </td>
                     </tr>
@@ -108,8 +117,11 @@
 
     <button type="button" class="btn btn-primary" {{on 'click' (fn this.AddCol 'last' @model)}}>Add Last Col</button>
 
-    <button type="button" class="btn btn-success" {{on 'click' this.SaveModel}}>Save to Model</button>
+    <button type="button" class="btn btn-success" {{on 'click' this.SaveModel}} disabled={{this.NoColRow}}>Save to Model</button>
 
-    <button type="button" class="btn btn-danger" {{on 'click' this.DeleteAllRow}}>Delete All</button>
+    <button type="button" class="btn btn-danger" {{on 'click' this.DeleteAllRow}} disabled={{this.NoData}}>
+        Delete All
+    </button>
+
 
 </div>
