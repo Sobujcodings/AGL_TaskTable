@@ -14,7 +14,6 @@
                             <button type="button" class="btn btn-md border bg-secondary text-white" 
                                 {{on 'click' (fn this.handleSelectTable item this.TabelModel)}}>{{item.name}} 
                             </button>
-                            {{!-- <button type="button" {{on 'click' (fn this.handleTableEdit item)}} class="btn btn-primary">Edit</button> --}}
                             <button type="button" {{on 'click' (fn this.handleTableDelete item) }} class="btn btn-danger">X</button>
                         </li>
                 {{/each}}
@@ -33,14 +32,12 @@
             {{else}}
                 {{!-- TODO: atay click kore edit option ta ashbe and save cancel hobe --}}
                 <h3>
-                    {{!-- {{#if this.NoData}} --}}
-                        {{#if this.tableShow}}
-                                <button type="button" {{on 'click' (fn this.handleTableEdit this.item)}} data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top" class="mt-4 border-0 bg-white">
-                                {{this.TableName}}
-                                    <BsTooltip @placement="top">Click to Edit</BsTooltip>
-                                </button>
-                        {{/if}}
-                    {{!-- {{/if}} --}}
+                    {{#if this.tableShow}}
+                            <button type="button" {{on 'click' (fn this.handleTableEdit this.item)}} data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Tooltip on top" class="mt-4 border-0 bg-white">
+                            {{this.TableName}}
+                                <BsTooltip @placement="top">Click to Edit</BsTooltip>
+                            </button>
+                    {{/if}}
                 </h3>
             {{/if}}
 
@@ -73,7 +70,7 @@
                                         <td class="my-auto border mx-auto w-25 text-center">
                                             <label>
                                                 <Input @value={{value}} class="form-control" aria-describedby="emailHelp" 
-                                                {{on 'input' (fn this.HandleInputeThree 'first' key)}}
+                                                {{on 'input' (fn this.HandleInputeThree key)}}
                                                 ></Input>
                                             </label>
                                         </td>  
@@ -107,7 +104,7 @@
     <button type="button" class="btn btn-secondary" {{on 'click' (fn this.CreateRow 'first' @model)}}>Add FirstRow</button>
     <button type="button" class="btn btn-secondary" {{on 'click' (fn this.CreateRow 'last' @model)}}>Add LastRow</button>
 
-    <button type="button" class="btn btn-primary" {{on 'click' (fn this.AddCol 'first' @model)}}>Add First Col</button>
+    <button type="button" class="btn btn-primary" {{on 'click' (fn this.AddCol 'first')}}>Add First Col</button>
 
     <label>
         <Input class="form-control" @value={{this.InputValueCol}} aria-describedby="emailHelp" placeholder="Add Column Name" {{on 'input'
@@ -115,7 +112,7 @@
         </Input>
     </label>
 
-    <button type="button" class="btn btn-primary" {{on 'click' (fn this.AddCol 'last' @model)}}>Add Last Col</button>
+    <button type="button" class="btn btn-primary" {{on 'click' (fn this.AddCol 'last')}}>Add Last Col</button>
 
     <button type="button" class="btn btn-success" {{on 'click' this.SaveModel}} disabled={{this.NoColRow}}>Save to Model</button>
 
