@@ -10,10 +10,14 @@ export default class TableComponent extends Component {
     // @service myService;
     @service store;
 
+    data = A(['data', 'data2', 'data3', 'data4', 'data5']);
+
+
     // @tracked row = [ [{'michel': 1},{'mile': 1},{'make': 1}], [{'mike': 2},{'pompe': 2},{'jompe': 2}], [ {'doe': 3},{'hoe': 3},{'moe': 3}]];
     @tracked TabelModel = this.store.peekAll('table');
 
     // to track col and row
+    // @tracked FirstColArray = A([]);
     @tracked FirstColArray = [];
     @tracked row = [];
 
@@ -43,15 +47,86 @@ export default class TableComponent extends Component {
     @tracked NoColRow = true;
 
 
+
+
     // after refreshing the page, check wheather there is any data, if not DeleteAll btn disbaled by making NoData = false
     constructor() {
         super(...arguments);
-        // console.log(this.TabelModel);
         // after resfresing or starting the page delete all data btn will be deactive due to not having any model instance
         if (this.TabelModel.length > 0) {
             this.NoData = false;
         }
+
+        // // Ember data practice
+        // // data = A(['data', 'data2', 'data3', 'data4', 'data5']);
+
+        // console.log(this.data);
+        // // push data to the ember object
+        // this.data.pushObject('data6');
+        // console.log(this.data);
+
+
+        // // loop foreach
+        // this.data.forEach((element, index, array) => {
+        //     console.log(element);
+        // });
+
+
+        // // map iterate like forEach
+        // this.data.map(element => {
+        //     console.log(element);
+        // })
+
+
+        // // filter (filter from all the item that matched the criteria)
+        // let EmberArray1 = A([{ name: 'Joe', age: '12' }, { name: 'alex', age: '10' }, { name: 'mac', age: '21' }]);
+        // console.log(EmberArray1.filter((element) => element.age > 15));
+
+
+        // // every (shob khetre ai value ta pele true dibe)
+        // let EmberArray2 = A([{ name: 'Joe', age: '12' }, { name: 'alex', age: '10' }, { name: 'mac', age: '21' }]);
+        // console.log(EmberArray1.every((element) => element.age > 15));
+        // // false
+        // console.log(EmberArray1.every((element) => element.age > 9));
+        // // true
+
+
+        // // filter by all key/ map by    * Pura obj ta dibe
+        // let EmberArray = A([{ name: 'Joe' }, { age: 'max' }, { age: 'alex' }]);
+        // console.log(EmberArray.filterBy('age'));
+
+
+        // // getEach  property            * just property value ta dibe
+        // let people1 = A([{ name: 'Joe' }, { name: 'Matt' }]);
+        // console.log(people1.getEach('name'));;
+        // // ['Joe', 'Matt'];
+
+
+        // // setEach (Each+Set)(set a property or vlaue to each object/item)
+        // let people = A([{ name: 'Joe' }, { name: 'Matt' }]);
+        // people.setEach('id', '12');
+        // console.log(people);
+
+
+        // // uniq   values dibe
+        // // Returns a new array that contains only unique values
+        // let arr = A(['a', 'b', 'c', 'b', 'a']);
+        // console.log(arr.uniq());
+
+
+        // // uniq   property dibe
+        // let arr2 = A([{ value: 'a' }, { value: 'a' }, { value: 'b' }, { value: 'b' }]);
+        // console.log(arr2.uniqBy('value'));
+
+
+
+        // // without
+        // // Returns a new array that excludes the passed value
+        // let arr3 = A(['a', 'b', 'a', 'c']);
+        // console.log(arr3.without('a'));
+
     }
+
 
 
     // Click edit to change the data of the row, input field appearace.
@@ -72,24 +147,19 @@ export default class TableComponent extends Component {
     }
 
 
+
     // To edit input field data
     @action
     HandleInputeThree(key, event) {
-        // console.log(FirstOrLast);
-
-        // console.log(key);
 
         let eventname = event.target.value;
-        // console.log(eventname);
 
         let keyName = key;
         let ValueName = eventname;
 
         let KeyValue = [{ [keyName]: ValueName }];
-        // console.log('keyvalue', KeyValue);
 
         // *** TODO: merged array ta bad jete pare
-
 
         this.ToChangedObjTwo.push(KeyValue);
         // *** jeta input dewa hoy nai sheta keo add korte hobe input value
@@ -150,71 +220,9 @@ export default class TableComponent extends Component {
         this.ToChangedObjTwo = mergedArray;
         console.log('ToChangedObjTwo', this.ToChangedObjTwo);
 
-
         // TODO: ai value ta k replace kore dibo ai object nam r sathe jetea ache shei nam diye
-
-        // } else {
-        //     // // *** ekhane shugulai ache input jegular value change hoice baki jgula change hoi nai segula to sheibhabai rakhte hobe ata check korte hobe j change hoice kina
-        //     // // *** shob push korle cholbe na last e e jeta input nici event sheta k add korte hobe
-        //     // this.ToChangedObj.push(KeyValue);
-        //     // // *** jeta input dewa hoy nai sheta keo add korte hobe input value
-        //     // console.log(this.ToChangedObj);
-
-        //     // // Create a map to store the last occurrence of each value
-        //     // let lastOccurrences = {};
-        //     // this.ToChangedObj.forEach((obj) => {
-        //     //     let key = Object.keys(obj)[0]; // Get the property name dynamically
-        //     //     lastOccurrences[key] = obj;
-        //     // });
-        //     // // Extract the values (last occurrences) from the map
-        //     // let uniqueObjects = Object.values(lastOccurrences);
-
-        //     // console.log(uniqueObjects);
-        //     // // event r uniqe gula tochange e rakhlam ai tochange k abar lastColArray baniye dibo save korle
-        //     // this.ToChangedObj = uniqueObjects;
-        //     // console.log(this.lastColArray);
-        //     // console.log(this.ToChangedObj);
-
-        //     // // let array1 = [{ df: 3675 }, { dfdfg: 3930 }];
-        //     // // let array2 = [{ df: 36751 }, { dfdfg: 3930 }];
-        //     // // Merge arrays
-        //     // let mergedArray = this.lastColArray.map((obj1) => {
-        //     //     let updatedObj = this.ToChangedObj.find(
-        //     //         (obj2) => Object.keys(obj1)[0] === Object.keys(obj2)[0],
-        //     //     );
-        //     //     // return updatedObj;
-        //     //     if (updatedObj) {
-        //     //         return updatedObj;
-        //     //     } else {
-        //     //         return obj1;
-        //     //     }
-        //     //     //   return updatedObj ? updatedObj : obj1;
-        //     // });
-        //     // console.log(mergedArray);
-        //     // // merged korar por duplicate gula bad dite hobe same data last value wala ta rakhte hobe
-
-
-        //     // // Create a map to track the last occurrence of each key
-        //     // let lastOccurrenceMap = new Map();
-        //     // // Iterate over the array in reverse order
-        //     // for (let i = mergedArray.length - 1; i >= 0; i--) {
-        //     //     let currentObject = mergedArray[i];
-        //     //     let key = Object.keys(currentObject)[0];
-
-        //     //     // If the key is not in the map, or if it is, but the current entry is the last occurrence
-        //     //     if (!lastOccurrenceMap.has(key) || lastOccurrenceMap.get(key) === i) {
-        //     //         lastOccurrenceMap.set(key, i);
-        //     //     } else {
-        //     //         // If the key is already in the map and this is not the last occurrence, remove the duplicate
-        //     //         mergedArray.splice(i, 1);
-        //     //     }
-        //     // }
-        //     // console.log(mergedArray);
-
-        //     // this.ToChangedObj = mergedArray;
-        //     // console.log(this.ToChangedObj);
-        // }
     }
+
 
 
     // after editing table row data, click save to make the changes
@@ -250,6 +258,7 @@ export default class TableComponent extends Component {
     }
 
 
+
     // delete a specific item from the table row.
     @action
     async handleDelete(item, wholeData) {
@@ -280,8 +289,7 @@ export default class TableComponent extends Component {
         // empty the col and row after deleting all the data of the table
         this.FirstColArray = [];
         this.row = [];
-        console.log(this.FirstColArray, this.row);
-
+        // console.log(this.FirstColArray, this.row);
         this.InputValueCol = '';
 
         // Delete all records using Ember Data
@@ -290,7 +298,7 @@ export default class TableComponent extends Component {
         // Use Promise.all to wait for all destroyRecord operations
         const deletionPromises = tables.map(async table => {
             await table.destroyRecord();
-            console.log('loading');
+            // console.log('loading');
             this.loading = true;
             this.tableShow = false;
         });
@@ -324,10 +332,10 @@ export default class TableComponent extends Component {
     }
 
 
+
     // CreateRow by clicking 1st or last row
     @action
     CreateRow(FirstOrLast, wholeData) {
-        console.log('create row');
 
         // to check if creating 1st row is clicked. unsift(add first) data to this.row array.
         if (FirstOrLast == 'first') {
@@ -394,13 +402,14 @@ export default class TableComponent extends Component {
 
         // if no row and col exist then disable the saveModel btn
         if (this.FirstColArray || this.row) {
-            console.log('no row / no col');
+            // console.log('no row / no col');
             if (this.NoColRow == true) {
                 this.NoColRow = !this.NoColRow;
             }
         }
 
     }
+
 
 
 
@@ -428,7 +437,7 @@ export default class TableComponent extends Component {
         if (FirstLast == 'first') {
             if (this.row.length > 0 && this.FirstColArray.length == 0) {
                 let LengthRow;
-                console.log(this.row);
+                // console.log(this.row);
                 this.row.forEach(element => {
                     LengthRow = element.length;
                 });
@@ -530,6 +539,7 @@ export default class TableComponent extends Component {
     }
 
 
+
     // specefic column remove 
     @action
     handleColRemove(itemToRemove) {
@@ -553,6 +563,7 @@ export default class TableComponent extends Component {
         this.row = this.row.map(element => element.filter((_, index) => index !== IndexRemove));
         this.row = this.row;
     }
+
 
 
     // SaveModel triggeres update the existed table or create a new table and send it to the backend
@@ -654,6 +665,7 @@ export default class TableComponent extends Component {
 
 
 
+
     // select table from the list of the table, is selected show the table Name and Save Cancel field to change the name.
     @action
     handleSelectTable(item, ModelTable) {
@@ -714,11 +726,13 @@ export default class TableComponent extends Component {
 
 
 
+
     @action
     handleTableInput(event) {
         this.TableInput = event.target.value;
         console.log(event.target.value);
     }
+
 
 
 
@@ -728,6 +742,7 @@ export default class TableComponent extends Component {
         console.log(item.name);
         this.oldInput = item.name;
     }
+
 
 
     // to edit
@@ -801,7 +816,8 @@ export default class TableComponent extends Component {
 
 
 
-    // X delete
+
+    // table delete
     @action
     async handleTableDelete(item) {
 
@@ -811,8 +827,7 @@ export default class TableComponent extends Component {
             console.error('Error during delete:', error);
         }
 
-        // shob delete korar por kono row col thakbe na
-        // kono data na pele savemodel and deleteAll btn disable thakbe
+        // after deleting all data there will be no row and col, make savemodel and deleteAll btn disabled.
 
         if (this.TabelModel.length == 0) {
             this.FirstColArray = [];
@@ -820,14 +835,6 @@ export default class TableComponent extends Component {
             this.tableShow = false;
             this.NoData = !this.NoData;
         }
-
-        // // kono data na pele savemodel and deleteAll btn disable thakbe
-        // if (this.TabelModel.length < 1) {
-        //     console.log('no data');
-        //     this.tableShow = false;
-        //     this.NoData = !this.NoData;
-        //     // data thakle disable korbo nah delete button
-        // }
 
     }
 

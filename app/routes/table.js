@@ -1,13 +1,24 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
+import { A } from '@ember/array';
+import { tracked } from '@glimmer/tracking';
 
 
 export default class TableRoute extends Route {
     @service store;
     // @service myService;
+    // @tracked item = A([]);
+
 
     async model() {
 
+
+        // itemFunc(){
+        //     this.item.pushObject('data');
+        //     console.log(this.item);
+        // }
+
+        
         try {
             // let response = await fetch('http://localhost:5000');
             // let parsed = await response.json();
