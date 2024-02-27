@@ -83,33 +83,33 @@ export default class TableComponent extends Component {
         // console.log(EmberArray1.filter((element) => element.age > 15));
 
 
-        // // every (shob khetre ai value ta pele true dibe)
+        // every (shob khetre ai value ta pele true dibe)
         // let EmberArray2 = A([{ name: 'Joe', age: '12' }, { name: 'alex', age: '10' }, { name: 'mac', age: '21' }]);
         // console.log(EmberArray1.every((element) => element.age > 15));
-        // // false
+        // false
         // console.log(EmberArray1.every((element) => element.age > 9));
-        // // true
+        // true
 
 
-        // // filter by all key/ map by    * Pura obj ta dibe
+        // filter by all key/ map by (jei jei obj e age key shei obj gula dibe)    * Pura obj ta dibe
         // let EmberArray = A([{ name: 'Joe' }, { age: 'max' }, { age: 'alex' }]);
         // console.log(EmberArray.filterBy('age'));
 
 
-        // // getEach  property            * just property value ta dibe
+        // getEach  property            *** just property value ta dibe
         // let people1 = A([{ name: 'Joe' }, { name: 'Matt' }]);
         // console.log(people1.getEach('name'));;
-        // // ['Joe', 'Matt'];
+        // ['Joe', 'Matt'];
 
 
-        // // setEach (Each+Set)(set a property or vlaue to each object/item)
+        // setEach (Each+Set)(set a property or vlaue to each object/item)
         // let people = A([{ name: 'Joe' }, { name: 'Matt' }]);
         // people.setEach('id', '12');
         // console.log(people);
 
 
-        // // uniq   values dibe
-        // // Returns a new array that contains only unique values
+        // uniq   values dibe
+        // Returns a new array that contains only unique values
         // let arr = A(['a', 'b', 'c', 'b', 'a']);
         // console.log(arr.uniq());
 
@@ -124,6 +124,10 @@ export default class TableComponent extends Component {
         // // Returns a new array that excludes the passed value
         // let arr3 = A(['a', 'b', 'a', 'c']);
         // console.log(arr3.without('a'));
+
+
+        // let arr = A(['a', null, 'c', undefined]);
+        // console.log(arr.compact())  // ['a', 'c']
 
     }
 

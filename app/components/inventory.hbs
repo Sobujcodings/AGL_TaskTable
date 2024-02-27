@@ -1,0 +1,323 @@
+{{yield}}
+
+{{!-- Inventory Buttons --}}
+<section class="my-4">
+    <div class="flex">
+        <div class="mx-auto text-center">
+            
+            <BsButton 
+                class="btn btn-lg"
+                @type="secondary" 
+                @onClick={{(fn this.HandleInventoryType 'Inventory type')}}
+                >Inventory type
+            </BsButton>
+
+            <BsButton class="btn btn-lg" 
+                @type="secondary" 
+                @onClick={{fn this.HandleCatagorytype 'Catagory type'}}  
+            >Inventory Catagory type
+            </BsButton>
+
+            <BsButton 
+                class="btn btn-lg" 
+                @type="secondary" 
+                @onClick={{fn this.HandleCatagory 'Catagory'}}             
+            >Inventory Catagory</BsButton>
+        </div>
+        <div class="my-2 mx-auto text-center">
+            <BsButton 
+                class="btn btn-lg" 
+                @type="secondary" 
+                @onClick={{fn this.HandleStoragetype 'Storage type'}} 
+            >Storage type
+            </BsButton>
+
+            <BsButton 
+                class="btn btn-lg" 
+                @type="secondary" 
+                @onClick={{fn this.HandleAlocationType 'Alocation type' }} 
+            >Alocation type</BsButton>
+
+            <BsButton 
+                class="btn btn-lg" 
+                @type="secondary" 
+                @onClick={{fn this.HandleUnitMeasure 'Unit Measure'}}  
+                {{!-- disabled={{this.isDisabled}} --}}
+            >Unit of Measure</BsButton>
+        </div>
+    
+        <div class="mx-auto text-center mt-3">
+            <BsButton 
+                class="btn btn-lg" 
+                @type="success" 
+                @onClick={{(fn this.HandleCreateInventory 'Create Inventory')}}>
+                Create Inventory
+            </BsButton>    
+        </div>
+    </div>
+
+
+
+
+    {{!-- open the modal, if modal opens this modal will be shown --}}
+    <div class="mx-auto text-center">
+        <BsButton class="btn btn-md d-none" @type="success" @onClick={{this.openModal}}></BsButton>
+        {{!-- <BsButton class="btn btn-md d-none" @type="success" @onClick={{this.openModal}}>Create Inventory</BsButton> --}}
+        <BsModal @open={{this.isModalOpen}}
+                 @onSubmit={{this.submit}} 
+                 @size="xl"
+                 {{!-- @size={{this.ModalSize}} --}}
+                 @onHidden={{fn (mut this.modal3) false}} as
+            |modal|>
+            <modal.header>
+                <h4 class="modal-title">
+                    {{this.ModalHeader}}
+                </h4>
+            </modal.header>
+            <modal.body class="table-responsive">
+                {{!-- modal table --}}
+                {{!-- input fields --}}
+                    <div class="mx-auto">
+                        {{#each this.inputFieldNumbers as |item index|}}
+                            {{!-- <div class=""> --}}
+                                <div class=" d-flex gap-1">
+                                    <div class="d-flex flex-row gap-1">
+                                        {{#each-in item as |key value|}}
+                                                <label class="mx-auto">
+                                                    <Input class="w-100 mt-1" hidden={{(eq key 'status')}} @value='' {{on "input" (fn this.handleInputChange key)}} placeholder={{key}}/>
+                                                </label>
+                                        {{/each-in}}
+                                    </div>
+                                    <div class="w-25 mt-1">
+                                      {{!-- {{#each this.statusValues as |item|}} --}}
+                                        <PowerSelect
+                                            class="w-100"
+                                            @options={{this.names}}
+                                            @renderInPlace={{true}}
+                                            @placeholder='status'
+                                            @selected={{this.selectedStatus}}
+                                            @onChange={{this.HandleStatus}} as |name|>
+                                           {{name}}
+                                        </PowerSelect>
+                                        {{!-- <p>status:{{index}} {{item.status}}</p> --}}
+
+
+                                            {{!-- <BsDropdown as |dd|>
+                                                <dd.button >
+                                                    {{this.selectedStatus}}
+                                                    <span class="caret"></span>
+                                                </dd.button>
+                                                <dd.menu as |menu|>
+                                                    {{#each this.names as |item|}}
+                                                        <menu.item class="flex">
+                                                            <label for="">
+                                                                <Input {{on 'change' this.HandleStatus}}>{{item}}</Input>
+                                                            </label>
+                                                        </menu.item>
+                                                    {{/each}}
+                                                </dd.menu>
+                                            </BsDropdown> --}}
+
+                                     
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-danger" {{on 'click' (fn this.handleDeleteInputField item)}}>X</button>
+                                    </div>
+                                </div>
+                            {{!-- </div> --}}
+                        {{/each}}
+                        <div class="d-block">
+                            <BsButton @type="primary" class="my-3 btn w-lg-25 px-4 " {{on 'click' this.handleAddInventory}}>+</BsButton>
+                            <BsButton @type="success" class="my-3 btn w-lg-25 px-4" {{on 'click' this.HandleSave}}>Save</BsButton>
+                        </div>
+                  </div>
+                {{!-- table --}}
+                <table class="table w-100 table-striped border w-25 mx-auto text-center py-0 my-0">
+                    <thead class="">
+                        <tr>
+                            <th class="col-1">S.L</th>
+                            {{!-- table header (keys) default mannually set headers/keys name for specefic table--}}
+                            {{#each this.ModalTableHeaders as |item|}}
+                                {{#each-in item as |key value|}}
+                                    {{#if key}}
+                                        <th class="border col" scope="col">{{key}}</th>
+                                    {{/if}}
+                                {{/each-in}}
+                            {{/each}}
+                            <th scope="col-3">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{!-- table data (keys value) --}}
+                        {{#each this.ModalTableValue as |item index|}}
+                            <tr>
+                                <td class="align-middle col-1">{{index}}</td>
+                                {{#each-in item as |key value|}}
+                                        {{!-- isclicked true hole input dekhabo noyto td/text--}}
+                                        {{#if (eq item.isClicked true)}}
+                                            {{!-- status k input field e dekhabo na status pele take text/td field e dekhabo --}}
+                                            {{!-- {{#if (eq key 'status')}} --}}
+                                                {{!-- true false value gulo ui te dekhabo nah value hishebe --}}
+                                                {{!-- <td hidden={{(or (eq value true) (eq value false))}} class="border align-middle"> --}}
+                                                    {{!-- {{value}} --}}
+                                                {{!-- </td> --}}
+                                            {{!-- {{else}} --}}
+                                                {{!-- value true false wont be shown --}}
+                                                <td hidden={{(or (eq key 'ID') (eq key 'isClicked'))}} class="border align-middle">
+                                                    <label for="" class="">
+                                                        <Input {{on 'input' (fn this.handleInputUpdate item key) }} class="w-75 px-1" @value={{value}} />
+                                                    </label>
+                                                </td>
+                                            {{!-- {{/if}} --}}
+                                        {{else}}
+                                            {{!-- hide ID, isClicked value --}}
+                                            <td hidden={{(or (eq key 'ID') (eq key 'isClicked'))}} class="border align-middle">
+                                                {{!-- server theke status r value true ashle active lekha dekhabo r false ashle inactive dekhabo --}}
+                                                {{#if (eq key 'status')}}
+                                                    {{#if (eq value true)}}
+                                                        active
+                                                    {{else}}
+                                                        inactive
+                                                    {{/if}}
+                                                {{else}}
+                                                    {{value}}
+                                                {{/if}}
+                                            </td>
+                                        {{/if}}
+                                {{/each-in}}
+                                <td class="d-flex flex-column gap-2 mx-auto text-center">
+                                    {{#if (eq item.status true)}}
+                                        <button type="button" class="btn btn-md btn-primary w-auto mx-auto text-center" {{on 'click' (fn this.handleActive this.ModalHeader item item.status)}}>Active</button>
+                                        <button type="button" class="btn btn-md btn-primary w-auto mx-auto text-center" {{on 'click' (fn this.handleUpdate this.ModalHeader item)}}>Update</button>
+                                    {{else}}
+                                        <button type="button" class="btn btn-md btn-danger w-auto mx-auto text-center" {{on 'click' (fn this.handleActive this.ModalHeader item item.status)}}>Inactive</button>
+                                        <button type="button" class="btn btn-md btn-primary w-auto mx-auto text-center" {{on 'click' (fn this.handleUpdate this.ModalHeader item)}}>Update</button>
+                                    {{/if}}
+                                </td>
+                            </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </modal.body>
+        </BsModal>
+    </div>
+</section>
+
+
+
+
+
+    {{!-- modal for create table --}}
+    {{!-- open the modal, if modal opens this modal will be shown --}}
+    <div class="mx-auto text-center">
+        <BsButton class="btn btn-md d-none" @type="success" @onClick={{this.isModalOpenCreateInventory}}></BsButton>
+        {{!-- <BsButton class="btn btn-md d-none" @type="success" @onClick={{this.openModal}}>Create Inventory</BsButton> --}}
+        <BsModal @open={{this.isModalOpenCreateInvent}}
+                 @onSubmit={{this.submit}} 
+                 @size="xl"
+                 {{!-- @size={{this.ModalSize}} --}}
+                 @onHidden={{fn (mut this.modal3) false}} as
+            |modal|>
+            <modal.header>
+                <h4 class="modal-title">
+                    {{this.ModalHeader}}
+                </h4>
+            </modal.header>
+            <modal.body class="table-responsive">
+                {{!-- modal table --}}
+                    <form class="row g-3" {{on "submit" this.submitForm}}>
+                        <div class="col-md-4">
+                            <Input required @type="text" @value={{this.sku}} placeholder="SKU" class="form-control" id="inputSKU"></Input>
+                        </div>
+                        <div class="col-md-4">
+                            <Input @type="text" @value={{this.name}} placeholder="Name" class="form-control" id="inputName"></Input>
+                        </div>
+                        <div class="col-md-4">
+                            <Input @type="text" @value={{this.description}} placeholder="Description" class="form-control" id="inputDescription"></Input>
+                        </div>
+                        <div class="mb-2">
+                            <textarea value={{this.fullDescription}} {{on 'input' this.fullDescriptionFunc}} placeholder="Full Description" class="form-control" id="inputFullDes" rows="2"></textarea>
+                        </div>
+                        <div class="col-md-3">
+                            <Input @value={{this.manufacturingDate}} @type="date" placeholder="Manufacturing date" class="form-control" id="inputManufacturingDate"></Input>
+                        </div>
+                        <div class="col-md-3">
+                            <Input @value={{this.expiryDate}} @type="date" placeholder="Expiry date" class="form-control" id="inputExpiryDate"></Input>
+                        </div>
+                          <div class="col-md-3">
+                            <Input @value={{this.storageType}} @type="text" placeholder="Storage type" class="form-control" id="inputStorageType"></Input>
+                        </div>
+                        <div class="col-md-3">
+                            <Input @value={{this.inventoryCategory}} @type="text" placeholder="Inventory Catagory" class="form-control" id="inputInventoryCatagory"></Input>
+                        </div>
+                        <div class="col-md-3">
+                            <Input @value={{this.categoryType}} @type="text" placeholder="Catagory type" class="form-control" id="inputCatagoryType"></Input>
+                        </div>
+                        <div class="col-md-3">
+                            <Input @value={{this.inventoryType}} @type="text" placeholder="Inventory type" class="form-control" id="inputInventoryType"></Input>
+                        </div>
+                        <div class="col-md-3">
+                            <Input @value={{this.allocationType}} @type="text" placeholder="Alocation type" class="form-control" id="inputAlocationType"></Input>
+                        </div>
+                        <div class="col-md-3">
+                            <Input @value={{this.unitOfMeasure}} @type="text" placeholder="Unit of Measure" class="form-control" id="inputUnitMeasure"></Input>
+                        </div>
+                        <div class="col-md-3">
+                            <PowerSelect
+                                class="w-100"
+                                @options={{this.names}}
+                                @renderInPlace={{true}}
+                                @placeholder='status'
+                                @selected={{this.selectedstatus}}
+                                @onChange={{this.statusFunc}} as |name|>
+                                {{name}}
+                            </PowerSelect>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </form>
+            </modal.body>
+        </BsModal>
+    </div>
+
+
+
+
+
+
+
+{{!-- Create Inventory Table --}}
+{{!-- show this when there is value in the formArray --}}
+{{#if this.firstObjectKeys}}
+<section class="table-responsive mx-2 mt-5">
+        <h4>Create Inventory</h4>
+    <table class="table table-striped border">
+        <thead class="">
+            <tr>
+               {{#each this.firstObjectKeys as |key|}}
+                    <th class="border text-center" scope="col">{{key}}</th>
+                {{/each}}
+                <th scope="">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+                {{#each this.FormArray as |item |}}
+                    <tr class="my-auto">
+                        {{#each-in item as |key value|}}
+                                <td class="border text-center">{{value}}</td>
+                        {{/each-in}}
+                        <td class="my-auto mx-auto text-center ">
+                            <BsButton 
+                                @type="primary" 
+                                class="btn btn-sm mx-auto my-auto text-center w-100" 
+                                {{on 'click' (fn this.HandleCreateInventoryEdit 'Create Inventory' item)}}>Edit
+                            </BsButton>
+                        </td>
+                    </tr>
+                {{/each}}
+        </tbody>
+    </table>
+</section>
+{{/if}}
+
