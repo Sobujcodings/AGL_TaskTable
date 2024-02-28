@@ -1,4 +1,5 @@
 import RESTSerializer from '@ember-data/serializer/rest';
+import { assign } from '@ember/polyfills';
 
 export default class ApplicationSerializer  extends RESTSerializer {
     normalizeResponse(store, primaryModelClass, payload, id, requestType) {

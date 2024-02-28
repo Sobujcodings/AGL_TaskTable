@@ -5,62 +5,41 @@ import { action } from '@ember/object';
 import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
 
-// TODO:
-// jodi kaw aksathe 2ta input field add korte chay tokhon inputvalues niye kaj korte hobe jate 2bare 2 data alada
-// kore rekhe then purate aksthe ba loop chaliye push kora jay, 2ta alada kore inputvalue e pawatai tough
-// field e serial maintain hocche nah jeta last e dei input sheta last e chole jay array fole type shesh e dile shetar type na dhore last r tay chole jay
-// akta save kore arektay gele ager data format ta theke jay sheta khali korte hobe
-// active, inactive
-// update
-
-// last input ta khali thakle tarpor r add input field korbo nah
-// active inactive dropdown issue (multiple input nile 2ta same hoye jay)
-// modal size should be dynamic as before
-// input field open thakle update button -> save button hoye jabe.
-// inputValue theke inputfilednumber e, jotogula value dibo shegulo set hobe r jgulu key r value dibo nah shegulo te undefined boshbe.
-// ami prothom input e jkoytay akta ba 2ta insert kori na kano, new input field create korle shei inventoryr joto
-// key tototai create hobe.
-// last e akta khali input thakleo save dile jegulo fill up kora ache shegulo diye save hobe.
-
-
-// *** status gular akta array banabo, inputfiled joto number array te ache akhn toto num array index diye
-// shei index r status k dekhabo, statusList[1] , 1 mane 1 num inputfilednumber r jonno
 
 export default class InventoryComponent extends Component {
     @service store;
 
-    // tracked for api data
+    @tracked isLoading = true;
+
+
+    // tracked for api data (this tracted will store data from api)
     @tracked inventorytypedata;
     @tracked inventoryCatagorytypedata;
     @tracked inventoryStorageTypes;
     @tracked inventoryAlocationTypes;
     @tracked inventoryUnitMeasure;
 
-    // modal open and close
-    @tracked isModalOpen = false;
 
-    // modal open
+
+    // open modal function for inventorries
     @action
-    openModal() {
-        // kono table selected na hole ai data ashbe thakbe nah tokhon alert dibo
-        if (!this.ModalHeader) {
-            console.log('no data');
-            alert('No table is selected yet!');
-            return
-        }
-        else {
-            this.isModalOpen = true;
-        }
+    openInventoryModel() {
+        $('#warehouseModalCenter').modal('show');
     }
-    // modal close
+
     @action
-    closeModal() {
-        this.isModalOpen = false;
+    openCreateInventoryModal() {
+        $('#openCreateInventory').modal('show');
+    }
+
+    // open modal for create inventory
+    CloseCreateInventoryModal() {
+        $('#openCreateInventory').modal('hide');
     }
 
 
 
-    // create Inventory
+    // tract create Inventory input field.
     @tracked sku = '';
     @tracked name = '';
     @tracked description = '';
@@ -77,7 +56,7 @@ export default class InventoryComponent extends Component {
     @tracked selectedstatus = 'Status';
 
     @tracked FormArray = A([]);
-    @tracked firstObjectKeys = A([]);
+    @tracked firstObjectKeys = A(['sku', 'Name', 'Des', 'FullDes', 'Manufacture', 'Expire', 'StorageType', 'Catagory', 'CategoryType', 'InventoryType', 'AllocationType', 'UnitMeasure', 'status']);
     @tracked CreateInventoryEditItem;
 
     // Define other form fields similarly
@@ -91,6 +70,8 @@ export default class InventoryComponent extends Component {
     closeModalCreateInventory() {
         this.isModalOpenCreateInvent = false;
     }
+
+
 
 
     // create inventory input submit form
@@ -125,6 +106,7 @@ export default class InventoryComponent extends Component {
         if (this.CreateInventoryEditItem != undefined) {
             console.log('create inventory item to be edited', this.CreateInventoryEditItem);
 
+
         } else {
             console.log('no edit new create');
             // push to form data to show this in the UI.
@@ -145,9 +127,11 @@ export default class InventoryComponent extends Component {
 
         // TODO: validation korte hobe, khali form save kora jabe nah/kon gula required shegulo chara submit kora jabe nah alert dibo return kore dibo
 
-        // after saving close the modal
-        this.closeModalCreateInventory();
+        // modal close hobe
+        this.CloseCreateInventoryModal();
+
     }
+
 
 
     // Method to reset form fields
@@ -180,15 +164,6 @@ export default class InventoryComponent extends Component {
         this.status = value;
         this.selectedstatus = value;
     }
-
-    // // 
-    // get firstObjectKeys() {
-    //     const firstObject = this.args.formArray?.[0];
-    //     return Object.keys(firstObject || {});
-    // }
-
-
-
 
 
 
@@ -279,14 +254,6 @@ export default class InventoryComponent extends Component {
         // console.log(this.FormArray);
         // const InventoryType = this.store.findAll('inventory/inventory-type');
         // console.log(typeof InventoryType);
-
-        // const CatagoryType = this.store.findAll('inventory/inventory-category-type');
-        // console.log(typeof CatagoryType);
-
-
-        // const peek = this.store.peekAll('inventory/get-inventory-types-predef-data');
-        // console.log(peek);
-
     }
 
 
@@ -303,22 +270,15 @@ export default class InventoryComponent extends Component {
     // to track selected status
     @action
     HandleStatus(value) {
-        // console.log("key");
-        console.log(value);
         this.statusList.push(value);
-        console.log(this.statusList);
-
+        // console.log(this.statusList);
 
         let key = 'status';
         this.selectedStatus = '';
         this.selectedStatus = value;
 
-
         // arekta property toyri hobe ai key status nam e, input value active inactive diye.
         this.inputValues[key] = value;
-        // console.log(this.inputValues);
-
-
 
         // this.ModalTableHeaders.push(this.inputValues[key] = value);
 
@@ -397,31 +357,39 @@ export default class InventoryComponent extends Component {
 
 
 
-        // get api
-        // fetch get api 
-        try {
-            const inventoryType = await this.store.findAll('inventory/inventory-type');
-            // set it to the tracted property.
-            this.inventorytypedata = inventoryType;
-            // Process the fetched data
-        } catch (error) {
-            console.error('Error fetching category types:', error);
-        }
+        setTimeout(async () => {
+            // fetch get api 
+            // Set isLoading to false when the data fetching is complete
+            this.isLoading = true;
 
-        // which data we want store here as a obj, then push it to the modaltablevalue to show it in the modal table.
-        // {type: 'sdf', description: 'asdfasdf', status: 'inactive'}
-        let inventoryTypeObjects = this.inventorytypedata.map(element => {
-            return {
-                ID: element.id,
-                type: element.inv_type,
-                description: element.description,
-                status: element.active_status
-            };
-        });
-        console.log(inventoryTypeObjects);
-        this.ModalTableValue = A(inventoryTypeObjects);
-        console.log(this.ModalTableValue);
-
+            try {
+                const inventoryType = await this.store.findAll('inventory/inventory-type');
+                // set it to the tracted property.
+                this.inventorytypedata = inventoryType;
+                // which data we want store here as a obj, then push it to the modaltablevalue to show it in the modal table.
+                // {type: 'sdf', description: 'asdfasdf', status: 'inactive'}
+                let inventoryTypeObjects = this.inventorytypedata.map(element => {
+                    return {
+                        ID: element.id,
+                        type: element.inv_type,
+                        description: element.description,
+                        status: element.active_status
+                    };
+                });
+                // console.log(inventoryTypeObjects);
+                this.ModalTableValue = A(inventoryTypeObjects);
+                // console.log(this.ModalTableValue);
+                this.ModalTableValue = this.ModalTableValue;
+                // Process the fetched data
+            } catch (error) {
+                console.error('Error fetching category types:', error);
+                // this.openModal();
+                this.openInventoryModel();
+            }
+            finally {
+                this.isLoading = false; // Set isLoading to false when the data fetching is complete
+            }
+        }, 1000);
 
 
 
@@ -444,9 +412,10 @@ export default class InventoryComponent extends Component {
         this.inputFieldNumbers = this.inputFieldNumbers;
 
 
+        // this.ModalTableValue = this.ModalTableValue;
+
         // value set korar por now open the modal by calling this.openModal
-        this.openModal();
-        console.log(this.inputFieldNumbers);
+        this.openInventoryModel();
     }
 
 
@@ -496,8 +465,8 @@ export default class InventoryComponent extends Component {
         // TODO: jokhon inputfield shob khali thakbe/shob input field delete kore dibo tokhon abar add korte chaile khali input filed add hobe as before like button click n open model 
         // shudhu jokhon shob khali kore dibo input filed tokhon ai part tuk kaj korbe abar akta khali input create kore key name onuyai totota
         // console.log(this.ModalTableHeaders);
-        console.log(this.inputValues);
-        console.log('inputFieldNumbers', this.inputFieldNumbers);
+        // console.log(this.inputValues);
+        // console.log('inputFieldNumbers', this.inputFieldNumbers);
         if (this.inputFieldNumbers.length == 0) {
             console.log('no input field existed');
             console.log('this.keysName', this.keysName);
@@ -543,7 +512,7 @@ export default class InventoryComponent extends Component {
         // modaltdable e arekta obj push kore dibo jodi shei shob input gulay data entry thake
         // add korle arekta null obj ekhane push hobe
 
-        console.log(this.inputFieldNumbers);
+        // console.log(this.inputFieldNumbers);
     }
 
 
@@ -551,7 +520,7 @@ export default class InventoryComponent extends Component {
 
     @action
     handleDeleteInputField(item) {
-        console.log(item);
+        // console.log(item);
 
         const index = this.inputFieldNumbers.indexOf(item);
         if (index > -1) {
@@ -565,18 +534,6 @@ export default class InventoryComponent extends Component {
             this.inputValues = {};
             this.inputvalueobj = [];
         }
-
-
-        // TODO: jeta delete korbo sheta ekhan thekeo delete korte hobe. dhore dhore***
-        // tar jonne match kore delete korte hobe, inputfilednumbers e tai shob data set thaka ucit
-        // shatar item k niye ekhane match kore inputvalueobj thekeo delete kore dibo, taholei save korle r modaltabe e save hobe na
-
-        // ai 2ta thekeoo shetake khali dite hobe noyto shudhu input filed theke khali holeo save dile save hoye jacche shob
-        // ekhean theke khali korle delete dile shob jayga theke delete hobe then abar save dile bakigula save hobe.
-        // console.log(this.inputValues);
-        // this.inputValues
-        // this.inputvalueobj
-        console.log(this.inputvalueobj);
     }
 
 
@@ -584,11 +541,6 @@ export default class InventoryComponent extends Component {
     @action
     HandleSave() {
         console.log(this.inputValues);
-
-        // TODO: Multiple input aksathe save kora jacche na!!
-        // TODO:null soho shob empty hobe prothom obosthay/jokhon length 1 thakbe many key thakbe value null diye
-        // Prothom null value ta thekei jacche shetake konobabe remove kortei hobe
-
 
         let isMissingProperty = false;
         // if no field has data then there will be no keys in that obj
@@ -604,7 +556,6 @@ export default class InventoryComponent extends Component {
                     // Check if the key exists in inputValues
                     if (!this.inputValues.hasOwnProperty(key)) {
                         // If the key is missing, add it to inputValues with a value of null
-                        // this.inputValues[key] = 'blank';
                         isMissingProperty = true;
                     }
                 });
@@ -620,9 +571,9 @@ export default class InventoryComponent extends Component {
                 this.inputvalueobj.forEach(singleObj => {
                     this.ModalTableValue.push(singleObj);
                     // console.log(this.inputvalueobj);
-
                     // API TODO: POST (ai multiple object guloke amra post/create kore dibo)
-                    
+
+
                 });
                 this.ModalTableValue = this.ModalTableValue;
             } else {
@@ -636,35 +587,35 @@ export default class InventoryComponent extends Component {
                 this.ModalTableValue = this.ModalTableValue;
                 console.log(this.ModalTableValue);
 
+
                 // API TODO: POST (Single value to post/create)
                 // ember data post store then save() means post that  here library is the model name that defines the libraries api endpoint
-                // const newLibrary = this.store.createRecord('inventory/inventory-type', {
-                //     name: this.name,
-                //     address: this.address,
-                //     phone: this.phone,
+                // const newInventoryType = this.store.createRecord('inventory/inventory-type', {
+                //     inv_type: this.inputValues.type,
+                //     description: this.inputValues.description,
+                //     active_status: this.inputValues.status,
                 // });
-                // // console.log(newLibrary.name);
+                // // console.log(newInventoryType.name);
 
                 // // post or save the data (post executed)
-                // newLibrary
+                // newInventoryType
                 //     .save()
-                //     .then((savedLibrary) => {
+                //     .then((savedInventory) => {
                 //         // The record has been saved successfully
-                //         // savedLibrary is the JSON api response we get from the beckend server
-                //         console.log('Saved library:', savedLibrary);
+                //         // savedInventory is the JSON api response we get from the beckend server
+                //         console.log('savedInventory:', savedInventory);
                 //         // // Access the values you posted
                 //         // const name = savedLibrary.name;
                 //         // const address = savedLibrary.address;
                 //         // const phone = savedLibrary.phone;
                 //         // console.log(name, address, phone);
-                //         alert('card added');
-                //         location.reload();
+                //         // alert('card added');
+                //         // location.reload();
                 //     })
                 //     .catch((error) => {
                 //         // Handle the error in case of failure
-                //         console.error('Error saving library:', error);
+                //         console.error('Error saving inventory:', error);
                 //     });
-                //
             }
         }
         else {
@@ -674,7 +625,7 @@ export default class InventoryComponent extends Component {
         }
 
         // this contains what keys we need 
-        console.log('ModalTableHeaders', this.ModalTableHeaders);
+        // console.log('ModalTableHeaders', this.ModalTableHeaders);
 
         // *** to blank the input fields. atar value guloke null korlei input field khali hoye jabe, 
         this.inputValues = {};
@@ -714,33 +665,42 @@ export default class InventoryComponent extends Component {
         this.ModalHeader = title;
 
 
+        // to hit the api 2 second after opening the modal.
+        setTimeout(async () => {
+            // Set isLoading to false when the data fetching is complete
+            this.isLoading = true;
 
-        // get api fetch
-        try {
-            const categoryTypes = await this.store.findAll('inventory/inventory-category-type');
-            console.log(categoryTypes);
-            // set it to the tracted property.
-            this.inventoryCatagorytypedata = categoryTypes;
-            // Process the fetched data
-        } catch (error) {
-            console.error('Error fetching category types:', error);
-        }
-
-        // console.log(this.inventoryCatagorytypedata);
-        // get and set value from the server,  obj that contains all the data that i need to show in the UI.
-        let inventoryCatagoryTypeObjects = this.inventoryCatagorytypedata.map(element => {
-            return {
-                ID: element.id,
-                type: element.category_type,
-                country: element.country,
-                status: element.active_status
-            };
-        });
-        // console.log(inventoryCatagoryTypeObjects);
-        // set the desired obj to the modaltablevalue to show in the UI
-        this.ModalTableValue = A(inventoryCatagoryTypeObjects);
-        // this.ModalTableValue.push(inventoryTypeObjects);
-        console.log(this.ModalTableValue);
+            // get api fetch
+            try {
+                const categoryTypes = await this.store.findAll('inventory/inventory-category-type');
+                console.log(categoryTypes);
+                // set it to the tracted property.
+                this.inventoryCatagorytypedata = categoryTypes;
+                // Process the fetched data
+                // console.log(this.inventoryCatagorytypedata);
+                // get and set value from the server,  obj that contains all the data that i need to show in the UI.
+                let inventoryCatagoryTypeObjects = this.inventoryCatagorytypedata.map(element => {
+                    return {
+                        ID: element.id,
+                        type: element.category_type,
+                        country: element.country,
+                        status: element.active_status
+                    };
+                });
+                // console.log(inventoryCatagoryTypeObjects);
+                // set the desired obj to the modaltablevalue to show in the UI
+                this.ModalTableValue = A(inventoryCatagoryTypeObjects);
+                // this.ModalTableValue.push(inventoryTypeObjects);
+                console.log(this.ModalTableValue);
+            } catch (error) {
+                console.error('Error fetching category types:', error);
+                this.isLoading = true;
+            }
+            // false hobei finally eshee
+            finally {
+                this.isLoading = false; // Set isLoading to false when the data fetching is complete
+            }
+        }, 1000);
 
 
 
@@ -766,34 +726,9 @@ export default class InventoryComponent extends Component {
 
 
         // value set korar por now open the modal by calling this.openModal
-        this.openModal();
+        // this.openModal();
+        this.openInventoryModel();
 
-
-        // // table dadta
-        // this.ModalTableValue = A([
-        //     { "types": null, "country": null, "status": null },
-        // ]);
-        // // setting dynamic modal size by calculating max key value number of an object
-        // let maxKeysCount = 0;
-        // this.ModalTableValue.forEach(obj => {
-        //     let keysCount = Object.keys(obj).length;
-        //     if (keysCount > maxKeysCount) {
-        //         maxKeysCount = keysCount;
-        //     }
-        // });
-        // if (maxKeysCount > 6) {
-        //     // make modal size to lg
-        //     console.log('xl');
-        //     this.ModalSize = 'xl';
-        // }
-        // else if (maxKeysCount >= 2) {
-        //     this.ModalSize = 'lg';
-        // }
-        // else {
-        //     this.ModalSize = 'md';
-        // }
-
-        // value set korar por now open the modal by calling this.openModal
     }
 
 
@@ -812,11 +747,6 @@ export default class InventoryComponent extends Component {
 
         // set modal table title
         this.ModalHeader = title;
-
-        // higesht key in a object more than 6
-        // this.ModalTableValue = A([
-        //     { "categories": null, "C.types": null, "parent categories": null, "inventory types": null, "status": null, "countries": null, "des.": null },
-        // ]);
 
 
         // setting input values
@@ -839,30 +769,8 @@ export default class InventoryComponent extends Component {
 
 
         // value set korar por now open the modal by calling this.openModal
-        this.openModal();
-
-        // // setting dynamic modal size by calculating max key value number of an object
-        // let maxKeysCount = 0;
-        // this.ModalTableValue.forEach(obj => {
-        //     let keysCount = Object.keys(obj).length;
-        //     if (keysCount > maxKeysCount) {
-        //         maxKeysCount = keysCount;
-        //     }
-        // });
-        // if (maxKeysCount > 6) {
-        //     // make modal size to lg
-        //     console.log('xl');
-        //     this.ModalSize = 'xl';
-        // }
-        // else if (maxKeysCount >= 2) {
-        //     this.ModalSize = 'lg';
-        // }
-        // else {
-        //     this.ModalSize = 'md';
-        // }
-
-        // value set korar por now open the modal by calling this.openModal
         // this.openModal();
+        this.openInventoryModel();
     }
 
 
@@ -883,28 +791,35 @@ export default class InventoryComponent extends Component {
         this.ModalHeader = title;
 
 
-        // fetch get api 
-        try {
-            const storgeType = await this.store.findAll('inventory/storage-type');
-            // set it to the tracted property.
-            this.inventoryStorageTypes = storgeType;
-            // Process the fetched data
-        } catch (error) {
-            console.error('Error fetching category types:', error);
-        }
 
-        // get and set value from the server,  obj that contains all the data that i need to show in the UI.
-        let inventoryCatagoryTypeObjects = this.inventoryStorageTypes.map(element => {
-            return {
-                ID: element.id,
-                type: element.storage_type,
-                status: element.active_status
-            };
-        });
-        // set the desired obj to the modaltablevalue to show in the UI
-        this.ModalTableValue = A(inventoryCatagoryTypeObjects);
-        console.log(this.ModalTableValue);
+        setTimeout(async () => {
 
+            this.isLoading = true;
+
+            // fetch get api 
+            try {
+                const storgeType = await this.store.findAll('inventory/storage-type');
+                // set it to the tracted property.
+                this.inventoryStorageTypes = storgeType;
+                // get and set value from the server,  obj that contains all the data that i need to show in the UI.
+                let inventoryCatagoryTypeObjects = this.inventoryStorageTypes.map(element => {
+                    return {
+                        ID: element.id,
+                        type: element.storage_type,
+                        status: element.active_status
+                    };
+                });
+                // set the desired obj to the modaltablevalue to show in the UI
+                this.ModalTableValue = A(inventoryCatagoryTypeObjects);
+                console.log(this.ModalTableValue);
+                // Process the fetched data
+            } catch (error) {
+                console.error('Error fetching category types:', error);
+            }
+            finally {
+                this.isLoading = false; // Set isLoading to false when the data fetching is complete
+            }
+        }, 1000);
 
 
 
@@ -928,38 +843,9 @@ export default class InventoryComponent extends Component {
 
 
         // value set korar por now open the modal by calling this.openModal
-        this.openModal();
-
-
-
-        //
-        // this.ModalTableValue = A([
-        //     { "types": null, "status": null },
-        // ]);
-
-        // // // setting dynamic modal size by calculating max key value number of an object
-        // // let maxKeysCount = 0;
-
-        // // this.ModalTableValue.forEach(obj => {
-        // //     let keysCount = Object.keys(obj).length;
-        // //     if (keysCount > maxKeysCount) {
-        // //         maxKeysCount = keysCount;
-        // //     }
-        // // });
-        // // if (maxKeysCount > 6) {
-        // //     // make modal size to lg
-        // //     console.log('xl');
-        // //     this.ModalSize = 'xl';
-        // // }
-        // // else if (maxKeysCount >= 2) {
-        // //     this.ModalSize = 'lg';
-        // // }
-        // // else {
-        // //     this.ModalSize = 'md';
-        // // }
-
-        // // value set korar por now open the modal by calling this.openModal
         // this.openModal();
+        this.openInventoryModel();
+
     }
 
 
@@ -981,29 +867,35 @@ export default class InventoryComponent extends Component {
 
 
 
-        // fetch get api 
-        try {
-            const AlocationType = await this.store.findAll('inventory/allocation-type');
-            // set it to the tracted property.
-            this.inventoryAlocationTypes = AlocationType;
-            // Process the fetched data
-        } catch (error) {
-            console.error('Error fetching category types:', error);
-        }
+        setTimeout(async () => {
 
-        // get and set value from the server,  obj that contains all the data that i need to show in the UI.
-        let inventoryCatagoryTypeObjects = this.inventoryAlocationTypes.map(element => {
-            return {
-                ID: element.id,
-                type: element.alloc_type,
-                status: element.active_status,
-                description: element.description
-            };
-        });
-        // set the desired obj to the modaltablevalue to show in the UI
-        this.ModalTableValue = A(inventoryCatagoryTypeObjects);
-        console.log(this.ModalTableValue);
-
+            this.isLoading = true;
+            // fetch get api 
+            try {
+                // Set isLoading to false when the data fetching is complete
+                const AlocationType = await this.store.findAll('inventory/allocation-type');
+                // set it to the tracted property.
+                this.inventoryAlocationTypes = AlocationType;
+                // get and set value from the server,  obj that contains all the data that i need to show in the UI.
+                let inventoryCatagoryTypeObjects = this.inventoryAlocationTypes.map(element => {
+                    return {
+                        ID: element.id,
+                        type: element.alloc_type,
+                        status: element.active_status,
+                        description: element.description
+                    };
+                });
+                // set the desired obj to the modaltablevalue to show in the UI
+                this.ModalTableValue = A(inventoryCatagoryTypeObjects);
+                console.log(this.ModalTableValue);
+                // Process the fetched data
+            } catch (error) {
+                console.error('Error fetching category types:', error);
+            }
+            finally {
+                this.isLoading = false; // Set isLoading to false when the data fetching is complete
+            }
+        }, 1000);
 
 
 
@@ -1027,36 +919,9 @@ export default class InventoryComponent extends Component {
 
 
         // value set korar por now open the modal by calling this.openModal
-        this.openModal();
-
-        // 
-        // this.ModalTableValue = A([
-        //     { "types": null, "status": null, "Description": null },
-        // ]);
-
-        // // setting dynamic modal size by calculating max key value number of an object
-        // let maxKeysCount = 0;
-
-        // this.ModalTableValue.forEach(obj => {
-        //     let keysCount = Object.keys(obj).length;
-        //     if (keysCount > maxKeysCount) {
-        //         maxKeysCount = keysCount;
-        //     }
-        // });
-        // if (maxKeysCount > 6) {
-        //     // make modal size to lg
-        //     console.log('xl');
-        //     this.ModalSize = 'xl';
-        // }
-        // else if (maxKeysCount >= 2) {
-        //     this.ModalSize = 'lg';
-        // }
-        // else {
-        //     this.ModalSize = 'md';
-        // }
-
-        // value set korar por now open the modal by calling this.openModal
         // this.openModal();
+        this.openInventoryModel();
+
     }
 
 
@@ -1073,29 +938,34 @@ export default class InventoryComponent extends Component {
 
 
 
+        setTimeout(async () => {
+            this.isLoading = true;
 
-        // fetch get api 
-        try {
-            const UnitMeasure = await this.store.findAll('inventory/unit-of-measure');
-            // set it to the tracted property.
-            this.inventoryUnitMeasure = UnitMeasure;
-            // Process the fetched data
-        } catch (error) {
-            console.error('Error fetching category types:', error);
-        }
-
-        // get and set value from the server,  obj that contains all the data that i need to show in the UI.
-        let UnitMeasureObject = this.inventoryUnitMeasure.map(element => {
-            return {
-                ID: element.id,
-                type: element.measure_type,
-                short: element.short,
-                status: element.active_status
-            };
-        });
-        // set the desired obj to the modaltablevalue to show in the UI
-        this.ModalTableValue = A(UnitMeasureObject);
-        console.log(this.ModalTableValue);
+            // fetch get api 
+            try {
+                const UnitMeasure = await this.store.findAll('inventory/unit-of-measure');
+                // set it to the tracted property.
+                this.inventoryUnitMeasure = UnitMeasure;
+                // get and set value from the server,  obj that contains all the data that i need to show in the UI.
+                let UnitMeasureObject = this.inventoryUnitMeasure.map(element => {
+                    return {
+                        ID: element.id,
+                        type: element.measure_type,
+                        short: element.short,
+                        status: element.active_status
+                    };
+                });
+                // set the desired obj to the modaltablevalue to show in the UI
+                this.ModalTableValue = A(UnitMeasureObject);
+                console.log(this.ModalTableValue);
+                // Process the fetched data
+            } catch (error) {
+                console.error('Error fetching category types:', error);
+            }
+            finally {
+                this.isLoading = false; // Set isLoading to false when the data fetching is complete
+            }
+        }, 1000);
 
 
 
@@ -1117,39 +987,11 @@ export default class InventoryComponent extends Component {
         this.inputFieldNumbers.push(newObj);
         this.inputFieldNumbers = this.inputFieldNumbers;
 
-        // value set korar por now open the modal by calling this.openModal
-        this.openModal();
-
-
-        // // table value
-        // this.ModalTableValue = A([
-        //     { "types": null, "shorts": null, "status": null },
-        // ]);
-
-        // // setting dynamic modal size by calculating max key value number of an object
-        // let maxKeysCount = 0;
-
-        // this.ModalTableValue.forEach(obj => {
-        //     let keysCount = Object.keys(obj).length;
-        //     if (keysCount > maxKeysCount) {
-        //         maxKeysCount = keysCount;
-        //     }
-        // });
-        // if (maxKeysCount > 6) {
-        //     // make modal size to lg
-        //     console.log('xl');
-        //     this.ModalSize = 'xl';
-        // }
-        // else if (maxKeysCount >= 2) {
-        //     this.ModalSize = 'lg';
-        // }
-        // else {
-        //     this.ModalSize = 'md';
-        // }
-
 
         // value set korar por now open the modal by calling this.openModal
         // this.openModal();
+        this.openInventoryModel();
+
     }
 
 
@@ -1160,23 +1002,11 @@ export default class InventoryComponent extends Component {
         // prothom ei ager shob khali kore nibo
         this.resetFormFields();
 
-
         // setting modaltable title
         this.ModalHeader = title;
 
         // value set korar por now open the modal by calling this.openModal
-        this.isModalOpenCreateInventory();
-
-
-        // ager shob khali kore dilam
-        // this.inputFieldNumbers = [];
-        // this.ModalTableValue = A([]);
-
-        // // ager shob input khali kore dibo
-        // this.inputValues = {};
-        // // console.log('create inventory');
-
-
+        this.openCreateInventoryModal();
 
 
         // // setting input values
@@ -1222,6 +1052,7 @@ export default class InventoryComponent extends Component {
 
         // value set korar por now open the modal by calling this.openModal, now modal contains this.ModalTableValue data;
         // this.openModal();
+        // this.openInventoryModel();
     }
 
 
@@ -1251,7 +1082,7 @@ export default class InventoryComponent extends Component {
         // this.status = item.Status;
 
         // then open the create table modal
-        this.isModalOpenCreateInventory()
+        // this.isModalOpenCreateInventory()
 
 
         // // ager shob input khali kore dibo
@@ -1290,9 +1121,9 @@ export default class InventoryComponent extends Component {
 
         // value set korar por now open the modal by calling this.openModal, now modal contains this.ModalTableValue data;
         // this.openModal();
+        this.openCreateInventoryModal();
+
     }
-
-
 
 
 
