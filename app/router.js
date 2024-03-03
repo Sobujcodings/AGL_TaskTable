@@ -28,4 +28,6 @@ Router.map(function () {
   this.route('seeder');
   this.route('contacks');
   this.route('table');
+  this.route('zone');
+  this.route('inventory');
 });

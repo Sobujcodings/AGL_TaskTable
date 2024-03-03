@@ -1,0 +1,179 @@
+{{yield}}
+
+
+
+<button type="button" class="btn btn-secondary btn-lg" 
+    {{on "click" (fn this.HandleInventoryType 'Inventory type' )}}>
+    Inventory type
+</button>
+
+
+
+
+
+{{!-- <button type="button" {{on 'click' this.editWarehouse}}>show modal</button> --}}
+<div class="modal fade" id="warehouseModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 80%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    {{this.ModalHeader}}
+                    {{!-- {{if @isEdit "Edit" "Create"}} --}}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" {{!-- {{action "onCancel" }}
+                    --}}>
+                    <span aria-hidden="true">
+                        ×
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: 80vh; overflow-y: auto; overflow-x: hidden;">
+                {{!-- input fields --}}
+                <p>{{this.typeCount.length}}</p>
+                <div class="mx-auto my-0">
+                    {{#each this.inputFieldNumbers as |item index|}}
+                    {{!-- <div class=""> --}}
+                        <div class="d-flex gap-2 mx-auto my-auto">
+                            <div class="d-flex flex-row gap-2">
+                                {{#each-in item as |key value|}}
+                                    <label class="mr-2">
+                                        <Input class="w-100 mt-1 p-1" hidden={{(eq key 'status' )}} @value='' {{on "input" (fn
+                                            this.handleInputChange key)}} placeholder={{key}} />
+                                    </label>
+                                {{/each-in}}
+                            </div>
+                            <div class="w-25 mt-1">
+                                {{!-- {{#each this.statusValues as |item|}} --}}
+                                <PowerSelect class="w-100 p-1" @options={{this.names}} @renderInPlace={{true}}
+                                    @placeholder='status' @selected={{this.selectedStatus}}
+                                    @onChange={{this.HandleStatus}} as |name|>
+                                    {{name}}
+                                </PowerSelect>
+                            </div>
+                            <div>
+                                <button type="button" class="btn btn-danger mt-1 mx-2" {{on 'click' (fn
+                                    this.handleDeleteInputField item)}}>X</button>
+                            </div>
+                        </div>
+                        {{!--
+                    </div> --}}
+                    {{/each}}
+                    <div class=" my-0">
+                        <button type="button" class="my-3 btn btn-primary w-lg-25 px-4" {{on 'click' this.handleAddInventory}}>+</button>
+                        <button type="button" class="my-3 btn btn-success w-lg-25 px-4" {{on 'click' this.HandleSave}}>Save</button>
+                    </div>
+                </div>
+                {{!-- table --}}
+                <table class="table w-100 table-striped border w-25 mx-auto text-center py-0 my-0">
+                    <thead class="">
+                        <tr>
+                            <th class="border-0">S.L</th>
+                                {{!-- table header (keys) default mannually set headers/keys name for specefic table--}}
+                                {{#each this.ModalTableHeaders as |item|}}
+                                    {{#each-in item as |key value|}}
+                                        {{#if key}}
+                                        <th class="border" scope="col">{{key}}</th>
+                                        {{!-- <th class="border col-2" scope="col">{{key}}</th> --}}
+                                        {{/if}}
+                                    {{/each-in}}
+                                {{/each}}
+                            <th scope="" class="border-0">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        {{!-- if api is fetcing laoding state will be appear if fetch is complete it will show the data. --}}
+                        {{#if this.isLoading}}
+                        <tr>
+                            <td colspan="12" class="text-center">
+                                <div class="spinner-border" role="status">
+                                </div>
+                            </td>
+                        </tr>
+                        {{else}}
+                              {{!-- table data (keys value) --}}
+                            {{#each this.ModalTableValue as |item index|}}
+                                <tr>
+                                    {{!-- api fetching laoding hole loader thakbe complete hole data(value) dekhabe  --}}
+                                        <td class="align-middle">{{index}}</td>
+                                        {{#each-in item as |key value|}}
+                                            {{!-- isclicked true hole input dekhabo noyto td/text--}}
+                                            {{#if (eq item.isClicked true)}}
+                                            <td hidden={{(or (eq key 'id' ) (eq key 'isClicked' ))}} class="border align-middle">
+                                                <label for="" class="">
+                                                    <Input {{on 'input' (fn this.handleInputUpdate item key) }} class="w-100 px-1"
+                                                        @value={{value}} />
+                                                </label>
+                                            </td>
+                                            {{else}}
+                                            {{!-- hide ID, isClicked value --}}
+                                            <td hidden={{(or (eq key 'id' ) (eq key 'isClicked' ))}} class="border align-middle">
+                                                {{!-- server theke status r value true ashle active lekha dekhabo r false ashle inactive
+                                                dekhabo --}}
+                                                {{#if (eq key 'status')}}
+                                                    {{#if (eq value true)}}
+                                                        active
+                                                    {{else}}
+                                                        inactive
+                                                    {{/if}}
+                                                {{else}}
+                                                    {{value}}
+                                                {{/if}}
+                                            </td>
+                                            {{/if}}
+                                        {{/each-in}}
+                                            <td class="d-flex flex-column gap-2 mx-auto text-center">
+                                                {{!-- if status/has tabe is true --}}
+                                                {{#if (eq item.status true)}}
+                                                    <div class="col">
+                                                        <button type="button" class="btn btn-md btn-primary w-100 my-1"
+                                                                {{on 'click' (fn this.handleActive this.ModalHeader item item.status)}}>Active</button>
+                                                    </div>
+                                                    {{!-- if iscliked is true --}}
+                                                   {{#if (eq item.isClicked true)}}
+                                                        <div class="col">
+                                                            <button type="button" class="btn btn-md btn-success w-100 my-1"
+                                                                {{on 'click' (fn this.handleInputValueSave item)}}>Save</button>
+                                                        </div>
+                                                   {{else}}
+                                                     <div class="col">
+                                                        <button type="button" class="btn btn-md btn-primary w-100 my-1"
+                                                            {{on 'click' (fn this.handleUpdate this.ModalHeader item)}}>Update</button>
+                                                    </div>
+                                                   {{/if}}
+                                                {{!-- if status is inactive then show inactive btn --}}
+                                                {{else}}
+                                                    <div class="col">
+                                                        <button type="button" class="btn btn-md btn-danger w-100 my-1"
+                                                        {{on 'click' (fn this.handleActive this.ModalHeader item
+                                                        item.status)}}>Inactive</button>
+                                                    </div>
+                                                    {{#if (eq item.isClicked true)}}
+                                                        <div class="col">
+                                                            <button type="button" class="btn btn-md btn-success w-100 my-1"
+                                                                {{on 'click' (fn this.handleInputValueSave item)}}>Save</button>
+                                                        </div>
+                                                    {{!-- if iscliked is false --}}
+                                                   {{else}}
+                                                        <div class="col">
+                                                            <button type="button" class="btn btn-md btn-primary w-100 my-1"
+                                                                {{on 'click' (fn this.handleUpdate this.ModalHeader item)}}>Update</button>
+                                                        </div>
+                                                   {{/if}}
+                                                {{/if}}
+                                            </td>
+                                </tr>
+                            {{/each}}
+                        {{/if}}
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+

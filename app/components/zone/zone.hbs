@@ -1,0 +1,130 @@
+
+
+{{yield}}
+
+{{!-- disable korte hobe change korle --}}
+{{!-- TODO datay country o add korte hobe at first e shob gular, poreo aro country thakte pare --}}
+{{!-- country abar change korle shob default value hocche nah and division bad shob default hocche nah --}}
+{{!-- karon onchange ta change hocche nah tai func call hocce nah ager motoi thakche shob --}}
+{{!-- json/data thik korte hobe at first country name thakbe sheibhabe chinta kore design kore then complete koro --}}
+{{!-- selected ata change na hole funciton trigger hobe na --}}
+
+
+<section class="d-flex w-50 gap-1">
+
+    {{!-- country --}}
+    <PowerSelect
+        class="w-25"
+        @searchEnabled={{true}}
+        @options={{this.Country}}
+        {{!-- selected ata change na hole funciton trigger hobe na --}}
+        @selected={{this.CoutryName}}
+        @placeholder="Country"
+        @onChange={{this.Handlecountry}}
+        {{!-- @onclick={{this.Handlecountry}} --}}
+        @triggerOnChange={{true}} as |name|>
+    {{name}}
+    </PowerSelect>
+
+
+
+    {{!-- division --}}
+    <PowerSelect
+        class="w-25"
+        {{!-- @disabled={{this.DivisionBtn}} --}}
+        @searchEnabled={{true}}
+        @options={{this.Divisions}}
+        @selected={{this.DivisionName}}
+        @placeholder="Division"
+        @onChange={{this.HandleDivision}} as |name|>
+        {{name}}
+    </PowerSelect>
+
+
+
+    {{!-- district --}}
+    <PowerSelect
+        class="w-25"
+        {{!-- @disabled={{this.DistrictBtn}} --}}
+        @searchEnabled={{true}}
+        @options={{this.Districts}}
+        @selected={{this.DistrictName}}
+        @placeholder="District"
+        @onChange={{this.HandleDistrict}} as |name|>
+        {{name}}
+    </PowerSelect>
+
+
+
+    {{!-- upazila --}}
+    <PowerSelect
+        class="w-25"
+        {{!-- @disabled={{this.UpazilaBtn}} --}}
+        @searchEnabled={{true}}
+        @options={{this.Upazilas}}
+        @selected={{this.UpazilaName}}
+        @placeholder="Upazila"
+        @onChange={{this.HandleUpazila}} as |name|>
+        {{name}}
+    </PowerSelect>
+
+
+
+
+    {{!-- division --}}
+    {{!-- if countryname is not found make this division dropdown disabled --}}
+    {{!-- <BsDropdown as |dd|>
+        <dd.button disabled={{this.DivisionBtn}}>
+            {{this.DivisionName}}
+            <span class="caret"></span>
+        </dd.button>
+        <dd.menu as |menu|>
+            <menu.item>
+            {{#each this.Divisions as |Division|}}
+                <menu.linkTo class="border" @route="zone" {{on 'click' (fn this.HandleDivision Division)}}>{{Division}}
+                </menu.linkTo>
+            {{/each}}
+            </menu.item>
+        </dd.menu>
+    </BsDropdown> --}}
+
+
+    {{!-- districk --}}
+    {{!-- if divisionname is not found make this district dropdown disabled --}}
+    {{!-- <BsDropdown as |dd|>
+        <dd.button disabled={{this.DistrictBtn}}>
+            {{this.DistrictName}}
+            <span class="caret"></span>
+        </dd.button>
+        <dd.menu as |menu|>
+            {{#each this.Districts as |District|}}
+            <menu.item>
+                <menu.linkTo @route="zone" class="border" {{on 'click' (fn this.HandleDistrict District )}}>
+                    {{District}}</menu.linkTo>
+            </menu.item>
+            {{/each}}
+        </dd.menu>
+    </BsDropdown> --}}
+
+
+    {{!-- upazila --}}
+    {{!-- if Districtname is not found make this upazila dropdown disabled --}}
+    {{!-- <BsDropdown as |dd|>
+        <dd.button disabled={{this.UpazilaBtn}}>
+            {{this.UpazilaName}}
+            <span class="caret"></span>
+        </dd.button>
+        <dd.menu as |menu|>
+            {{#each this.Upazilas as |Upazila|}}
+            <menu.item>
+                <menu.linkTo @route="zone" class="border" {{on 'click' (fn this.HandleUpazila Upazila )}}>{{Upazila}}
+                </menu.linkTo>
+            </menu.item>
+            {{/each}}
+        </dd.menu>
+    </BsDropdown> --}}
+
+
+</section>
+
+<p>{{this.Zonevalue}}</p>
