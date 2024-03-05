@@ -1,3 +1,57 @@
 
 
-{{!-- <button type="button" {{on 'click' this.editWarehouse}}>show modal</button> --}}
+<div class="modal fade" id="inventoryModalContent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document" style="max-width: 80%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    {{!-- {{this.ModalHeader}} --}}
+                    {{!-- {{if @isEdit "Edit" "Create"}} --}}
+                    <p>{{@inventoryType}}</p>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" {{!-- {{action "onCancel" }}
+                    --}}>
+                    <span aria-hidden="true">
+                        ×
+                    </span>
+                </button>
+            </div>
+      <div class="modal-body">
+        {{#if (eq @inventoryType "Inventory type")}}
+          <Inventory::InventoryType
+          />
+        {{else if (eq @inventoryType "Inventory Category type")}}
+          <Inventory::InventoryCatagoryType
+          />
+        {{else if (eq @inventoryType "Inventory Category")}}
+            <Inventory::InventoryCatagory></Inventory::InventoryCatagory>
+        {{else if (eq @inventoryType "Storage type")}}
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos
+            similique tempora corporis pariatur vel possimus illum animi
+            blanditiis accusantium eius?</p>
+        {{else if (eq @inventoryType "Allocation type")}}
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos
+            similique tempora corporis pariatur vel possimus illum animi
+            blanditiis accusantium eius?</p>
+        {{else if (eq @inventoryType "Unit of Measure")}}
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos
+            similique tempora corporis pariatur vel possimus illum animi
+            blanditiis accusantium eius?</p>
+        {{else if (eq @inventoryType "Create Inventory")}}
+          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos
+            similique tempora corporis pariatur vel possimus illum animi
+            blanditiis accusantium eius?</p>
+        {{/if}}
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+        >Close</button>
+        {{!-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+      </div>
+    </div>
+  </div>
+</div>

@@ -14,6 +14,22 @@ import { inject as service } from '@ember/service';
 // shesh r input input field thakle/khali thakle kono value na thakleo inputfieldnumber/blank input field add korte dibo
 
 export default class InventoryComponent extends Component {
+    @tracked inventory;
+
+
+    @action changeInventoryType(type) {
+        this.inventory = type;
+        $('#inventoryModalContent').modal('show');
+    }
+
+    
+    // @action addInventoryTypeCreate(item){
+    //     console.log('sdjkb', item);
+    // }
+
+    
+
+
     @tracked typeCount;
 
     @service store;
@@ -58,7 +74,7 @@ export default class InventoryComponent extends Component {
     @tracked storageType = '';
     @tracked inventoryCategory = '';
     @tracked categoryType = '';
-    @tracked inventoryType = '';
+    // @tracked inventoryType = '';
     @tracked allocationType = '';
     @tracked unitOfMeasure = '';
     @tracked status = '';
@@ -481,11 +497,10 @@ export default class InventoryComponent extends Component {
     }
 
 
-    @tracked inventoryType;
     // inventory type func
     @action
     async HandleInventoryType(title) {
-        this.inventoryType = title;
+        this.inventory = title;
 
         this.inputFieldNumbers = [];
         // this.ModalTableValue = A([]);

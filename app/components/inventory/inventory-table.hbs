@@ -1,0 +1,259 @@
+
+
+   {{!-- input fields --}}
+  
+            <div>
+                <p>{{this.typeCount.length}}</p>
+                <div class="mx-auto my-0">
+                    {{#each this.inputFieldNumbers as |item index|}}
+                        <div class="d-flex gap-1 mx-auto my-auto">
+                            <div class="d-flex flex-row gap-2">
+                                {{#each-in item as |key value|}}
+                                    <label class="mr-2">
+                                        <Input class="w-100 mt-1 p-1" hidden={{(eq key 'status' )}} @value={{value}} {{on "input" (fn
+                                            this.handleInputChange key)}} placeholder={{key}} />
+                                    </label>
+                                {{/each-in}}
+                            </div>
+
+                            <div class="mt-1">
+                                {{!-- status dropdown --}}
+                                <label for="">
+                                    <select class="w-100 pr-5 py-1 pl-1" {{on "change" this.HandleStatus}} >
+                                        <option value="" hidden disabled selected>Status</option>
+                                        {{#each this.names as |item|}}
+                                            <option class="py-2" 
+                                            value={{item}}
+                                            >
+                                              {{#if (eq item true)}}
+                                                active
+                                              {{else}}
+                                                inactive
+                                              {{/if}}
+                                            </option>
+                                        {{/each}}
+                                    </select>
+                                </label>
+                            </div>
+                            
+                            <div>
+                                <button type="button" class="btn btn-danger mt-1 mx-2" {{on 'click' (fn
+                                    this.handleDeleteInputField item)}}>X</button>
+                            </div>
+                        </div>
+                    {{/each}}
+                    <div class=" my-0">
+                        <button type="button" class="my-3 btn btn-primary w-lg-25 px-4" {{on 'click' this.handleAddInventory}}>+</button>
+                        <button type="button" class="my-3 btn btn-success w-lg-25 px-4" {{on 'click' this.HandleSave}}>Save</button>
+                    </div>
+                </div>
+
+
+
+
+                {{!-- table --}}
+                <table class="table w-100 table-striped border w-25 mx-auto text-center py-0 my-0">
+                    <thead class="">
+                        <tr>
+                            <th class="border-0">S.L</th>
+                                {{!-- table header (keys) default mannually set headers/keys name for specefic table--}}
+                                {{#each this.ModalTableHeaders as |item|}}
+                                    {{#each-in item as |key value|}}
+                                        <th class="border" scope="col">{{key}}</th>
+                                    {{/each-in}}
+                                {{/each}}
+                            <th scope="" class="border-0">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        {{!-- if api is fetcing laoding state will be appear if fetch is complete it will show the data. --}}
+                        {{#if this.isLoading}}
+                        <tr>
+                            <td colspan="12" class="text-center">
+                                <div class="spinner-border" role="status">
+                                </div>
+                            </td>
+                        </tr>
+                        {{else}}
+                            {{!-- table data (keys value) --}}
+                            {{#each this.ModalTableValue as |item index|}}
+                                <tr>
+                                    {{!-- api fetching laoding hole loader thakbe complete hole data(value) dekhabe  --}}
+                                        <td class="align-middle">{{index}}</td>
+                                        {{#each-in item as |key value|}}
+                                            {{!-- isclicked true hole input dekhabo noyto td/text--}}
+                                          {{#if (eq item.isClicked true)}}
+                                            <td hidden={{(or (eq key 'id' ) (eq key 'isClicked' ))}} class="border align-middle">
+                                              {{!-- for status make value 'active' if active status is true --}}
+                                              {{#if (eq key 'status')}}
+                                                  {{!-- status dropdown --}}
+                                                  <label for="">
+                                                      {{!-- dropdown header --}}
+                                                      <select class="w-100 pr-5 py-1 pl-1" {{on "change" this.HandleStatus}} >
+                                                          <option value="" hidden disabled selected>
+                                                            {{#if (eq value true)}}
+                                                                    active
+                                                                {{else}}
+                                                                    inactive
+                                                            {{/if}}
+                                                          </option>
+                                                        {{!-- dropdown value --}}
+                                                          {{#each this.TableDropDownnames as |item|}}
+                                                              <option class="py-2" value={{item}}>
+                                                                 {{#if (eq item true)}}
+                                                                    active
+                                                                {{else}}
+                                                                    inactive
+                                                                {{/if}}
+                                                              </option>
+                                                          {{/each}}
+                                                      </select>
+                                                  </label>
+
+                                              {{else}}
+                                                      <label for="" class="">
+                                                          <Input {{on 'input' (fn this.handleInputUpdate item key) }} class="w-100 px-1"
+                                                            @value={{value}}/>
+                                                      </label>
+                                               {{/if}}
+                                            </td>
+                                          {{else}}
+                                            {{!-- hide ID, if isClicked value false --}}
+                                            {{!-- server theke status r value true ashle active lekha dekhabo r false ashle inactive
+                                            dekhabo --}}                     
+                                            <td hidden={{(or (eq key 'id' ) (eq key 'isClicked' ))}} class="border align-middle">
+                                                {{#if (eq key 'status')}}
+                                                  {{#if (or (eq value true) (eq value 'true'))}}
+                                                      active
+                                                  {{else}}
+                                                      inactive
+                                                  {{/if}}
+                                                {{else}}
+                                                    {{value}}
+                                                {{/if}}
+                                            </td>
+                                          {{/if}}
+                                        {{/each-in}}
+                                            <td class="d-flex flex-column gap-2 mx-auto text-center">
+                                                {{!-- if status is true --}}
+                                                {{#if (eq item.status true)}}
+                                                        <div class="col">
+                                                            <button type="button" class="btn btn-md btn-danger w-100 my-1"
+                                                                    {{on 'click' (fn this.handleActive this.ModalHeader item item.status)}}>
+                                                                    Inactive
+                                                            </button>
+                                                        </div>
+                                                    {{!-- if iscliked is true --}}
+                                                    {{#if (eq item.isClicked true)}}
+                                                            <div class="col">
+                                                                <button type="button" class="btn btn-md btn-danger w-100 my-1"
+                                                                    {{on 'click' (fn this.handleCancel item )}}>Cancel</button>
+                                                            </div>
+                                                            <div class="col">
+                                                                <button type="button" class="btn btn-md btn-success w-100 my-1"
+                                                                    {{on 'click' (fn this.handleInputValueSave item)}}>Save</button>
+                                                            </div>
+                                                    {{else}}
+                                                        <div class="col">
+                                                            <button type="button" class="btn btn-md btn-primary w-100 my-1"
+                                                                {{on 'click' (fn this.handleEdit item)}}>Edit</button>
+                                                        </div>
+                                                    {{/if}}
+                                                {{!-- if status is inactive then show inactive btn --}}
+                                                {{else}}
+                                                        <div class="col">
+                                                            <button type="button" class="btn btn-md btn-primary w-100 my-1"
+                                                            {{on 'click' (fn this.handleActive this.ModalHeader item
+                                                            item.status)}}>Active</button>
+                                                        </div>
+                                                        {{#if (eq item.isClicked true)}}
+                                                            <div class="col">
+                                                                <button type="button" class="btn btn-md btn-danger w-100 my-1"
+                                                                    {{on 'click' (fn this.handleCancel item)}}>Cancel</button>
+                                                            </div>
+                                                            <div class="col">
+                                                                <button type="button" class="btn btn-md btn-success w-100 my-1"
+                                                                    {{on 'click' (fn this.handleInputValueSave item)}}>Save</button>
+                                                            </div>
+                                                        {{!-- if iscliked is false --}}
+                                                        {{else}}
+                                                            <div class="col">
+                                                                <button type="button" class="btn btn-md btn-primary w-100 my-1"
+                                                                    {{on 'click' (fn this.handleEdit item)}}>Edit</button>
+                                                            </div>
+                                                        {{/if}}
+                                                {{/if}}
+                                            </td>
+                                </tr>
+                            {{/each}}
+                        {{/if}}
+                    </tbody>
+                </table>
+            </div>
+          
+
+
+
+
+
+{{!-- 
+
+<table class="table">
+  <thead>
+    <tr>
+      {{#each @columns as |item|}}
+        <th>
+          {{item.column_name}}
+        </th>
+      {{/each}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#each @items as |item|}}
+      <tr>
+        {{#each @columns as |column|}}
+          {{#if (eq column.column_property "id")}}
+            <td>
+              {{item.id}}
+            </td>
+          {{else if (eq column.column_property "type")}}
+            <td>
+              {{#if (eq item.isEdit true)}}
+              <Input @value={{item.inv_type}} />
+                {{else}}
+              {{item.inv_type}}
+              {{/if}}
+
+            </td>
+          {{else if (eq column.column_property "description")}}
+            <td>
+              {{item.description}}
+            </td>
+          {{else if (eq column.column_property "status")}}
+            <td>
+              {{item.status}}
+            </td>
+          {{else if (eq column.column_property "sojib")}}
+            <td>
+              {{item.sojib}}
+            </td>
+          {{else if (eq column.column_property "ronjib")}}
+            <td>
+              {{item.ronjib}}
+            </td>
+          {{else if (eq column.column_property "soboz")}}
+            <td>
+              {{item.soboz}}
+            </td>
+          {{else if (eq column.column_property "actions")}}
+            <td>
+              <button type="button" {{on "click" (fn this.handleEdit item)}}>Edit</button>
+              <button type="button" {{on "click" (fn this.handleCancel item)}}>Edit</button>
+            </td>
+          {{/if}}
+
+        {{/each}}
+      </tr>
+    {{/each}}
+  </tbody>
+</table> --}}

@@ -28,9 +28,31 @@ export default class ApplicationAdapterextends extends RESTAdapter {
         return super.urlForQueryRecord(...arguments) + '/';
     }
 
+    // urlForUpdateRecord(id, modelName, snapshot) {
+    //     // console.log(id,modelName,snapshot);
+    //     console.log('updated record');
+    //     console.log(super.urlForUpdateRecord(...arguments));
+    //     return super.urlForUpdateRecord(...arguments);
+    // }
     urlForUpdateRecord(id, modelName, snapshot) {
-        return super.urlForUpdateRecord(...arguments) + '/';
+        let baseUrl = super.urlForUpdateRecord(id, modelName, snapshot); // Call the superclass method
+        return baseUrl; // Return the base URL without the ID
     }
+
+    updateRecord(store, type, snapshot) {
+        let url = this.buildURL(type.modelName, null, snapshot, 'updateRecord');
+        let data = this.serialize(snapshot, { includeId: true });
+
+        // Filter out only the changed attributes
+        let changedAttributes = snapshot.changedAttributes();
+        let changedData = {};
+        for (let key in changedAttributes) {
+            changedData[key] = data[key];
+        }
+        changedData.id = snapshot.id;
+        return this.ajax(url, 'PATCH', { data: changedData });
+    }
+
 
 
 
