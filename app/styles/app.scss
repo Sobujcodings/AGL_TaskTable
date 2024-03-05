@@ -3,3 +3,8 @@
 @import "ember-power-select";
 
 @import "ember-cli-bootstrap-4/bootstrap";
+
+
+.ember-power-select-dropdown {
+    z-index: 9999999 !important;
+}

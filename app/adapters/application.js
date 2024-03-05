@@ -7,8 +7,8 @@ import { inject as service } from '@ember/service';
 export default class ApplicationAdapterextends extends RESTAdapter {
     // @service auth;
 
-    // host = 'http://192.168.1.88:8000';
-    host = 'http://192.168.1.57:8000';
+    host = 'http://192.168.1.88:8000';
+    // host = 'http://192.168.1.57:8000';
     namespace = 'api/v1';
 
     get headers() {

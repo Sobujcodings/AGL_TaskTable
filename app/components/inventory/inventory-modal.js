@@ -19,6 +19,5 @@ export default class InventoryInventoryModalComponent extends Component {
             column_name: 'ronjib type',
             column_property: 'ronjib',
         },
-
     ]
 }

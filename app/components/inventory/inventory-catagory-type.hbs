@@ -1,1 +1,5 @@
-<Inventory::InventoryTable @columns={{@columns}} @items={{this.items}} />
+<Inventory::InventoryTable 
+@columns={{this.inventoryTypeColumns}} @items={{this.items}}
+@handleCancel={{this.handleCancel}} @handleEdit={{this.handleEdit}} @handleSave={{this.handleSave}}
+@tabledropdown={{this.TableDropDownnames}} @handleStatus={{this.handleStatus}} @selectedValue={{this.name}}
+/>

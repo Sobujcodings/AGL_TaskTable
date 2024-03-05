@@ -1,7 +1,4 @@
-{{log 'inventoryTypetable' this.inputFieldNumbers}}
-
-<Inventory::InventoryTable
-  @columns={{this.inventoryTypeColumns}}
-  @items={{this.items}}
-  {{!-- @inputFieldNumber={{this.inputFieldNumbers}} --}}
-/>
+<Inventory::InventoryTable @columns={{this.inventoryTypeColumns}} @items={{this.items}}
+  @handleCancel={{this.handleCancel}} @handleEdit={{this.handleEdit}} @handleSave={{this.handleSave}}
+  @tabledropdown={{this.TableDropDownnames}}
+  @handleStatusChange={{this.handleStatusChange}} />
