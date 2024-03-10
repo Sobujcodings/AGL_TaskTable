@@ -1,1 +1,43 @@
-{{yield}}
+{{!-- input fields --}}
+<div class="mx-auto my-0">
+  {{#each this.inputFieldNumbers as |item|}}
+  <div class="d-flex gap-2 mx-auto my-auto">
+    <div class="d-flex flex-row gap-2">
+      <label class="mr-2">
+        <Input class="w-100 mt-1 p-1" @value={{item.type}} placeholder="type" {{on "input" this.handleInputChange}} />
+      </label>
+      <label class="mr-2">
+        <Input class="w-100 mt-1 p-1" @value={{item.description}} placeholder="Description" {{on "input" this.handleInputChange}} />
+      </label>
+      {{!-- <div class="w-25 mt-1">
+        <PowerSelect class="w-100 p-1" @options={{this.names}} @placeholder='has tables' @selected={{item.has_tables}}
+          @onChange={{(fn this.HandleStatus item)}} as |name|>
+          {{name}}
+        </PowerSelect>
+      </div> --}}
+    </div>
+    <div>
+      <button type="button" class="btn btn-danger mt-1" {{on 'click' (fn this.handleDeleteInputField item)}}>X</button>
+    </div>
+  </div>
+  {{/each}}
+  <div class="d-flex my-0">
+    <button type="button" class="my-3 btn btn-primary w-lg-25 px-4" {{on 'click' this.handleAddInventory}}>+</button>
+    <button type="button" class="my-3 btn btn-success w-lg-25 px-4 mx-2" hidden={{(eq this.inputFieldNumbers.length 0)}} {{on 'click' this.HandleSave}}>Save</button>
+    {{!-- for post request spinner  --}}
+    {{#if this.isLoadingPOST}}
+        <div hidden={{(eq this.isLoadingPOST false)}} class="my-auto">
+              <div class="spinner-border" role="status">
+              </div>
+        </div>
+    {{/if}}
+  </div>
+</div>
+
+
+
+<Inventory::InventoryTable @columns={{this.inventoryTypeColumns}} @items={{this.items}}
+  @handleCancel={{this.handleCancel}} @handleEdit={{this.handleEdit}} @handleSave={{this.handleSave}}
+  @tabledropdown={{this.TableDropDownnames}} @handleStatusChange={{this.handleStatusChange}}
+  @handleStatus={{this.handleStatus}} @isloading={{this.isloading}}
+/>

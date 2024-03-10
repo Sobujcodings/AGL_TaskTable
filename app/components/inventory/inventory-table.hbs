@@ -1,40 +1,7 @@
-{{!-- input fields --}}
-<p>{{this.typeCount.length}}</p>
-<div class="mx-auto my-0">
-  {{#each this.inputFieldNumbers as |item index|}}
-  <div class="d-flex gap-2 mx-auto my-auto">
-    <div class="d-flex flex-row gap-2">
-      {{#each-in item as |key value|}}
-      <label class="mr-2">
-        <Input class="w-100 mt-1 p-1" hidden={{(eq key 'status' )}} @value='' 
-        {{on "input" (fn this.handleInputChange
-          key)}} placeholder={{key}} />
-      </label>
-      {{/each-in}}
-    </div>
-    <div class="w-25 mt-1">
-      <PowerSelect class="w-100 p-1" @options={{this.names}}  @placeholder='status'
-        @selected={{item.status}} @onChange={{(fn this.HandleStatus item)}} as |name|>
-        {{name}}
-      </PowerSelect>
-    </div>
-    <div>
-      <button type="button" class="btn btn-danger mt-1 mx-2" {{on 'click' (fn this.handleDeleteInputField
-        item)}}>X</button>
-    </div>
-  </div>
-  {{/each}}
-  <div class=" my-0">
-    <button type="button" class="my-3 btn btn-primary w-lg-25 px-4" {{on 'click' this.handleAddInventory}}>+</button>
-    <button type="button" class="my-3 btn btn-success w-lg-25 px-4" {{on 'click' this.HandleSave}}>Save</button>
-  </div>
-</div>
-
-
 
 {{!-- table --}}
 <table class="table border w-100 table-striped border w-25 mx-auto text-center py-0 my-0">
-  <thead>
+  <thead class="bg-light">
     <tr>
       {{#each @columns as |item|}}
       <th class="border">
@@ -44,58 +11,174 @@
     </tr>
   </thead>
   <tbody>
-    {{#each @items as |item|}}
+    <tr>
+       <th hidden={{ (eq @isloading false)}} colspan="6">
+          {{#if @isloading}}
+            <div class="d-flex justify-content-center">
+              <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+          {{/if}}
+       </th>
+    </tr>
+    {{!-- from fetch data --}}
+    {{#each @items as |item index|}}
     <tr>
       {{#each @columns as |column|}}
-      {{#if (eq column.column_property "id")}}
-      <td class="border">
-        {{item.id}}
-      </td>
-      {{else if (eq column.column_property "type")}}
-      <td>
-        {{#if (eq item.isEdit true)}}
-        <label for="">
-          <Input @value={{item.inv_type}} />
-        </label>
-        {{else}}
-        {{item.inv_type}}
-        {{/if}}
-      </td>
-      {{else if (eq column.column_property "description")}}
-      <td class="border">
-        {{#if (eq item.isEdit true)}}
-        <label for="">
-          <Input @value={{item.description}} />
-        </label>
-        {{else}}
-        {{item.description}}
-        {{/if}}
-      </td>
-      {{else if (eq column.column_property "status")}}
-      <td class="border col-2">
-        {{#if (eq item.isEdit true)}}
-        <PowerSelect class="w-100" @options={{@tabledropdown}} @placeholder='status' @selected={{item.active_status}}
-          @onChange={{(fn @handleStatusChange item)}} as |name|>
-          {{name}}
-        </PowerSelect>
-        {{else}}
-        {{#if (eq item.active_status true)}}
-        active
-        {{else}}
-        inactive
-        {{/if}}
-        {{/if}}
-      </td>
-      {{else if (eq column.column_property "actions")}}
-      <td class="d-flex flex-column gap-2 border">
-        <button type="button" class="btn btn-primary" {{on "click" (fn @handleEdit item)}}>Edit</button>
-        <button type="button" class="btn btn-md btn-danger w-100 my-1" {{on "click" (fn @handleCancel
-          item)}}>Cancel</button>
-        <button type="button" class="btn btn-success" {{on "click" (fn @handleSave item)}}>Save</button>
-      </td>
-      {{/if}}
+          {{#if (eq column.column_property "id")}}
+              {{!-- {{#if item.id}} --}}
+                <td class="border">
+                  {{index}}
+                  {{!-- {{item.id}} --}}
+                </td>
+              {{!-- {{/if}} --}}
+          {{/if}}
+
+          {{#if (eq column.column_property "inv_type") }}
+            <td>
+                {{#if (eq item.isEdit true)}}
+                  <label for="">
+                    <Input @value={{item.inv_type}} />
+                  </label>
+                {{else}}
+                  {{item.inv_type}}
+                {{/if}}
+            </td>
+
+            {{else if (eq column.column_property "category_type")}}
+            <td>
+                {{#if (eq item.isEdit true)}}
+                  <label for="">
+                    <Input @value={{item.category_type}} />
+                  </label>
+                {{else}}
+                  {{item.category_type}}
+                {{/if}}
+            </td>
+
+            {{else if (eq column.column_property "storage_type")}}
+            <td>
+                {{#if (eq item.isEdit true)}}
+                  <label for="">
+                    <Input @value={{item.storage_type}} />
+                  </label>
+                {{else}}
+                  {{item.storage_type}}
+                {{/if}}
+            </td>
+
+            {{else if (eq column.column_property "alloc_type")}}
+              <td>
+                  {{#if (eq item.isEdit true)}}
+                    <label for="">
+                      <Input @value={{item.alloc_type}} />
+                    </label>
+                  {{else}}
+                    {{item.alloc_type}}
+                  {{/if}}
+              </td>
+
+            {{else if (eq column.column_property "measure_type")}}
+              <td>
+                  {{#if (eq item.isEdit true)}}
+                    <label for="">
+                      <Input @value={{item.measure_type}} />
+                    </label>
+                  {{else}}
+                    {{item.measure_type}}
+                  {{/if}}
+              </td>
+          {{/if}}
+
+
+          {{#if (eq column.column_property "short")}}
+            {{!-- {{#if item.short}} --}}
+              <td>
+                  {{#if (eq item.isEdit true)}}
+                    <label for="">
+                      <Input @value={{item.short}} />
+                    </label>
+                  {{else}}
+                    {{item.short}}
+                  {{/if}}
+              </td>
+            {{!-- {{/if}} --}}
+          {{/if}}
+
+
+          {{#if (eq column.column_property "country")}}
+            {{!-- {{#if item.country}} --}}
+            <td>
+                {{#if (eq item.isEdit true)}}
+                  <label for="">
+                    <Input @value={{item.country}} />
+                  </label>
+                {{else}}
+                    {{item.country}}
+                {{/if}}
+            </td>
+          {{/if}}
+
+
+          {{#if (eq column.column_property "description")}}
+            {{!-- {{#if item.description}} --}}
+            <td class="border">
+              {{#if (eq item.isEdit true)}}
+                <label for="">
+                  <Input @value={{item.description}} />
+                </label>
+              {{else}}
+                {{item.description}}
+              {{/if}}
+            </td>
+          {{/if}}
+
+
+          {{#if (eq column.column_property "status")}}
+            <td class="border col-2">
+                {{#if (eq item.isEdit true)}}
+                  {{!-- <PowerSelect class="w-100" @options={{@tabledropdown}} @placeholder='status' @selected={{item.active_status}}
+                    @onChange={{(fn @handleStatusChange item)}} as |name|>
+                    {{name}}
+                  </PowerSelect> --}}
+                  <div class="mt-1">
+                    <label class="toggle">
+                      {{!-- <span class="toggle-label">Has Tables</span> --}}
+                      {{!-- <Input @checked={{item.active_status}} {{on 'change' (fn @handleStatusChange item)}} class="toggle-checkbox" @type="checkbox" /> --}}
+                      <Input @checked={{item.active_status}} {{on 'change' (fn @handleStatusChange item)}} class="toggle-checkbox" @type="checkbox" />
+                      <div class="toggle-switch"></div>
+                    </label>
+                  </div>
+                {{else}}
+                  {{#if (eq item.active_status true)}}
+                    active
+                  {{else}}
+                    inactive
+                  {{/if}}
+                {{/if}}
+            </td>
+          {{/if}}
+
+
+            {{#if (eq column.column_property "actions")}}
+              <td class="d-flex flex-column gap-2 border">
+                {{#if (eq item.active_status true)}}
+                    <button type="button" class="btn btn-danger" {{on "click" (fn @handleStatus item)}}>Inactive</button>
+                  {{else}}
+                    <button type="button" class="btn btn-primary" {{on "click" (fn @handleStatus item)}}>Active</button>
+                {{/if}}
+                {{#if item.isEdit}}
+                    <button type="button" class="btn btn-danger w-100 my-1" {{on "click" (fn @handleCancel item)}}>Cancel</button>
+                    <button type="button" class="btn btn-success" {{on "click" (fn @handleSave item)}}>Save</button>
+                  {{else}}
+                      <button hidden={{(eq item.created_by.user_type 'SYSTEM')}} type="button" class="btn btn-primary w-100 my-1" {{on "click" (fn @handleEdit item)}}>Edit</button>                      
+                {{/if}}
+              </td>
+            {{/if}}
       {{/each}}
     </tr>
+
     {{/each}}
   </tbody>
 </table>

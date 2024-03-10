@@ -5,9 +5,8 @@ export default class InventoryInventoryTypeModel extends Model {
     @attr('string') inv_type;
     @attr('string') description;
     @attr('') active_status;
-    @attr('') data;
+    @attr('') created_by;
     // @attr('date') created_at;
-    // @attr created_by;
     // @attr('boolean') has_tables;
     // @attr('date') updated_at;
     // @attr updated_by;

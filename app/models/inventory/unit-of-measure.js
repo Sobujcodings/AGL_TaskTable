@@ -6,6 +6,7 @@ export default class InventoryUnitOfMeasureModel extends Model {
     @attr('string') short;
     @attr('string') measure_type;
     @attr('boolean') active_status;
+    @attr('') created_by;
     // @attr('date') created_at;
     // @attr('string') created_by;
     // @attr('date') updated_at;

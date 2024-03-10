@@ -3,6 +3,7 @@ import Model, { attr } from '@ember-data/model';
 export default class InventoryAllocationTypeModel extends Model {
     @attr('') allocation_types;
     @attr('string') alloc_type;
+    @attr('') created_by;
     // @attr('date') created_at;
     // @attr('string') created_by;
     // @attr('date') updated_at;

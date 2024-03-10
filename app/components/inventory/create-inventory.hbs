@@ -1,1 +1,77 @@
-{{yield}}
+{{log 'createInventoryEditItem' @createInventoryEditItem}}
+{{!-- ekhane obj/item k property dhore dhore dekhano hote pare! edit e click korle akrokom, normally arek rokom --}}
+
+<form class="row" {{on "submit" this.submitForm}}>
+    <div class="col-md-3">
+        <Input required @type="text" @value={{this.sku}} placeholder="SKU" class="form-control" id="inputSKU"></Input>
+    </div>
+    <div class="col-md-3">
+        <Input @type="text" @value={{this.name}} placeholder="Name" class="form-control" id="inputName"></Input>
+    </div>
+    <div class="col-md-3">
+        <Input @type="text" @value={{this.description}} placeholder="Description" class="form-control"
+            id="inputDescription"></Input>
+    </div>
+    <div class="col-md-3">
+        <PowerSelect class="w-100 py-1" @options={{this.names}} @renderInPlace={{true}} @placeholder='status'
+            @selected={{this.selectedstatus}} @onChange={{this.statusFunc}} as |name|>
+            {{name}}
+        </PowerSelect>
+    </div>
+    <div class="col-md-12 my-md-3">
+        <textarea value={{this.fullDescription}} {{on 'input' this.fullDescriptionFunc}} placeholder="Full Description"
+            class="form-control" id="inputFullDes" rows="2"></textarea>
+    </div>
+
+    <div class="col-md-3">
+        <Input @value={{this.manufacturingDate}} @type="date" placeholder="Manufacturing date" class="form-control"
+            id="inputManufacturingDate"></Input>
+    </div>
+    <div class="col-md-3">
+        <Input @value={{this.expiryDate}} @type="date" placeholder="Expiry date" class="form-control"
+            id="inputExpiryDate"></Input>
+    </div>
+    <div class="col-md-3">
+        <Input @value={{this.storageType}} @type="text" placeholder="Storage type" class="form-control"
+            id="inputStorageType"></Input>
+    </div>
+    <div class="col-md-3">
+        <Input @value={{this.inventoryCategory}} @type="text" placeholder="Inventory Catagory" class="form-control"
+            id="inputInventoryCatagory"></Input>
+    </div>
+
+    <div class="col-md-3 my-3">
+        <Input @value={{this.categoryType}} @type="text" placeholder="Catagory type" class="form-control"
+            id="inputCatagoryType"></Input>
+    </div>
+    <div class="col-md-3 my-3">
+        <Input @value={{this.inventoryType}} @type="text" placeholder="Inventory type" class="form-control"
+            id="inputInventoryType"></Input>
+    </div>
+    <div class="col-md-3 my-3">
+        <Input @value={{this.allocationType}} @type="text" placeholder="Alocation type" class="form-control"
+            id="inputAlocationType"></Input>
+    </div>
+    <div class="col-md-3 my-3">
+        <Input @value={{this.unitOfMeasure}} @type="text" placeholder="Unit of Measure" class="form-control"
+            id="inputUnitMeasure"></Input>
+    </div>
+    <div class="container d-flex flex-row g-2">
+        <div class="">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+        <div class="mx-2">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                Close
+            </button>
+        </div>
+    </div>
+</form> 
+
+
+{{!-- <div class="col-md-3 mb-3">
+    <PowerSelect class="w-100 py-1" @options={{this.names}} @renderInPlace={{true}} @placeholder='status'
+        @selected={{this.selectedstatus}} @onChange={{this.statusFunc}} as |name|>
+        {{name}}
+    </PowerSelect>
+</div> --}}

@@ -6,4 +6,5 @@ export default class InventoryInventoryCategoryModel extends Model {
     @attr('') category_type;
     @attr('') inv_type;
     @attr('') country;
+    @attr('') created_by;
 }

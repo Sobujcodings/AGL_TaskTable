@@ -10,20 +10,19 @@ import { inject as service } from '@ember/service';
 // tableStatus dropdoun na mile, active dile pay na amon
 
 export default class InventoryInventoryTableComponent extends Component {
-    // names = ['Stefan', 'Miguel', 'Tomster', 'Pluto'];
     @service store;
 
     @tracked keysName = ['type', 'description'];
 
     // to store inputfileds
-    @tracked inputFieldNumbers = [{ 'type': '', 'description': '', "status": '' }];
+    @tracked inputFieldNumbers = A([{ 'type': null, 'description': null }]);
     // input values
     @tracked inputValues = {};
     // create inventory
     // @tracked keysName;
     @tracked isActive = false;
     // dropdown value
-    names = ['true', 'false'];
+    names = ['active', 'inactive'];
     @tracked selectedStatus = 'status';
     // to track multiple input value and keys obj.
     @tracked inputvalueobj = [];
@@ -33,45 +32,51 @@ export default class InventoryInventoryTableComponent extends Component {
 
 
 
+    @tracked switch = false; 
+
     constructor() {
         super(...arguments);
-
-        // this.keysName = Object.keys({ type: null, description: null });
-        // console.log('this.keysName', this.keysName);
-        // // Create an object with null values for each key
-        // const newObj = this.keysName.reduce((acc, key) => {
-        //     acc[key] = null;
-        //     return acc;
-        // }, {});
-        // console.log(newObj);
-        // // Push the new object into the inputFieldNumbers array, to show the blank input field.
-        // this.inputFieldNumbers.push(newObj);
-        // this.inputFieldNumbers = this.inputFieldNumbers;
     }
+
+
+    // @action
+    // handleInputType(event) {
+    //     console.log(event.target.value);
+    // }
 
 
     // to track selected status
     @action
     HandleStatus(item, value) {
-        set(item, 'status', value)
+        console.log(item, value);
         // this.statusList.push(value);
-        // // console.log(this.statusList);
-        // let key = 'status';
         // this.selectedStatus = '';
         // this.selectedStatus = value;
-        
-        // this.inputValues[key] = value;
 
-        // // arekta property toyri hobe ai key status nam e, input value active inactive diye.
-        // // console.log('inputvalueobj', this.inputvalueobj);
-        // if (this.inputvalueobj.length > 0) {
-        //     let inputValuesCopy = Object.assign({}, this.inputValues);
-        //     // Push the copy into this.ModalTableValue
-        //     this.inputvalueobj.push(inputValuesCopy);
-        //     // make changes to the UI
-        //     this.inputvalueobj = this.inputvalueobj;
-        //     console.log('inputvalueobj', this.inputvalueobj);
-        // }
+        set(item, 'status', value);
+
+        let key = 'status';
+        // to take true false value instead of active n inactive
+        if (value == 'active') {
+            this.inputValues[key] = true;
+            console.log(this.inputValues);
+        } else {
+            let key = 'status';
+            this.inputValues[key] = false;
+            console.log(this.inputValues);
+        }
+
+
+        // arekta property toyri hobe ai key status nam e, input value active inactive diye.
+        // console.log('inputvalueobj', this.inputvalueobj);
+        if (this.inputvalueobj.length > 0) {
+            let inputValuesCopy = Object.assign({}, this.inputValues);
+            // Push the copy into this.ModalTableValue
+            this.inputvalueobj.push(inputValuesCopy);
+            // make changes to the UI
+            this.inputvalueobj = this.inputvalueobj;
+            console.log('inputvalueobj', this.inputvalueobj);
+        }
 
         // // Iterate over each object in the array
         // this.inputFieldNumbers.forEach(obj => {
@@ -89,7 +94,13 @@ export default class InventoryInventoryTableComponent extends Component {
     // input fields
     @action
     handleInputChange(key, event) {
-        // TODO: jei value shei key ta padhte hobe!
+        event.preventDefault();
+
+        // console.log(item, item.type, event.target.value);
+
+        // set(item, item.type, event.target.value);
+        // console.log('item', item);
+
         console.log('key', key);
         this.inputValues[key] = event.target.value;
         console.log(this.inputValues);
@@ -99,17 +110,19 @@ export default class InventoryInventoryTableComponent extends Component {
 
     @action
     handleDeleteInputField(item) {
-        const index = this.inputFieldNumbers.indexOf(item);
-        if (index > -1) {
-            this.inputFieldNumbers.splice(index, 1);
-        }
-        this.inputFieldNumbers = this.inputFieldNumbers;
-        console.log(this.inputFieldNumbers);
+        // const index = this.inputFieldNumbers.indexOf(item);
+        // if (index > -1) {
+        //     this.inputFieldNumbers.splice(index, 1);
+        // }
+        // this.inputFieldNumbers = this.inputFieldNumbers;
+        // console.log(this.inputFieldNumbers);
 
-        if (this.inputFieldNumbers.length == 0) {
-            this.inputValues = {};
-            this.inputvalueobj = [];
-        }
+        // if (this.inputFieldNumbers.length == 0) {
+        //     this.inputValues = {};
+        //     this.inputvalueobj = [];
+        // }
+        console.log(item);
+        this.inputFieldNumbers.removeObject(item);
     }
 
 
@@ -117,64 +130,75 @@ export default class InventoryInventoryTableComponent extends Component {
     // + add new Inventory to the table
     @action
     handleAddInventory() {
+
+        // console.log(this.inputValues);
+        // console.log(Object.keys(this.inputValues).length);
+        // if (Object.keys(this.inputValues).length != 3) {
+        //     alert('insert data');
+        //     return
+        // }
+
+        // console.log(this.inputFieldNumbers);
+        // this.inputFieldNumbers.push({ 'type': '', 'description': '', "status": '' });
+        // this.inputFieldNumbers = this.inputFieldNumbers;
+
+
         // Check if all values are null, show a alert
-        console.log('inputFieldNumbers', this.inputFieldNumbers);
-        console.log(this.inputValues);
+        // const allNull = Object.values(this.inputValues).every(value => value === null);
+        // console.log(allNull);
+        // if (allNull && this.inputFieldNumbers.length > 0) {
+        //     console.log('inputValues', this.inputValues);
+        //     alert("add input values!");
+        //     return
+        // }
+        // if (this.inputvalueobj.length < 1 && Object.keys(this.inputValues).length > 0) {
+        //     console.log('inputvalueobj is 0');
+        //     let inputValuesCopy = Object.assign({}, this.inputValues);
+        //     // Push the copy into this.ModalTableValue
+        //     this.inputvalueobj.push(inputValuesCopy);
+        //     // make changes to the UI
+        //     this.inputvalueobj = this.inputvalueobj;
+        //     console.log(this.inputvalueobj);
+        //     // tarpar save korle push korbo main modaltablevalue te.
+        // }
+
+
+        // // this.inputFieldNumbers.pushObject({ 'type': '', 'description': '', "status": '' });
+
+        // if (this.inputFieldNumbers.length == 0) {
+        //     console.log('no input field existed');
+        //     console.log('this.keysName', this.keysName);
+        //     // TODO: ager obj/input filed khali thakle ai new create hobe nah 
+        //     // Create an object with null values for each key
+        //     const newObj = this.keysName.reduce((acc, key) => {
+        //         acc[key] = '';
+        //         return acc;
+        //     }, {});
+        //     console.log(newObj);
+        //     // Push the new object into the inputFieldNumbers array, to show the blank input field.
+        //     this.inputFieldNumbers.push(newObj);
+        //     this.inputFieldNumbers = this.inputFieldNumbers;
+        //     console.log('inputValues', this.inputValues);
+        //     console.log('inputFieldNumbers', this.inputFieldNumbers);
+        //     return
+        // }
+        // this.keysName = Object.keys(this.inputValues);
+        // console.log('keysName', this.keysName);
+        // // console.log(this.item);
+
+
+        // // Create an object with null values for each key
+        // const newObj = this.keysName.reduce((acc, key) => {
+        //     acc[key] = '';
+        //     return acc;
+        // }, {});
+        // console.log(newObj);
+        // // Push the new object into the ModalTableValue array
+        // this.inputFieldNumbers.push(newObj);
+        // this.inputFieldNumbers = this.inputFieldNumbers;
+
+        // // if last input field is blank then dont create another blank one.
         // this.inputValues = {};
-        const allNull = Object.values(this.inputValues).every(value => value === null);
-        console.log(allNull);
-        if (allNull && this.inputFieldNumbers.length > 0) {
-            console.log('inputValues', this.inputValues);
-            alert("add input values!");
-            return
-        }
-        if (this.inputvalueobj.length < 1 && Object.keys(this.inputValues).length > 0) {
-            console.log('inputvalueobj is 0');
-            let inputValuesCopy = Object.assign({}, this.inputValues);
-            // Push the copy into this.ModalTableValue
-            this.inputvalueobj.push(inputValuesCopy);
-            // make changes to the UI
-            this.inputvalueobj = this.inputvalueobj;
-            console.log(this.inputvalueobj);
-            // tarpar save korle push korbo main modaltablevalue te.
-        }
-
-
-        if (this.inputFieldNumbers.length == 0) {
-            console.log('no input field existed');
-            console.log('this.keysName', this.keysName);
-            // TODO: ager obj/input filed khali thakle ai new create hobe nah 
-            // Create an object with null values for each key
-            const newObj = this.keysName.reduce((acc, key) => {
-                acc[key] = null;
-                return acc;
-            }, {});
-            console.log(newObj);
-            // Push the new object into the inputFieldNumbers array, to show the blank input field.
-            this.inputFieldNumbers.push(newObj);
-            this.inputFieldNumbers = this.inputFieldNumbers;
-            console.log('inputValues', this.inputValues);
-            console.log('inputFieldNumbers', this.inputFieldNumbers);
-            return
-        }
-
-        this.keysName = Object.keys(this.inputValues);
-        console.log('keysName', this.keysName);
-        // console.log(this.item);
-
-        // TODO: ager obj/input filed khali thakle ai new create hobe nah 
-        // Create an object with null values for each key
-        const newObj = this.keysName.reduce((acc, key) => {
-            acc[key] = null;
-            return acc;
-        }, {});
-        console.log(newObj);
-        // Push the new object into the ModalTableValue array
-        this.inputFieldNumbers.push(newObj);
-        this.inputFieldNumbers = this.inputFieldNumbers;
-
-        // if last input field is blank then dont create another blank one.
-        this.inputValues = {};
     }
 
 
@@ -182,10 +206,7 @@ export default class InventoryInventoryTableComponent extends Component {
     // HandleSave
     @action
     HandleSave() {
-
-
         if (this.inputvalueobj.length > 0) {
-
             const newInventoryType = this.store.createRecord(
                 'inventory/inventory-type',
                 {
@@ -199,6 +220,7 @@ export default class InventoryInventoryTableComponent extends Component {
             );
             newInventoryType.save().then((savedInventory) => {
                 // The record has been saved successfully
+                console.log(savedInventory);
                 this.typeCount = this.store.peekAll('inventory/inventory-type');
             })
                 .catch((error) => {
@@ -217,6 +239,14 @@ export default class InventoryInventoryTableComponent extends Component {
                     ],
                 },
             );
+            newInventoryType.save().then((savedInventory) => {
+                // The record has been saved successfully
+                console.log(savedInventory);
+                this.typeCount = this.store.peekAll('inventory/inventory-type');
+            })
+                .catch((error) => {
+                    console.error('Error saving inventory:', error);
+                });
         }
 
 

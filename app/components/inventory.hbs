@@ -16,7 +16,7 @@
       <button
         type="button"
         class="btn btn-secondary btn-lg"
-        {{on "click" (fn this.changeInventoryType "sojib")}}
+        {{on "click" (fn this.changeInventoryType "Inventory Category type")}}
       >
         Inventory Category type
       </button>
@@ -49,7 +49,7 @@
       <button
         type="button"
         class="btn btn-secondary btn-lg"
-        {{!-- onclick={{fn this.HandleUnitMeasure "Unit Measure"}} --}}
+        onclick={{fn this.changeInventoryType "Unit Measure"}}
       >
         Unit of Measure
       </button>
@@ -59,7 +59,7 @@
       <button
         type="button"
         class="btn btn-primary btn-lg"
-        {{!-- onclick={{fn this.HandleCreateInventory "Create Inventory"}} --}}
+        onclick={{fn this.changeInventoryType "Create Inventory"}}
       >
         Create Inventory
       </button>
@@ -68,11 +68,74 @@
 </section>
 
 
+{{!-- create inventory table --}}
+{{!-- show this when there is value in the formArray --}}
+{{#if this.firstObjectKeys}}
+<section class="table-responsive">
+        <h4 class="mx-2">Create Inventory</h4>
+    <table class="table table-striped border">
+        <thead class="">
+            <tr>
+               {{#each this.firstObjectKeys as |item|}}
+                <th class="border text-center" scope="col">{{item}}</th>
+                {{/each}}
+                <th scope="col" class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+                {{#each this.FormArray as |item |}}
+                    <tr class="my-auto">
+                        <td class="border text-center">{{item.sku}}</td>
+                        <td class="border text-center">{{item.Name}}</td>
+                        <td class="border text-center">{{item.Des}}</td>
+                        <td class="border text-center">{{item.FullDes}}</td>
+                        <td class="border text-center">{{item.Manufacture}}</td>
+                        <td class="border text-center">{{item.Expire}}</td>
+                        <td class="border text-center">{{item.StorageType}}</td>
+                        <td class="border text-center">{{item.Catagory}}</td>
+                        <td class="border text-center">{{item.CategoryType}}</td>
+                        <td class="border text-center">{{item.InventoryType}}</td>
+                        <td class="border text-center">{{item.AllocationType}}</td>
+                        <td class="border text-center">{{item.UnitMeasure}}</td>
+                        <td class="border text-center">{{item.status}}</td>
+                        <td class="my-auto mx-auto text-center">
+                          <button 
+                              type="button" 
+                              class="btn btn-primary btn-sm mx-auto my-auto text-center w-100"
+                              {{on "click" (fn this.HandleCreateInventoryEdit "Create Inventory" item)}}
+                          >
+                              Edit
+                          </button>
+                        </td>
+                    </tr>
+                {{/each}}
+                {{!-- {{#each this.FormArray as |item |}}
+                    <tr class="my-auto">
+                        {{#each-in item as |key value|}}
+                                <td class="border text-center">{{value}}</td>
+                        {{/each-in}}
+                        <td class="my-auto mx-auto text-center ">
+                          <button 
+                              type="button" 
+                              class="btn btn-primary btn-sm mx-auto my-auto text-center w-100"
+                              {{on "click" (fn this.HandleCreateInventoryEdit "Create Inventory" item)}}
+                          >
+                              Edit
+                          </button>
+                        </td>
+                    </tr>
+                {{/each}} --}}
+        </tbody>
+    </table>
+</section>
+{{/if}}
 
 
+{{!-- *** ekahan theke akta function e padahte pari j shob edit korar por shei fuction e item k padhiye dibo shei item ke ekhane ene save kore dibo!! --}}
 {{!-- modal aktai open hobe jei table r jonno open korbo sheta pass korbo just shei modal e then shetar jonno specific table padhabo shetar jonno --}}
 <Inventory::InventoryModal
   @inventoryType={{this.inventory}}
+  @createInventoryEditItem={{this.CreateInventoryEditItem}}
 />
 
 

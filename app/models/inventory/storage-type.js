@@ -9,4 +9,5 @@ export default class InventoryStorageTypeModel extends Model {
     @attr('string') description;
     @attr('string') storage_type;
     @attr('boolean') active_status;
+    @attr('') created_by;
 }
