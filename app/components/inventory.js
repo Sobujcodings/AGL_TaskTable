@@ -10,6 +10,7 @@ export default class InventoryComponent extends Component {
 
 
     @action changeInventoryType(type) {
+        // console.log(type);
         this.inventory = type;
         $('#inventoryModalContent').modal('show');
     }

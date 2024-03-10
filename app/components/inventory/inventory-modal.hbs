@@ -8,7 +8,6 @@
 {{!-- country te add kora jay kina save dile dekhte hobe  !!!--}}
 {{!-- invent cat type e country edit korle r array thake nah string hoye jay ata array hishebe send korte hobe server e! --}}
 {{!-- same data again insert korle update data violation dekhabe response e, tokhon akta alert show kore dite hobe j cant insert same data twice --}}
-
 <div {{did-insert (fn this.insertForModal this.handleItemsToNull) }} class="modal fade" id="inventoryModalContent" tabindex="-1" role="dialog"
   aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog" role="document" style="max-width: 80%">
@@ -36,7 +35,7 @@
         <Inventory::StorageType />
         {{ else if (eq @inventoryType "Allocation type")}}
         <Inventory::AllocationType />
-        {{ else if (eq @inventoryType "Unit Measure")}}
+        {{ else if (eq @inventoryType "Unit of Measure")}}
         <Inventory::UnitOfMeasure />
         {{ else if (eq @inventoryType "Create Inventory")}}
         <Inventory::CreateInventory @createInventoryEditItem={{@createInventoryEditItem}} />
