@@ -1,62 +1,70 @@
 {{log 'createInventoryEditItem' @createInventoryEditItem}}
 {{!-- ekhane obj/item k property dhore dhore dekhano hote pare! edit e click korle akrokom, normally arek rokom --}}
 
+{{!-- {{#each this.inventoryTypeColumns as |item|}} --}}
 <form class="row" {{on "submit" this.submitForm}}>
     <div class="col-md-3">
-        <Input required @type="text" @value={{this.sku}} placeholder="SKU" class="form-control" id="inputSKU"></Input>
+        <Input required @type="text" @value={{this.formData.sku}} {{on 'input'
+            this.handleInputChange}} placeholder="SKU" {{on 'change' (fn this.inventoryDropdownInput this.formData 'sku')}}  class="form-control" id="inputSKU"></Input>
+        {{!-- <Input required @type="text" @value={{if this.items this.items.sku this.form.sku}} {{on 'input'
+            this.handleInputChange}} placeholder="SKU" {{on 'change' (fn this.inventoryDropdownInput this.formData 'sku')}}  class="form-control" id="inputSKU"></Input> --}}
     </div>
     <div class="col-md-3">
-        <Input @type="text" @value={{this.name}} placeholder="Name" class="form-control" id="inputName"></Input>
+        <Input @type="text" @value={{this.formData.inv_name}} {{on 'change' (fn this.inventoryDropdownInput this.formData 'inv_name')}} placeholder="Inventory Name" class="form-control" id="inputName"></Input>
     </div>
     <div class="col-md-3">
-        <Input @type="text" @value={{this.description}} placeholder="Description" class="form-control"
+        <Input @type="text" @value={{this.formData.description}} {{on 'change' (fn this.inventoryDropdownInput this.formData 'description')}} placeholder="Description" class="form-control"
             id="inputDescription"></Input>
     </div>
-    <div class="col-md-3">
-        <PowerSelect class="w-100 py-1" @options={{this.names}} @renderInPlace={{true}} @placeholder='status'
-            @selected={{this.selectedstatus}} @onChange={{this.statusFunc}} as |name|>
+        <div class="col-md-3">
+        <PowerSelect class="w-100 py-1" @options={{this.names}}  @value={{this.inventoryType}} @placeholder='Inventory type'
+            @selected={{this.formData.inv_type}} @onChange={{(fn this.inventoryDropdown this.formData 'inv_type')}} as |name|>
             {{name}}
         </PowerSelect>
     </div>
+    {{!-- <div class="col-md-3">
+        <PowerSelect class="w-100 py-1" @options={{this.names}} @renderInPlace={{true}} @placeholder='status'
+            @selected={{this.formData.active_status}} @onChange={{(fn this.inventoryDropdown this.formData 'active_status')}} as |name|>
+            {{name}}
+        </PowerSelect>
+    </div> --}}
     <div class="col-md-12 my-md-3">
-        <textarea value={{this.fullDescription}} {{on 'input' this.fullDescriptionFunc}} placeholder="Full Description"
+        <textarea value={{this.formData.full_description}} {{on 'change' (fn this.inventoryDropdownInput this.formData 'full_description')}} placeholder="Full Description"
             class="form-control" id="inputFullDes" rows="2"></textarea>
     </div>
-
     <div class="col-md-3">
-        <Input @value={{this.manufacturingDate}} @type="date" placeholder="Manufacturing date" class="form-control"
+        <PowerSelect class="w-100 py-1" @options={{this.names}}  @value={{this.categoryType}} @placeholder='Category Type'
+            @selected={{this.formData.category_type}} @onChange={{(fn this.inventoryDropdown this.formData 'category_type')}} as |name|>
+            {{name}}
+        </PowerSelect>
+    </div>
+    <div class="col-md-3">
+        <PowerSelect class="w-100 py-1" @options={{this.names}}  @value={{this.storageType}} @placeholder='Storage type'
+            @selected={{this.formData.storage_type}} @onChange={{(fn this.inventoryDropdown this.formData 'storage_type')}} as |name|>
+            {{name}}
+        </PowerSelect>
+    </div>
+    <div class="col-md-3 ">
+        <PowerSelect class="w-100 py-1" @options={{this.names}}  @value={{this.inventoryType}} @placeholder='Allocation type'
+            @selected={{this.formData.alloc_type}} @onChange={{(fn this.inventoryDropdown this.formData 'alloc_type')}} as |name|>
+            {{name}}
+        </PowerSelect>
+    </div>
+    <div class="col-md-3 ">
+        <PowerSelect class="w-100 py-1" @options={{this.names}}  @value={{this.unitOfMeasure}} @placeholder='Unit of Measure'
+            @selected={{this.formData.measure_type}} @onChange={{(fn this.inventoryDropdown this.formData 'measure_type')}} as |name|>
+            {{name}}
+        </PowerSelect>
+    </div>
+    <div class="col-md-3 my-3">
+        <Input placeholder="Manufacturing date" @value={{this.formData.manufacturing_date}} {{on 'change' (fn this.inventoryDropdownInput this.formData 'manufacturing_date')}} @type="date"  class="form-control h-100"
             id="inputManufacturingDate"></Input>
     </div>
-    <div class="col-md-3">
-        <Input @value={{this.expiryDate}} @type="date" placeholder="Expiry date" class="form-control"
+    <div class="col-md-3 my-3">
+        <Input placeholder="Expiry date" @value={{this.formData.expire_date}} {{on 'change' (fn this.inventoryDropdownInput this.formData 'expire_date')}} @type="date" class="form-control h-100"
             id="inputExpiryDate"></Input>
     </div>
-    <div class="col-md-3">
-        <Input @value={{this.storageType}} @type="text" placeholder="Storage type" class="form-control"
-            id="inputStorageType"></Input>
-    </div>
-    <div class="col-md-3">
-        <Input @value={{this.inventoryCategory}} @type="text" placeholder="Inventory Catagory" class="form-control"
-            id="inputInventoryCatagory"></Input>
-    </div>
-
-    <div class="col-md-3 my-3">
-        <Input @value={{this.categoryType}} @type="text" placeholder="Catagory type" class="form-control"
-            id="inputCatagoryType"></Input>
-    </div>
-    <div class="col-md-3 my-3">
-        <Input @value={{this.inventoryType}} @type="text" placeholder="Inventory type" class="form-control"
-            id="inputInventoryType"></Input>
-    </div>
-    <div class="col-md-3 my-3">
-        <Input @value={{this.allocationType}} @type="text" placeholder="Alocation type" class="form-control"
-            id="inputAlocationType"></Input>
-    </div>
-    <div class="col-md-3 my-3">
-        <Input @value={{this.unitOfMeasure}} @type="text" placeholder="Unit of Measure" class="form-control"
-            id="inputUnitMeasure"></Input>
-    </div>
-    <div class="container d-flex flex-row g-2">
+    <div class="ml-3 d-flex flex-row g-2 w-100">
         <div class="">
             <button type="submit" class="btn btn-primary">Save</button>
         </div>
@@ -66,7 +74,8 @@
             </button>
         </div>
     </div>
-</form> 
+</form>
+{{!-- {{/each}} --}}
 
 
 {{!-- <div class="col-md-3 mb-3">

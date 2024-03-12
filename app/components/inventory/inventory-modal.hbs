@@ -1,22 +1,24 @@
-{{!-- save e jei data gulo padhabo shegulo thik korte hobe comment kora save dekhe --}}
-{{!-- storage e edit korle active status require dekhay --}}
-{{!-- input filed khali dile edit/save hobe na in type e kora hoice--}}
-{{!-- created_by.user_type system hole edit option off thakbe just active inactive korte parbe --}}
-{{!-- dropdown bad diye switch use koro on korle item e padhiye !status opposite kore dibo, active btn r moto --}}
-{{!-- id r bodle index dite hobe --}}
-{{!-- modal close korle rollback korte hobe like kono input field open thakle close hoye jabe --}} 
-{{!-- country te add kora jay kina save dile dekhte hobe  !!!--}}
-{{!-- invent cat type e country edit korle r array thake nah string hoye jay ata array hishebe send korte hobe server e! --}}
-{{!-- same data again insert korle update data violation dekhabe response e, tokhon akta alert show kore dite hobe j cant insert same data twice --}}
-<div {{did-insert (fn this.insertForModal this.handleItemsToNull) }} class="modal fade" id="inventoryModalContent" tabindex="-1" role="dialog"
-  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document" style="max-width: 80%">
+{{!-- same data again insert korle update data violation dekhabe response e, tokhon akta alert show kore dite hobe j
+cant insert same data twice --}}
+{{!-- !edit/active/inactive korle akta loader dekhate hobe wheather its a overlay loader or inside a btn use loader --}}
+{{!-- check validation for inventory catagory, parent e data na thakle child create hobe na, ager child e na thakle
+porer tay add hobe nah
+akta parent e data na thakle arekta parent create korbo na alert dibo, return dibo amon! --}}
+{{!-- create inventory edit koro, kichu input filed gulo dropdown deo! --}}
+
+<div {{did-insert (fn this.insertForModal this.handleItemsToNull) }} class="modal fade" id="inventoryModalContent"
+  tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document" style="max-width: 90%">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">
           {{!-- {{this.ModalHeader}} --}}
           {{!-- {{if @isEdit "Edit" "Create"}} --}}
-          <p>{{@inventoryType}}</p>
+          {{#if (eq @inventoryType 'inventory-list')}}
+              <p>Create Inventory</p>
+          {{else}}
+              <p>{{@inventoryType}}</p>
+          {{/if}}
         </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">
@@ -37,17 +39,11 @@
         <Inventory::AllocationType />
         {{ else if (eq @inventoryType "Unit of Measure")}}
         <Inventory::UnitOfMeasure />
-        {{ else if (eq @inventoryType "Create Inventory")}}
+        {{ else if (eq @inventoryType "inventory-list")}}
         <Inventory::CreateInventory @createInventoryEditItem={{@createInventoryEditItem}} />
         {{/if}}
       </div>
-      <div class="modal-footer" hidden={{(eq @inventoryType "Create Inventory")}}>
-        {{!-- <div class="col-12"> --}}
-        {{!-- this.submitform function k service e niye ekhan theke shei func hit kora jabe kina dekhte hobe taholei hobe  ***--}}
-        {{!-- {{#if (eq @inventoryType "Create Inventory")}}
-          <button type="submit" {{on 'click' this.f}} class="btn btn-primary">Save</button>
-        {{/if}} --}}
-        {{!-- </div> --}}
+      <div class="modal-footer" hidden={{(eq @inventoryType "inventory-list" )}}>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">
           Close
         </button>

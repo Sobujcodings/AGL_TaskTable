@@ -36,21 +36,43 @@
           {{/if}}
 
           {{#if (eq column.column_property "inv_type") }}
-            <td>
+            <td class="border">
                 {{#if (eq item.isEdit true)}}
-                  <label for="">
-                    <Input @value={{item.inv_type}} />
+                  <label for="" class="w-100">
+                    <Input class="w-100" @value={{item.inv_type}} />
                   </label>
                 {{else}}
                   {{item.inv_type}}
                 {{/if}}
             </td>
 
-            {{else if (eq column.column_property "category_type")}}
-            <td>
+            {{else if (eq column.column_property "category_name")}}
+            <td class="border">
                 {{#if (eq item.isEdit true)}}
-                  <label for="">
-                    <Input @value={{item.category_type}} />
+                  <label for="" class="w-100">
+                    <Input class="w-100" @value={{item.category_name}} />
+                  </label>
+                {{else}}
+                  {{item.category_name}}
+                {{/if}}
+            </td>
+
+            {{else if (eq column.column_property "parent_name")}}
+            <td class="border">
+                {{#if (eq item.isEdit true)}}
+                  <label for="" class="w-100">
+                    <Input class="w-100" @value={{item.parent_name}} />
+                  </label>
+                {{else}}
+                  {{item.parent_name}}
+                {{/if}}
+            </td>
+
+            {{else if (eq column.column_property "category_type")}}
+            <td class="border">
+                {{#if (eq item.isEdit true)}}
+                  <label for="" class="100">
+                    <Input class="w-100" @value={{item.category_type}} />
                   </label>
                 {{else}}
                   {{item.category_type}}
@@ -58,7 +80,7 @@
             </td>
 
             {{else if (eq column.column_property "storage_type")}}
-            <td>
+            <td class="border">
                 {{#if (eq item.isEdit true)}}
                   <label for="">
                     <Input @value={{item.storage_type}} />
@@ -69,7 +91,7 @@
             </td>
 
             {{else if (eq column.column_property "alloc_type")}}
-              <td>
+              <td class="border">
                   {{#if (eq item.isEdit true)}}
                     <label for="">
                       <Input @value={{item.alloc_type}} />
@@ -80,7 +102,7 @@
               </td>
 
             {{else if (eq column.column_property "measure_type")}}
-              <td>
+              <td class="border">
                   {{#if (eq item.isEdit true)}}
                     <label for="">
                       <Input @value={{item.measure_type}} />
@@ -94,7 +116,7 @@
 
           {{#if (eq column.column_property "short")}}
             {{!-- {{#if item.short}} --}}
-              <td>
+              <td class="border">
                   {{#if (eq item.isEdit true)}}
                     <label for="">
                       <Input @value={{item.short}} />
@@ -109,11 +131,16 @@
 
           {{#if (eq column.column_property "country")}}
             {{!-- {{#if item.country}} --}}
-            <td>
+            <td class="border">
                 {{#if (eq item.isEdit true)}}
-                  <label for="">
+                  {{!-- <label for="">
                     <Input @value={{item.country}} />
-                  </label>
+                  </label> --}}
+                <PowerSelectMultiple class="w-100 mt-1 h-75 px-1" @value={{item.country}} @searchEnabled={{true}} @options={{this.names}}
+                    @selected={{item.country}} @labelText="Name" @placeholder="Select Country" @onChange={{(fn this.handlemultipleSelection item)}}
+                    as |name|>
+                    {{name}}
+                </PowerSelectMultiple>
                 {{else}}
                     {{item.country}}
                 {{/if}}
@@ -138,14 +165,8 @@
           {{#if (eq column.column_property "status")}}
             <td class="border col-2">
                 {{#if (eq item.isEdit true)}}
-                  {{!-- <PowerSelect class="w-100" @options={{@tabledropdown}} @placeholder='status' @selected={{item.active_status}}
-                    @onChange={{(fn @handleStatusChange item)}} as |name|>
-                    {{name}}
-                  </PowerSelect> --}}
                   <div class="mt-1">
                     <label class="toggle">
-                      {{!-- <span class="toggle-label">Has Tables</span> --}}
-                      {{!-- <Input @checked={{item.active_status}} {{on 'change' (fn @handleStatusChange item)}} class="toggle-checkbox" @type="checkbox" /> --}}
                       <Input @checked={{item.active_status}} {{on 'change' (fn @handleStatusChange item)}} class="toggle-checkbox" @type="checkbox" />
                       <div class="toggle-switch"></div>
                     </label>

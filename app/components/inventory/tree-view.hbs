@@ -1,0 +1,52 @@
+{{!-- component tree-view.hbs: --}}
+<div class="d-flex flex-row mb-2 ">
+    <div class="w-100">
+        <label for="">
+            <Input class="form-control" @type="text" placeholder="Catagory Name" {{on 'change' this.onChangeInput}} @value={{@item.category_name}} />
+        </label>
+    </div>
+    <div class="mx-2 w-100">
+        <PowerSelect
+            class="form-control mx-2"
+            @options={{this.inventoryTypes}}
+            {{!-- @value={{@item.inv_type}} --}}
+            @selected={{@item.inv_type}}
+            @placeholder='Inventory type'
+            @onChange={{fn this.handledropdown @item 'inv_type'}} as |item|>
+            Inventory type: {{item}}
+        </PowerSelect>
+    </div>
+     <div class="mx-2 w-100">
+         <PowerSelect
+            class="form-control mx-2"
+            @options={{this.CatagoryTypes}}
+            {{!-- @value={{@item.category_type}} --}}
+            @selected={{@item.category_type}}
+            @placeholder='Catagory type'
+             @onChange={{fn this.handledropdown @item 'category_type'}} as |item|>
+            Category type: {{item}}
+        </PowerSelect>
+    </div>
+    <div class="mx-2 w-100">
+         <PowerSelect
+            class="form-control mx-2"
+            @options={{this.Country}}
+            {{!-- @value={{@item.country}} --}}
+            @selected={{@item.country}}
+            @placeholder='Country'
+            @onChange={{fn this.handledropdown @item 'country'}} as |item|>
+            Country: {{item}}
+        </PowerSelect>
+    </div>
+    <button type="button" class="btn btn-sm btn-primary ml-2" {{on "click" (fn this.addChildCategory @item)}}>Add</button>
+    <button type="button" class="btn btn-sm btn-danger ml-2" {{on "click" (fn this.removeCategory
+        @item)}}>Remove</button>
+</div>
+
+{{#if @item.children.length}}
+<div class=" ml-2">
+    {{#each @item.children as |child index|}}
+    <Inventory::TreeView @item={{child}} @parent={{@item}} @children={{@item.children}} @postItems={{@postItems}}/>
+    {{/each}}
+</div>
+{{/if}}

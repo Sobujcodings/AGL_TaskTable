@@ -1,0 +1,53 @@
+{{!-- create inventory table --}}
+{{!-- show this when there is value in the formArray --}}
+{{!-- {{#if @firstObjectKeys}} --}}
+<section class="table-responsive">
+    <h4 class="mx-2">Create Inventory</h4>
+    <table class="table table-striped border">
+        <thead class="">
+            <tr>
+                {{#each @columns as |item|}}
+                <th class="border text-center" scope="col">{{item.column_name}}</th>
+                {{/each}}
+                {{!-- <th scope="col" class="text-center">Action</th> --}}
+            </tr>
+        </thead>
+        <tbody>
+            {{#each this.items as |item |}}
+            <tr class="my-auto">
+                <td class="border text-center">{{item.sku}}</td>
+
+                <td class="border text-center">{{item.inv_name}}</td>
+
+                <td class="border text-center">{{item.description}}</td>
+
+                <td class="border text-center">{{item.full_description}}</td>
+
+                <td class="border text-center">{{item.manufacturing_date}}</td>
+
+                <td class="border text-center">{{item.expire_date}}</td>
+
+                <td class="border text-center">{{item.storage_type}}</td>
+
+                <td class="border text-center">{{item.category_name}}</td>
+
+                <td class="border text-center">{{item.category_type}}</td>
+
+                <td class="border text-center">{{item.inv_type}}</td>
+
+                <td class="border text-center">{{item.alloc_type}}</td>
+
+                <td class="border text-center">{{item.measure_type}}</td>
+                
+                <td class="my-auto mx-auto text-center">
+                    <button type="button" class="btn btn-primary btn-sm mx-auto my-auto text-center w-100" {{on "click"
+                        (fn @handlecreateinventoryedit "Create Inventory" item)}}>
+                        Edit
+                    </button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</section>
+{{!-- {{/if}} --}}
