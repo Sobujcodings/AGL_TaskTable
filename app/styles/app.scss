@@ -4,14 +4,17 @@
 
 @import "ember-cli-bootstrap-4/bootstrap";
 
+// @import 'node_modules/@fortawesome/fontawesome-free/css/all.css';
+// app.scss
+// @import 'fontawesome';
 
+
+// 
 .ember-power-select-dropdown {
-    z-index: 9999999 !important;
+  z-index: 9999999 !important;
 }
 
-
-
-
+// 
 *,
 *:before,
 *:after {
@@ -37,9 +40,12 @@ body {
   vertical-align: middle;
   transition: background 0.25s;
 }
-.toggle-switch:before, .toggle-switch:after {
+
+.toggle-switch:before,
+.toggle-switch:after {
   content: "";
 }
+
 .toggle-switch:before {
   display: block;
   background: linear-gradient(to bottom, #fff 0%, #eee 100%);
@@ -52,14 +58,17 @@ body {
   left: 4px;
   transition: left 0.25s;
 }
+
 .toggle:hover .toggle-switch:before {
   background: linear-gradient(to bottom, #fff 0%, #fff 100%);
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
 }
-.toggle-checkbox:checked + .toggle-switch {
+
+.toggle-checkbox:checked+.toggle-switch {
   background: #56c080;
 }
-.toggle-checkbox:checked + .toggle-switch:before {
+
+.toggle-checkbox:checked+.toggle-switch:before {
   left: 30px;
 }
 
@@ -82,7 +91,17 @@ input[type="date"]:before {
   color: #aaa;
   margin-right: 0.5em;
 }
+
 input[type="date"]:focus:before,
 input[type="date"]:valid:before {
   content: "";
+}
+
+
+//
+.table-container {
+  max-height: 400px;
+  max-width: 1250px;
+  overflow-x: auto;
+  overflow-y: auto;
 }

@@ -2,6 +2,12 @@
 
 module.exports = function (environment) {
   const ENV = {
+
+    // // Add options here
+    // fontawesome: {
+    //   defaultPrefix: 'fal' // light icons
+    // },
+
     modulePrefix: 'library-app',
     environment,
     rootURL: '/',

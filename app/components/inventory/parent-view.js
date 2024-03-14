@@ -11,7 +11,6 @@ export default class InventoryParentViewComponent extends Component {
 
     @tracked isLoadingPOST;
 
-    @tracked categories = A([]);
     @tracked postItems = A([])
 
     @action
@@ -24,7 +23,6 @@ export default class InventoryParentViewComponent extends Component {
             inv_type: '',
             category_type: '',
             country: '',
-            parent_name: null,
         };
         // if the categories last obj data is null then dont insert another obj into it.
         // console.log('categories',this.categories);
@@ -77,36 +75,41 @@ export default class InventoryParentViewComponent extends Component {
         return result;
     }
 
+    // const newInventoryType = await this.store.createRecord('inventory/inventory-type',
+    //     {
+    //         inventory_types: this.inputFieldNumbers.map((singleObj) => ({
+    //             inv_type: singleObj.type,
+    //             description: singleObj.description,
+    //             has_tables: singleObj.has_tables,
+    //         }))
+    //     },
+    // );
 
     @action
     async onSave() {
         console.log('inventory category save:', this.postItems);
-        // let result = this.flattenTree(this.args.items);
-        // this.isLoadingPOST = true;
-        // const newInventoryCatagory = await this.store.createRecord('inventory/inventory-category',
-        //     {
-        //         inventory_category: result.map((singleObj) => ({
-        //             id: singleObj.id,
-        //             parent_id: singleObj.parent_id,
-        //             inv_type: singleObj.inv_type,
-        //             country: singleObj.country,
-        //             category_name: singleObj.category_name,
-        //             category_type: singleObj.category_type,
-        //         }))
-        //     },
-        // );
-        // newInventoryCatagory.save().then((savedInventory) => {
-        //     // The record has been saved successfully
-        //     console.log(savedInventory);
-        //     // reset fields
-        //     this.categories = A([]);
-        //     this.isLoadingPOST = false;
-        //     // this.result = A([]);
-        // })
-        //     .catch((error) => {
-        //         console.error('Error saving inventory:', error);
-        //         alert(error);
-        //     });
+        const newInventoryCatagory = await this.store.createRecord('inventory/inventory-category',
+            {
+                inventory_category: this.postItems.map((singobj) => ({
+                    id: singobj.id,
+                    category_name: singobj.category_name,
+                    parent_id: singobj.parent_id,
+                    inv_type: singobj.inv_type,
+                    category_type: singobj.category_type,
+                    country: singobj.country,
+                }))
+            })
+
+        try {
+            let response = await newInventoryCatagory.save();
+            console.log('response', response);
+            this.postItems = A([]);
+            let data = this.store.peekAll('inventory/inventory-category')
+            this.args.setItems(data);
+
+        } catch (error) {
+            console.log('error', error);
+        }
     }
 
 

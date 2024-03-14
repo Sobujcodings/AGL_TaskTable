@@ -84,16 +84,19 @@ export default class InventoryInventoryCatagoryComponent extends Component {
     }
 
 
+    @action
+    setItems(data){
+        this.items = this.convertToTree(data);
+    }
+
     // 
     constructor() {
         super(...arguments);
 
         const inventoryType = this.store.findAll('inventory/inventory-category');
         inventoryType.then(data => {
-            let inventoryTypeObjects = data.map((element) => {
-                return element
-            })
-            this.items = this.convertToTree(data);
+            // this.items = this.convertToTree(data);
+            this.setItems(data);
 
             // console.log('items:', this.items);
             // to make it globally accessible set this item data from the server to global and if the modal is closed, set the item to null to set it as previous, after opening that modal it will be fetch again n everything will be as usual. 
@@ -102,23 +105,25 @@ export default class InventoryInventoryCatagoryComponent extends Component {
                 this.isloading = !this.isloading;
             }
         })
-
     }
 
 
+    // making tree form the data found from the server
     @action
     convertToTree(array) {
         const map = new Map();
         const result = A([]);
 
         array.forEach(item => {
-            map.set(item.id, {id: item.id,
+            map.set(item.id, {
+                id: item.id,
                 category_name: item.category_name,
                 parent_id: item.parent_id,
                 inv_type: item.inv_type,
                 category_type: item.category_type,
                 country: item.country,
-                children: A([]) });
+                children: A([])
+            });
         });
 
         array.forEach(item => {
@@ -250,6 +255,7 @@ export default class InventoryInventoryCatagoryComponent extends Component {
     @action
     async HandleSave() {
 
+        // saved this data to the server POST createRecord
         console.log('save inventory category:', this.postItems);
         // console.log(this.inputFieldNumbers);
 

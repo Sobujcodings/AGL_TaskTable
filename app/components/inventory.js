@@ -3,6 +3,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { A } from '@ember/array';
+import { set } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default class InventoryComponent extends Component {
@@ -120,8 +121,6 @@ export default class InventoryComponent extends Component {
 
 
 
-
-
         // item theke niye sheta set kore dibo existed input field e. XXX
         this.sku = item.sku;
         this.name = item.Name;
@@ -144,6 +143,13 @@ export default class InventoryComponent extends Component {
 
         // this.openCreateInventoryModal();
 
+    }
+
+
+    @action
+    handlecreateinventoryStatus(name,item) {
+        console.log(item);
+        set(item, 'active_status', true);
     }
 
 }

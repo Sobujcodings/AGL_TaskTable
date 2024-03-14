@@ -1,10 +1,11 @@
 {{!-- same data again insert korle update data violation dekhabe response e, tokhon akta alert show kore dite hobe j
 cant insert same data twice --}}
 {{!-- !edit/active/inactive korle akta loader dekhate hobe wheather its a overlay loader or inside a btn use loader --}}
-{{!-- check validation for inventory catagory, parent e data na thakle child create hobe na, ager child e na thakle
-porer tay add hobe nah
+{{!-- check validation for inventory catagory, parent e data na thakle child create hobe na, ager child e na thakle porer tay add hobe nah
 akta parent e data na thakle arekta parent create korbo na alert dibo, return dibo amon! --}}
-{{!-- create inventory edit koro, kichu input filed gulo dropdown deo! --}}
+{{!-- use fontawesome icon in add, remove, X,  --}}
+{{!-- catagory te loader dibo borota untill data findAll found from the server and save r shomoy o choto loader dibo --}}
+{{!-- create inv table e active status btn dibo and functionalities--}}
 
 <div {{did-insert (fn this.insertForModal this.handleItemsToNull) }} class="modal fade" id="inventoryModalContent"
   tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

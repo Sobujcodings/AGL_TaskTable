@@ -1,68 +1,99 @@
 {{log 'createInventoryEditItem' @createInventoryEditItem}}
 {{!-- ekhane obj/item k property dhore dhore dekhano hote pare! edit e click korle akrokom, normally arek rokom --}}
 
-{{!-- {{#each this.inventoryTypeColumns as |item|}} --}}
-<form class="row" {{on "submit" this.submitForm}}>
+<form  {{did-insert (fn this.insertForModal this.handleItemsToNull) }} class="row" {{on "submit" this.submitForm}}>
     <div class="col-md-3">
-        <Input required @type="text" @value={{this.formData.sku}} {{on 'input'
-            this.handleInputChange}} placeholder="SKU" {{on 'change' (fn this.inventoryDropdownInput this.formData 'sku')}}  class="form-control" id="inputSKU"></Input>
-        {{!-- <Input required @type="text" @value={{if this.items this.items.sku this.form.sku}} {{on 'input'
-            this.handleInputChange}} placeholder="SKU" {{on 'change' (fn this.inventoryDropdownInput this.formData 'sku')}}  class="form-control" id="inputSKU"></Input> --}}
+        <Input required @type="text" @value={{if @createInventoryEditItem @createInventoryEditItem.sku this.formData.sku}} placeholder="SKU" 
+            {{on 'change' (if @createInventoryEditItem (fn this.inventoryDropdownInput @createInventoryEditItem 'sku') 
+            (fn this.inventoryDropdownInput  this.formData 'sku') )}}  class="form-control" id="inputSKU">
+        </Input>
     </div>
     <div class="col-md-3">
-        <Input @type="text" @value={{this.formData.inv_name}} {{on 'change' (fn this.inventoryDropdownInput this.formData 'inv_name')}} placeholder="Inventory Name" class="form-control" id="inputName"></Input>
+        <Input required @type="text" @value={{if @createInventoryEditItem @createInventoryEditItem.inv_name this.formData.inv_name}} 
+            {{on 'change' (if @createInventoryEditItem (fn this.inventoryDropdownInput @createInventoryEditItem 'inv_name') 
+            (fn this.inventoryDropdownInput  this.formData 'inv_name') )}} placeholder="Inventory Name" class="form-control" id="inputName">
+        </Input>
     </div>
     <div class="col-md-3">
-        <Input @type="text" @value={{this.formData.description}} {{on 'change' (fn this.inventoryDropdownInput this.formData 'description')}} placeholder="Description" class="form-control"
-            id="inputDescription"></Input>
+        <Input required @type="text" @value={{if @createInventoryEditItem @createInventoryEditItem.description  this.formData.description}}
+            {{on 'change' (if @createInventoryEditItem (fn this.inventoryDropdownInput @createInventoryEditItem 'description') 
+            (fn this.inventoryDropdownInput  this.formData 'description') )}} placeholder="Description" class="form-control" id="inputDescription">
+        </Input>
     </div>
         <div class="col-md-3">
-        <PowerSelect class="w-100 py-1" @options={{this.names}}  @value={{this.inventoryType}} @placeholder='Inventory type'
-            @selected={{this.formData.inv_type}} @onChange={{(fn this.inventoryDropdown this.formData 'inv_type')}} as |name|>
+        {{!-- PowerSelect --}}
+        <PowerSelect class="w-100 py-1" 
+            @options={{this.inv_type}}  
+            @searchEnabled={{false}}
+            @value={{if @createInventoryEditItem @createInventoryEditItem.inv_type this.formData.inv_type}} @placeholder='Inventory type'
+            @selected={{if @createInventoryEditItem @createInventoryEditItem.inv_type  this.formData.inv_type}} 
+            @onChange={{(if @createInventoryEditItem (fn this.inventoryDropdown @createInventoryEditItem 'inv_type') 
+            (fn this.inventoryDropdown  this.formData 'inv_type') )}} as |name|>
             {{name}}
+            {{!-- @onChange={{(fn this.inventoryDropdown this.formData 'inv_type')}} as |name|>
+            {{name}} --}}
         </PowerSelect>
     </div>
-    {{!-- <div class="col-md-3">
-        <PowerSelect class="w-100 py-1" @options={{this.names}} @renderInPlace={{true}} @placeholder='status'
-            @selected={{this.formData.active_status}} @onChange={{(fn this.inventoryDropdown this.formData 'active_status')}} as |name|>
-            {{name}}
-        </PowerSelect>
-    </div> --}}
     <div class="col-md-12 my-md-3">
-        <textarea value={{this.formData.full_description}} {{on 'change' (fn this.inventoryDropdownInput this.formData 'full_description')}} placeholder="Full Description"
-            class="form-control" id="inputFullDes" rows="2"></textarea>
+        <textarea value={{if @createInventoryEditItem @createInventoryEditItem.full_description  this.formData.full_description}} 
+            {{on 'change' (if @createInventoryEditItem (fn this.inventoryDropdownInput @createInventoryEditItem 'full_description') 
+            (fn this.inventoryDropdownInput  this.formData 'full_description'))}} placeholder="Full Description"
+            class="form-control" id="inputFullDes" rows="2">
+        </textarea>
     </div>
     <div class="col-md-3">
-        <PowerSelect class="w-100 py-1" @options={{this.names}}  @value={{this.categoryType}} @placeholder='Category Type'
-            @selected={{this.formData.category_type}} @onChange={{(fn this.inventoryDropdown this.formData 'category_type')}} as |name|>
+        {{!-- PowerSelect --}}
+        <PowerSelect class="w-100 py-1" @options={{this.category_type}}  @value={{this.categoryType}} @placeholder='Category Type'
+            @searchEnabled={{false}}
+            @selected={{if @createInventoryEditItem @createInventoryEditItem.category_type  this.formData.category_type}} 
+            @onChange={{(if @createInventoryEditItem (fn this.inventoryDropdown @createInventoryEditItem 'category_type') 
+            (fn this.inventoryDropdown  this.formData 'category_type') )}} as |name|>
             {{name}}
         </PowerSelect>
     </div>
     <div class="col-md-3">
-        <PowerSelect class="w-100 py-1" @options={{this.names}}  @value={{this.storageType}} @placeholder='Storage type'
-            @selected={{this.formData.storage_type}} @onChange={{(fn this.inventoryDropdown this.formData 'storage_type')}} as |name|>
+        {{!-- PowerSelect --}}
+        <PowerSelect class="w-100 py-1" @options={{this.storage_type}}  @value={{this.storageType}} @placeholder='Storage type'
+            @selected={{if @createInventoryEditItem @createInventoryEditItem.storage_type  this.formData.storage_type}} 
+            @searchEnabled={{false}}
+            @onChange={{(if @createInventoryEditItem (fn this.inventoryDropdown @createInventoryEditItem 'storage_type') 
+            (fn this.inventoryDropdown  this.formData 'storage_type') )}} as |name|>
             {{name}}
         </PowerSelect>
     </div>
     <div class="col-md-3 ">
-        <PowerSelect class="w-100 py-1" @options={{this.names}}  @value={{this.inventoryType}} @placeholder='Allocation type'
-            @selected={{this.formData.alloc_type}} @onChange={{(fn this.inventoryDropdown this.formData 'alloc_type')}} as |name|>
+        {{!-- PowerSelect --}}
+        <PowerSelect class="w-100 py-1" @options={{this.alloc_type}}  @value={{this.inventoryType}} @placeholder='Allocation type'
+            @selected={{if @createInventoryEditItem @createInventoryEditItem.alloc_type  this.formData.alloc_type}}
+            @searchEnabled={{false}} 
+            @onChange={{(if @createInventoryEditItem (fn this.inventoryDropdown @createInventoryEditItem 'alloc_type') 
+            (fn this.inventoryDropdown  this.formData 'alloc_type') )}} as |name|>
             {{name}}
         </PowerSelect>
     </div>
     <div class="col-md-3 ">
-        <PowerSelect class="w-100 py-1" @options={{this.names}}  @value={{this.unitOfMeasure}} @placeholder='Unit of Measure'
-            @selected={{this.formData.measure_type}} @onChange={{(fn this.inventoryDropdown this.formData 'measure_type')}} as |name|>
+        {{!-- PowerSelect --}}
+        <PowerSelect class="w-100 py-1" @options={{this.measure_type}}  @value={{this.unitOfMeasure}} @placeholder='Unit of Measure'
+            @selected={{if @createInventoryEditItem @createInventoryEditItem.measure_type  this.formData.measure_type}}
+            @searchEnabled={{false}} 
+            @onChange={{(if @createInventoryEditItem (fn this.inventoryDropdown @createInventoryEditItem 'measure_type') 
+            (fn this.inventoryDropdown  this.formData 'measure_type') )}} as |name|>
             {{name}}
         </PowerSelect>
     </div>
     <div class="col-md-3 my-3">
-        <Input placeholder="Manufacturing date" @value={{this.formData.manufacturing_date}} {{on 'change' (fn this.inventoryDropdownInput this.formData 'manufacturing_date')}} @type="date"  class="form-control h-100"
-            id="inputManufacturingDate"></Input>
+        <Input required placeholder="Manufacturing date" 
+            @value={{if @createInventoryEditItem @createInventoryEditItem.manufacturing_date  this.formData.manufacturing_date}} 
+            {{on 'change' (if @createInventoryEditItem (fn this.inventoryDropdownInput @createInventoryEditItem 'manufacturing_date') 
+            (fn this.inventoryDropdownInput  this.formData 'manufacturing_date'))}} @type="date"  class="form-control h-100" id="inputManufacturingDate">
+        </Input>
     </div>
     <div class="col-md-3 my-3">
-        <Input placeholder="Expiry date" @value={{this.formData.expire_date}} {{on 'change' (fn this.inventoryDropdownInput this.formData 'expire_date')}} @type="date" class="form-control h-100"
-            id="inputExpiryDate"></Input>
+        <Input required placeholder="Expiry date" 
+            @value={{if @createInventoryEditItem @createInventoryEditItem.expire_date  this.formData.expire_date}} 
+            {{on 'change' (if @createInventoryEditItem (fn this.inventoryDropdownInput @createInventoryEditItem 'expire_date') 
+            (fn this.inventoryDropdownInput  this.formData 'expire_date'))}} @type="date" class="form-control h-100" id="inputExpiryDate">
+        </Input>
     </div>
     <div class="ml-3 d-flex flex-row g-2 w-100">
         <div class="">
@@ -75,12 +106,3 @@
         </div>
     </div>
 </form>
-{{!-- {{/each}} --}}
-
-
-{{!-- <div class="col-md-3 mb-3">
-    <PowerSelect class="w-100 py-1" @options={{this.names}} @renderInPlace={{true}} @placeholder='status'
-        @selected={{this.selectedstatus}} @onChange={{this.statusFunc}} as |name|>
-        {{name}}
-    </PowerSelect>
-</div> --}}

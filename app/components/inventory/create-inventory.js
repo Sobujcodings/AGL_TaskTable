@@ -9,12 +9,19 @@ export default class InventoryCreateInventoryComponent extends Component {
     @service store;
 
     items;
-
     @tracked createInventoryEditItem = this.args.createInventoryEditItem;
 
     @tracked isloading = true;
     @tracked items;
     @tracked formData = {};
+
+    // for dropdown
+    @tracked inv_type;
+    @tracked category_type;
+    @tracked storage_type;
+    @tracked alloc_type;
+    @tracked measure_type;
+
 
     inventoryTypeColumns = [
         {
@@ -76,23 +83,7 @@ export default class InventoryCreateInventoryComponent extends Component {
     ];
 
 
-    // tract create Inventory input field. ***
-    @tracked sku = '';
-    @tracked name = '';
-    @tracked description = '';
-    @tracked fullDescription = '';
-    @tracked manufacturingDate = '';
-    @tracked expiryDate = '';
-    @tracked storageType = '';
-    @tracked inventoryCategory = '';
-    @tracked categoryType = '';
-    @tracked category_name = '';
-    @tracked inventoryType = '';
-    @tracked allocationType = '';
-    @tracked unitOfMeasure = '';
-    @tracked status = '';
-
-    @tracked selectedstatus = 'Status';
+    // ekhane koyekta dropdown r list hobe from server
     names = ['active', 'inactive'];
 
 
@@ -101,14 +92,157 @@ export default class InventoryCreateInventoryComponent extends Component {
     // then save dile tokhon/createinvenotryEdit thakbe tokhon abar create na kore item.save korbo
     constructor() {
         super(...arguments);
+        console.log('constructor of create inventory');
         // contains edit item values obj
         let createInventoryEditItem = this.args.createInventoryEditItem;
         // this.items = createInventoryEditItem;
 
-        // console.log(createInventoryEditItem);
-        if (createInventoryEditItem) {
-            this.formData = createInventoryEditItem;
+        this.inv_type = this.getInventoryType();
+        this.category_type = this.getCatagoryType();
+        this.storage_type = this.getStorageType();
+        this.alloc_type = this.getAllocationType();
+        this.measure_type = this.getMeasureType();
+    }
+
+
+
+    // droptdown for types
+    // inv type data for dropdown
+    getcachInventoryType() {
+        const inv_types = this.store.peekAll('inventory/inventory-type');
+        // console.log(inv_types);
+        return inv_types;
+    }
+
+    // inv type
+    async getInventoryType() {
+        let invTypeArray = [];
+        // inv_types from getcached method
+        let invtypedata = this.getcachInventoryType();
+        if (Object.keys(invtypedata).length === 0) {
+            console.log('findAll it');
+            const invtypes = await this.store.findAll('inventory/inventory-type');
+            console.log('invtypedata', invtypes);
+            let types = invtypes.filter(obj => obj.active_status == true);
+            // console.log('types', types);
+            types.forEach(element => {
+                invTypeArray.push(element.inv_type);
+            });
+            console.log('invTypeArray []', invTypeArray);
         }
+        else {
+            // if peekAll works
+            let types = invtypedata.filter(obj => obj.active_status == true);
+            console.log('peek works');
+            types.forEach(element => {
+                invTypeArray.push(element.inv_type);
+            });
+        }
+        return invTypeArray;
+    }
+
+
+    // cat type
+    async getCatagoryType() {
+        let invTypeArray = [];
+        // inv_types from getcached method
+        // let invtypedata = this.getcachInventoryType();
+        // if (Object.keys(invtypedata).length === 0) {
+        console.log('findAll it');
+        const invtypes = await this.store.findAll('inventory/inventory-category-type');
+        console.log('invtypedata', invtypes);
+        let types = invtypes.filter(obj => obj.active_status == true);
+        // console.log('types', types);
+        types.forEach(element => {
+            invTypeArray.push(element.category_type);
+        });
+        console.log('invTypeArray []', invTypeArray);
+        // }
+        // else {
+        //     // if peekAll works
+        //     let types = invtypedata.filter(obj => obj.active_status == true);
+        //     console.log('peek works');
+        //     types.forEach(element => {
+        //         invTypeArray.push(element.inv_type);
+        //     });
+        // }
+        return invTypeArray;
+    }
+
+    // storage type
+    async getStorageType() {
+        let invTypeArray = [];
+        console.log('findAll it');
+        const invtypes = await this.store.findAll('inventory/storage-type');
+        console.log('invtypedata', invtypes);
+        let types = invtypes.filter(obj => obj.active_status == true);
+        // console.log('types', types);
+        types.forEach(element => {
+            invTypeArray.push(element.storage_type);
+        });
+        console.log('invTypeArray []', invTypeArray);
+        return invTypeArray;
+    }
+
+
+    // allocation type
+    async getAllocationType() {
+        let invTypeArray = [];
+        console.log('findAll it');
+        const invtypes = await this.store.findAll('inventory/allocation-type');
+        console.log('invtypedata', invtypes);
+        let types = invtypes.filter(obj => obj.active_status == true);
+        // console.log('types', types);
+        types.forEach(element => {
+            invTypeArray.push(element.alloc_type);
+        });
+        console.log('invTypeArray []', invTypeArray);
+        return invTypeArray;
+    }
+
+
+    // measure type
+    async getMeasureType() {
+        let invTypeArray = [];
+        console.log('findAll it');
+        const invtypes = await this.store.findAll('inventory/unit-of-measure');
+        console.log('invtypedata', invtypes);
+        let types = invtypes.filter(obj => obj.active_status == true);
+        // console.log('types', types);
+        types.forEach(element => {
+            invTypeArray.push(element.measure_type);
+        });
+        console.log('measure_type []', invTypeArray);
+        return invTypeArray;
+    }
+
+
+
+    // if modal is closed then we know it from here then get the peekAll data which might be edited from the modal then rollbackattributes that whole model value or each model item using service to catch the model value after findAll.
+    @action
+    insertForModal(handleItemsToNull) {
+        // this.SelectedInventory = SelectedInventory;
+        $('#inventoryModalContent').on('hidden.bs.modal', function (event) {
+            // do something...
+            console.log('modal closed');
+            handleItemsToNull();
+        })
+    }
+
+
+    @action
+    handleItemsToNull() {
+        // console.log(this.formData);
+        // this.formData = {};
+        // console.log(this.formData);
+        // this.createInventoryEditItem = {};
+        // console.log('inventoryType', this.args.inventoryType);
+        // let allRecords = this.store.peekAll(`inventory/${this.args.inventoryType}`);
+        // // console.log(allRecords);
+        // allRecords.forEach(element => {
+        //     set(element, 'isEdit', false);
+        //     element.rollbackAttributes();
+        // });
     }
 
 
@@ -118,37 +252,28 @@ export default class InventoryCreateInventoryComponent extends Component {
         event.preventDefault();
 
         // jodi create invenory edit kori tahole ekahne data thakbe r ekhane data thakle item.save() korbo noyto notun kore create korbo
-        if (this.createInventoryEditItem) {
-            console.log('item.save()');
-            // to save it like this it should be a model instance!!! done
-            this.createInventoryEditItem.save();
+        if (this.args.createInventoryEditItem) {
+            console.log(this.args.createInventoryEditItem);
+            this.args.createInventoryEditItem.save();
+            $('#inventoryModalContent').modal('hide');
         }
         else {
             console.log('formdata', this.formData);
             const newInventoryType = await this.store.createRecord('inventory/inventory-list',
                 this.formData
-                // {
-                // create_inventory: {
-                //     sku: this.formData.sku,
-                //     description: this.formData.description,
-                //     has_tables: this.formData.has_tables,
-                // }
-                // create_inventory: this.formData
-                // },
             );
             newInventoryType.save().then((savedInventory) => {
                 // The record has been saved successfully
                 console.log(savedInventory);
+                $('#inventoryModalContent').modal('hide');
                 // this.isLoadingPOST = false;
-                alert('Inventory has been created successfully');
+                // alert('Inventory has been created successfully');
             })
                 .catch((error) => {
                     console.error('Error saving inventory:', error);
                     alert(error, 'Inventory has been not created, try again');
                 });
         }
-        $('#inventoryModalContent').modal('hide');
-
 
         // Reset form fields if needed
         // this.resetFormFields();
@@ -182,52 +307,230 @@ export default class InventoryCreateInventoryComponent extends Component {
     }
 
 
-    @action
-    fullDescriptionFunc(event) {
-        this.fullDescription = event.target.value;
-    }
+
+    // TODO: ata akta component banano jete pare jekhane ami ki lagbe inv type naki cat type ta dibo shei onujayi fetch/findAll hoye amke shei inv,cat type r name/value gula dibe
+    // // inv type data for dropdown
+    // getcachInventoryType() {
+    //     const inv_types = this.store.peekAll('inventory/inventory-type');
+    //     // console.log(inv_types);
+    //     return inv_types;
+    // }
+
+    // async getInventoryType() {
+    //     let invTypeArray = [];
+    //     let invtypedata = this.getcachInventoryType();
+    //     if (Object.keys(invtypedata).length === 0) {
+    //         // console.log('findAll it');
+    //         invtypedata = await this.store.findAll('inventory/inventory-type');
+    //         // console.log(invtypedata);
+    //         let types = invtypedata.filter(obj => obj.active_status == true);
+    //         // console.log('types', types);
+    //         types.forEach(element => {
+    //             invTypeArray.push(element.inv_type);
+    //         });
+
+    //     }
+    //     else {
+    //         let types = invtypedata.filter(obj => obj.active_status == true);
+    //         // console.log('types', types);
+    //         types.forEach(element => {
+    //             invTypeArray.push(element.inv_type);
+    //         });
+    //     }
+    //     return invTypeArray;
+    // }
 
 
-    @action
-    statusFunc(value) {
-        this.status = value;
-        this.selectedstatus = value;
-    }
 
 
 
-    @action
-    handleInputChange(event) {
-        console.log(event.target.value);
-    }
+    // // catagory type
+    // getcachCatagoryType() {
+    //     const category_type = this.store.peekAll('inventory/inventory-category-type');
+    //     // console.log(category_type);
+    //     return category_type;
+    // }
+
+    // @action
+    // async getCatagoryType() {
+    //     let CatagoryTypeArray = [];
+    //     let Country = [];
+    //     let Catagorytypedata = this.getcachCatagoryType();
+    //     if (Object.keys(Catagorytypedata).length === 0) {
+    //         // console.log('findAll it');
+    //         Catagorytypedata = await this.store.findAll('inventory/inventory-category-type');
+    //         // console.log(Catagorytypedata);
+    //         let types = Catagorytypedata.filter(obj => obj.active_status == true);
+    //         // category type array
+    //         types.forEach(element => {
+    //             CatagoryTypeArray.push(element.category_type);
+    //         });
+    //         // country
+    //         types.forEach(element => {
+    //             element.country.forEach(element => {
+    //                 // Check if the country is not already in the array before adding it
+    //                 if (!Country.includes(element)) {
+    //                     Country.push(element);
+    //                 }
+    //             });
+    //         });
+    //         // console.log(Country);
+    //         this.Country = Country;
+    //     }
+    //     else {
+    //         let types = Catagorytypedata.filter(obj => obj.active_status == true);
+    //         // console.log('types', types);
+    //         types.forEach(element => {
+    //             CatagoryTypeArray.push(element.category_type);
+    //         });
+    //         // country
+    //         types.forEach(element => {
+    //             element.country.forEach(element => {
+    //                 // Check if the country is not already in the array before adding it
+    //                 if (!Country.includes(element)) {
+    //                     Country.push(element);
+    //                 }
+    //             });
+    //         });
+    //         this.Country = Country;
+    //         // console.log(invTypeArray);
+    //     }
+    //     return CatagoryTypeArray;
+    // }
+
+
+
+
+
 
     // 
-    // @action
-    // handledropdown(data, property, value) {
-    //     // console.log('value', value);
-    //     set(data, property, value);
-    //     this.trackingItem();
-    // }
+
+
 
     @action
     inventoryDropdown(data, property, value) {
         console.log(value);
-
         set(data, property, value);
         console.log(data);
-        console.log(this.formData);
+        // console.log(this.formData);
     }
 
 
     @action
     inventoryDropdownInput(data, property, event) {
         console.log(event.target.value);
-
         set(data, property, event.target.value);
         console.log(data);
-        console.log(this.formData);
+        // console.log(this.formData);
     }
+
+
+
+
 }
+
+
+
+// constructor() {
+//     super(...arguments);
+//     this.copyItem = JSON.parse(JSON.stringify(this.args.item));
+//     this.inventoryTypes = this.getInventoryType();
+//     this.CatagoryTypes = this.getCatagoryType();
+// }
+
+
+// // inv type data for dropdown
+// getcachInventoryType() {
+//     const inv_types = this.store.peekAll('inventory/inventory-type');
+//     // console.log(inv_types);
+//     return inv_types;
+// }
+
+// async getInventoryType() {
+//     let invTypeArray = [];
+//     let invtypedata = this.getcachInventoryType();
+//     if (Object.keys(invtypedata).length === 0) {
+//         // console.log('findAll it');
+//         invtypedata = await this.store.findAll('inventory/inventory-type');
+//         // console.log(invtypedata);
+//         let types = invtypedata.filter(obj => obj.active_status == true);
+//         // console.log('types', types);
+//         types.forEach(element => {
+//             invTypeArray.push(element.inv_type);
+//         });
+
+//     }
+//     else {
+//         let types = invtypedata.filter(obj => obj.active_status == true);
+//         // console.log('types', types);
+//         types.forEach(element => {
+//             invTypeArray.push(element.inv_type);
+//         });
+//     }
+//     return invTypeArray;
+// }
+
+
+
+// // catagory type
+// getcachCatagoryType() {
+//     const category_type = this.store.peekAll('inventory/inventory-category-type');
+//     // console.log(category_type);
+//     return category_type;
+// }
+
+// @action
+// async getCatagoryType() {
+//     let CatagoryTypeArray = [];
+//     let Country = [];
+//     let Catagorytypedata = this.getcachCatagoryType();
+//     if (Object.keys(Catagorytypedata).length === 0) {
+//         // console.log('findAll it');
+//         Catagorytypedata = await this.store.findAll('inventory/inventory-category-type');
+//         // console.log(Catagorytypedata);
+//         let types = Catagorytypedata.filter(obj => obj.active_status == true);
+//         // category type array
+//         types.forEach(element => {
+//             CatagoryTypeArray.push(element.category_type);
+//         });
+//         // country
+//         types.forEach(element => {
+//             element.country.forEach(element => {
+//                 // Check if the country is not already in the array before adding it
+//                 if (!Country.includes(element)) {
+//                     Country.push(element);
+//                 }
+//             });
+//         });
+//         // console.log(Country);
+//         this.Country = Country;
+//     }
+//     else {
+//         let types = Catagorytypedata.filter(obj => obj.active_status == true);
+//         // console.log('types', types);
+//         types.forEach(element => {
+//             CatagoryTypeArray.push(element.category_type);
+//         });
+//         // country
+//         types.forEach(element => {
+//             element.country.forEach(element => {
+//                 // Check if the country is not already in the array before adding it
+//                 if (!Country.includes(element)) {
+//                     Country.push(element);
+//                 }
+//             });
+//         });
+//         this.Country = Country;
+//         // console.log(invTypeArray);
+//     }
+//     return CatagoryTypeArray;
+// }
+
+
+
+
+
+
 
 
 // Retrieve values from tracked properties, tracted property is assosiated with the input fields.

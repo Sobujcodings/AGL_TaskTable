@@ -4,6 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { action, set } from '@ember/object';
 import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
+import { FontAwesomeIcon } from '@fortawesome/ember-fontawesome';
 
 
 export default class InventoryInventoryTypeComponent extends Component {

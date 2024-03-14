@@ -1,8 +1,8 @@
 {{!-- create inventory table --}}
 {{!-- show this when there is value in the formArray --}}
 {{!-- {{#if @firstObjectKeys}} --}}
-<section class="table-responsive">
-    <h4 class="mx-2">Create Inventory</h4>
+<section class="table-responsive table-container mx-auto">
+    <h4 class="mx-2">Inventory</h4>
     <table class="table table-striped border">
         <thead class="">
             <tr>
@@ -13,6 +13,17 @@
             </tr>
         </thead>
         <tbody>
+            {{!-- <tr>
+                <th hidden={{ (eq this.isloading false)}} colspan="6">
+                    {{#if this.isloading}}
+                        <div class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        </div>
+                    {{/if}}
+                </th>
+            </tr> --}}
             {{#each this.items as |item |}}
             <tr class="my-auto">
                 <td class="border text-center">{{item.sku}}</td>
@@ -38,11 +49,15 @@
                 <td class="border text-center">{{item.alloc_type}}</td>
 
                 <td class="border text-center">{{item.measure_type}}</td>
-                
-                <td class="my-auto mx-auto text-center">
-                    <button type="button" class="btn btn-primary btn-sm mx-auto my-auto text-center w-100" {{on "click"
+
+                <td class="">
+                    <button type="button" class="btn btn-primary btn-sm w-100" {{on "click"
                         (fn @handlecreateinventoryedit "Create Inventory" item)}}>
                         Edit
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm w-100 my-2" {{on "click"
+                        (fn @handlecreateinventoryStatus "Create Inventory" item)}}>
+                        Inactive
                     </button>
                 </td>
             </tr>

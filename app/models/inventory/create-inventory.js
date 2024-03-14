@@ -17,4 +17,6 @@ export default class InventoryCreateInventoryModel extends Model {
     @attr() inv_type;   
     @attr() measure_type;   
     @attr() create_inventory;   
+    @attr() active_status;   
+
 }

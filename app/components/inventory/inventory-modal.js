@@ -27,9 +27,9 @@ export default class InventoryInventoryModalComponent extends Component {
 
     @action
     handleItemsToNull() {
-        console.log(this.args.inventoryType);
+        console.log('inventoryType', this.args.inventoryType);
         let allRecords = this.store.peekAll(`inventory/${this.args.inventoryType}`);
-        console.log(allRecords);
+        // console.log(allRecords);
         allRecords.forEach(element => {
             set(element, 'isEdit', false);
             element.rollbackAttributes();
