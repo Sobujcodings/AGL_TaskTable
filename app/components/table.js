@@ -351,7 +351,7 @@ export default class TableComponent extends Component {
                     const random4DigitNumber2 = Math.floor(Math.random() * 9) + 1;
                     const Name = RandomName[random4DigitNumber2];
                     const data = { [Name]: random4DigitNumber2 };
-                    console.log(data);
+                    // console.log(data);
                     array.push(data);
                 }
                 this.row.unshift(array);
@@ -381,7 +381,7 @@ export default class TableComponent extends Component {
                     const random4DigitNumber2 = Math.floor(Math.random() * 9) + 1;
                     const Name = RandomName[random4DigitNumber2];
                     const data = { [Name]: random4DigitNumber2 };
-                    console.log(data);
+                    // console.log(data);
                     array.push(data);
                 }
                 this.row.push(array);

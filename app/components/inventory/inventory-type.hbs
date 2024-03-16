@@ -15,11 +15,16 @@
     <div class="mt-1">
       <label class="toggle">
         <span class="toggle-label">Has Tables</span>
-        <Input @checked={{item.has_tables}} {{on 'change' (fn this.HandleStatus item)}} class="toggle-checkbox" @type="checkbox" />
+        <Input @checked={{item.has_tables}} {{on 'change' (fn this.HandleStatus item)}} class="toggle-checkbox"
+          @type="checkbox" />
         {{!-- <button {{ on 'click' (fn this.HandleStatus item)}} class="toggle-checkbox" type="button"></button> --}}
         <div class="toggle-switch"></div>
       </label>
     </div>
+
+
+    {{!--
+    <FaIcon @icon="coffee" /> --}}
 
 
     <div>
@@ -39,10 +44,9 @@
       </div>
     </div>
     {{/if}}
-
-    {{!-- <FontAwesomeIcon @icon="faCoffee" /> --}}
   </div>
 </div>
+
 
 
 

@@ -20,10 +20,10 @@ export default class IndexRoute extends Route {
       // console.log(parsed);
 
       let data = await this.store.findAll('table');
-      console.log(data);
+      // console.log(data);
       // return data;
       data.forEach(element => {
-        console.log(element);
+        // console.log(element);
       });
       return data;
     } catch (error) {

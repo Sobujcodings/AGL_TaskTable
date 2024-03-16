@@ -4,7 +4,6 @@ import { tracked } from '@glimmer/tracking';
 import { action, set } from '@ember/object';
 import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
-import { FontAwesomeIcon } from '@fortawesome/ember-fontawesome';
 
 
 export default class InventoryInventoryTypeComponent extends Component {
@@ -43,6 +42,16 @@ export default class InventoryInventoryTypeComponent extends Component {
       column_property: 'actions',
     },
   ];
+
+
+  people = [
+    { name: 'María', surname: 'Murray' },
+    { name: 'Søren', surname: 'Williams' },
+    { name: 'João', surname: 'Jin' },
+    { name: 'Miguel', surname: 'Camba' },
+    { name: 'Marta', surname: 'Stinson' },
+    { name: 'Lisa', surname: 'Simpson' },
+];
 
 
 

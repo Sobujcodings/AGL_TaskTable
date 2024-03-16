@@ -81,24 +81,14 @@ export default class InventoryComponent extends Component {
 
 
 
-    // constructor() {
-    //     super(...arguments);
-    //     const inventoryType = this.store.findAll('inventory/inventory_data');
-    //     console.log(inventoryType);
-    //     inventoryType.then(data => {
-    //         let inventoryTypeObjects = data.map((element) => {
-    //             console.log(element);
-    //             return element
-    //         })
-    //         console.log(data);
-    //         this.items = data;
-    //         // to make it globally accessible set this item data from the server to global and if the modal is closed, set the item to null to set it as previous, after opening that modal it will be fetch again n everything will be as usual. 
-    //         // this.fetchdata.setItems(this.items);
-    //         // if (data) {
-    //         //     this.isloading = !this.isloading;
-    //         // }
-    //     })
-    // }
+    people = [
+        { name: 'María', surname: 'Murray' },
+        { name: 'Søren', surname: 'Williams' },
+        { name: 'João', surname: 'Jin' },
+        { name: 'Miguel', surname: 'Camba' },
+        { name: 'Marta', surname: 'Stinson' },
+        { name: 'Lisa', surname: 'Simpson' },
+    ];
 
 
 
@@ -147,7 +137,7 @@ export default class InventoryComponent extends Component {
 
 
     @action
-    handlecreateinventoryStatus(name,item) {
+    handlecreateinventoryStatus(name, item) {
         console.log(item);
         set(item, 'active_status', true);
     }

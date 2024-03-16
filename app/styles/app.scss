@@ -10,6 +10,7 @@
 
 
 // 
+// , .ember-power-select-search-input, .ember-power-select-search
 .ember-power-select-dropdown {
   z-index: 9999999 !important;
 }
@@ -104,4 +105,23 @@ input[type="date"]:valid:before {
   max-width: 1250px;
   overflow-x: auto;
   overflow-y: auto;
+}
+
+
+//
+
+.img {
+  position: relative;
+  display: inline-block;
+}
+
+.icon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(50%, -50%);
+  padding: 5px;
+  // background-color: red;
+  color: white;
+  border: none;
 }

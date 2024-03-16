@@ -3,6 +3,7 @@ import { computed } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { action, set } from '@ember/object';
 import { A } from '@ember/array';
+import { v1, v4 as uuid } from 'ember-uuid';
 import { inject as service } from '@ember/service';
 
 export default class InventoryCreateInventoryComponent extends Component {
@@ -21,6 +22,10 @@ export default class InventoryCreateInventoryComponent extends Component {
     @tracked storage_type;
     @tracked alloc_type;
     @tracked measure_type;
+
+    //
+    @tracked images = A([]);
+    @tracked videos = A([]);
 
 
     inventoryTypeColumns = [
@@ -87,6 +92,18 @@ export default class InventoryCreateInventoryComponent extends Component {
     names = ['active', 'inactive'];
 
 
+    // warehouse mapping
+    @tracked warehouseOptions = A(['Warehouse A', 'Warehouse B', 'Warehouse C']);
+    @tracked warehouseMaps = A([]);
+    @tracked selectedItem;
+    @tracked selectedItem2;
+    @tracked warehouses = A([
+        { id: 1, warehouseName: 'Warehouse A', warehouseMaps: ['Map 1', 'Map 2', 'Map 3'] },
+        { id: 2, warehouseName: 'Warehouse B', warehouseMaps: ['Map 4', 'Map 5', 'Map 6'] },
+        { id: 3, warehouseName: 'Warehouse C', warehouseMaps: ['Map 7', 'Map 8', 'Map 9'] }
+    ]);
+
+
     // TODO: Constructor e inv type, cat type, stg type ai type gulo diye dropdown banabo
     // edit e click korle shei item k padhiye dibo shei item r property ekhane set kore dibo and
     // then save dile tokhon/createinvenotryEdit thakbe tokhon abar create na kore item.save korbo
@@ -106,6 +123,72 @@ export default class InventoryCreateInventoryComponent extends Component {
 
 
 
+    @action
+    handleWarehHouseMapping(warehouseName, property, value) {
+        // console.log('itrem', warehouseName);
+        // console.log('property', property);
+        // console.log('value', value);
+        this.selectedItem = value;
+        // find the item by the property name and value from warehouses.
+        const Thatitem = this.warehouses.findBy('warehouseName', value);
+        this.warehouseMaps = Thatitem.warehouseMaps;
+        this.selectedItem2 = '';
+    }
+
+
+    @action
+    handleSelectedMap(warehousemaps, value) {
+        console.log(warehousemaps, value);
+        this.selectedItem2 = value;
+    }
+
+
+
+    // images
+    @action
+    HandlepreviewImage(event) {
+        console.log(event);
+        Array.from(event.target.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                console.log(e.target.result);
+                this.images.pushObject({ 'id': uuid(), 'image': e.target.result });
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // video
+    @action
+    HandlepreviewVideo(event) {
+        console.log(event.target.files);
+        Array.from(event.target.files).forEach((file) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                console.log(e.target.result);
+                // Push each video file into the videos array
+                this.videos.pushObject({ 'id': uuid(), 'video': e.target.result });
+            };
+            reader.readAsDataURL(file);
+        });
+        console.log(this.videos);
+    }
+
+
+    @action
+    handleImageRemove(item) {
+        console.log(item);
+        this.images.removeObject(item);
+    }
+
+    @action
+    handleVideoRemove(item) {
+        console.log(item);
+        this.videos.removeObject(item);
+    }
+
+
+
     // droptdown for types
     // inv type data for dropdown
     getcachInventoryType() {
@@ -120,7 +203,7 @@ export default class InventoryCreateInventoryComponent extends Component {
         // inv_types from getcached method
         let invtypedata = this.getcachInventoryType();
         if (Object.keys(invtypedata).length === 0) {
-            console.log('findAll it');
+            // console.log('findAll it');
             const invtypes = await this.store.findAll('inventory/inventory-type');
             console.log('invtypedata', invtypes);
             let types = invtypes.filter(obj => obj.active_status == true);
@@ -133,7 +216,7 @@ export default class InventoryCreateInventoryComponent extends Component {
         else {
             // if peekAll works
             let types = invtypedata.filter(obj => obj.active_status == true);
-            console.log('peek works');
+            // console.log('peek works');
             types.forEach(element => {
                 invTypeArray.push(element.inv_type);
             });
@@ -278,32 +361,6 @@ export default class InventoryCreateInventoryComponent extends Component {
         // Reset form fields if needed
         // this.resetFormFields();
 
-
-        // console.log(this.CreateInventoryEditItem);
-        // // if data found in tracked editItem  then replace that item with the updated input data.
-        // if (this.CreateInventoryEditItem != undefined) {
-        //     console.log('create inventory item to be edited', this.CreateInventoryEditItem);
-
-        // } else {
-        //     console.log('no edit new create');
-        //     // push to form data to show this in the UI.
-        //     this.FormArray.push(formData);
-        //     // form data to contains all the data to post.
-        //     this.FormArray = this.FormArray;
-        // }
-
-        // // get the keys from the formArray
-        // this.firstObjectKeys = Object.keys(this.FormArray[0]);
-        // console.log(this.firstObjectKeys);
-
-
-        // Reset form fields if needed
-        // this.resetFormFields();
-
-        // TODO: validation korte hobe, khali form save kora jabe nah/kon gula required shegulo chara submit kora jabe nah alert dibo return kore dibo
-        // modal close hobe ***
-        // this.CloseCreateInventoryModal();
-
     }
 
 
@@ -411,7 +468,7 @@ export default class InventoryCreateInventoryComponent extends Component {
     inventoryDropdown(data, property, value) {
         console.log(value);
         set(data, property, value);
-        console.log(data);
+        // console.log(data);
         // console.log(this.formData);
     }
 
@@ -420,7 +477,7 @@ export default class InventoryCreateInventoryComponent extends Component {
     inventoryDropdownInput(data, property, event) {
         console.log(event.target.value);
         set(data, property, event.target.value);
-        console.log(data);
+        // console.log(data);
         // console.log(this.formData);
     }
 
