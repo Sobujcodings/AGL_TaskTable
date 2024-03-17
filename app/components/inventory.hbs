@@ -1,60 +1,16 @@
+<Inventory::InventoryModal
+  @inventoryType={{this.inventory}}
+  @createInventoryEditItem={{this.CreateInventoryEditItem}}
+  @changeInventoryType={{this.changeInventoryType}}
+  @handlecreateinventoryedit={{this.HandleCreateInventoryEdit}}
+  @columns={{this.CreateInventoryTableColumns}} @items={{this.items}}
+  @handleInventoryStatusEdit={{this.handleInventoryStatusEdit}}
+/>
+
 
 {{! Inventory Buttons }}
-<section class="my-4">
+{{!-- <section class="my-4">
   <div class="flex">
-    <div class="mx-auto text-center">
-      {{! <Inventory::InventoryType class="mx-auto text-center"></Inventory::InventoryType> }}
-
-      <button
-        type="button"
-        class="btn btn-secondary btn-lg"
-        {{on "click" (fn this.changeInventoryType "Inventory type")}}
-      >
-        Inventory type
-      </button>
-
-      <button
-        type="button"
-        class="btn btn-secondary btn-lg"
-        {{on "click" (fn this.changeInventoryType "Inventory Category type")}}
-      >
-        Inventory Category type
-      </button>
-
-      <button
-        type="button"
-        class="btn btn-secondary btn-lg"
-        {{on "click" (fn this.changeInventoryType "Catagory")}}
-      >
-        Inventory Category
-      </button>
-    </div>
-    <div class="my-2 mx-auto text-center">
-      <button
-        type="button"
-        class="btn btn-secondary btn-lg"
-        onclick={{fn this.changeInventoryType "Storage type"}}
-      >
-        Storage type
-      </button>
-
-      <button
-        type="button"
-        class="btn btn-secondary btn-lg"
-        onclick={{fn this.changeInventoryType "Allocation type"}}
-      >
-        Allocation type
-      </button>
-
-      <button
-        type="button"
-        class="btn btn-secondary btn-lg"
-        onclick={{fn this.changeInventoryType "Unit of Measure"}}
-      >
-        Unit of Measure
-      </button>
-    </div>
-
     <div class="mx-auto text-center mt-3">
       <button
         type="button"
@@ -65,37 +21,16 @@
       </button>
     </div>
   </div>
-</section>
+</section> --}}
+
 
 
 
 {{!-- 
-    <PowerSelect
-            @searchEnabled={{true}}
-            @options={{this.people}}
-            @selected={{this.selectedPerson}}
-            @labelText="Person"
-            @onChange={{fn (mut this.selectedPerson)}} as |person|>
-            {{person.name}} {{person.surname}}
-    </PowerSelect>
- --}}
-
-
-
-
-<Inventory::Createinventorytable @formarray={{this.FormArray}} 
-@firstObjectKeys={{this.firstObjectKeys}} @handlecreateinventoryedit={{this.HandleCreateInventoryEdit}}
+<Inventory::Createinventorytable
+@handlecreateinventoryedit={{this.HandleCreateInventoryEdit}}
 @columns={{this.CreateInventoryTableColumns}} @items={{this.items}}
-@handlecreateinventoryStatus={{this.handlecreateinventoryStatus}}
-/>
-
-
-
-{{!-- *** ekahan theke akta function e padahte pari j shob edit korar por shei fuction e item k padhiye dibo shei item ke ekhane ene save kore dibo!! --}}
-{{!-- modal aktai open hobe jei table r jonno open korbo sheta pass korbo just shei modal e then shetar jonno specific table padhabo shetar jonno --}}
-<Inventory::InventoryModal
-  @inventoryType={{this.inventory}}
-  @createInventoryEditItem={{this.CreateInventoryEditItem}}
-/>
+@handleInventoryStatusEdit={{this.handleInventoryStatusEdit}}
+/> --}}
 
 

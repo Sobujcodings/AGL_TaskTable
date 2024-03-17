@@ -1,5 +1,5 @@
 {{!-- component tree-view.hbs: --}}
-<div class="d-flex flex-row mb-2 ">
+<div class="d-flex flex-row mb-2 container p-0">
     <div class="w-100">
         <label for="">
             <Input class="form-control" @type="text" placeholder="Catagory Name" {{on 'change' this.onChangeInput}} @value={{@item.category_name}} />
@@ -13,7 +13,7 @@
             @selected={{@item.inv_type}}
             @placeholder='Inventory type'
             @onChange={{fn this.handledropdown @item 'inv_type'}} as |item|>
-            Inventory type: {{item}}
+            {{item}}
         </PowerSelect>
     </div>
      <div class="mx-2 w-100">
@@ -24,7 +24,7 @@
             @selected={{@item.category_type}}
             @placeholder='Catagory type'
              @onChange={{fn this.handledropdown @item 'category_type'}} as |item|>
-            Category type: {{item}}
+            {{item}}
         </PowerSelect>
     </div>
     <div class="mx-2 w-100">
@@ -35,7 +35,7 @@
             @selected={{@item.country}}
             @placeholder='Country'
             @onChange={{fn this.handledropdown @item 'country'}} as |item|>
-            Country: {{item}}
+            {{item}}
         </PowerSelect>
     </div>
     <button type="button" class="btn btn-sm btn-primary ml-2" {{on "click" (fn this.addChildCategory @item)}}>Add</button>

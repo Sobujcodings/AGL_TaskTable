@@ -1,5 +1,5 @@
 {{!-- input fields --}}
-<div class="mx-auto my-0">
+<div class="mx-auto my-0 container p-0">
   {{#each this.inputFieldNumbers as |item|}}
   <div class="d-flex gap-2 mx-auto my-auto">
     <div class="d-flex flex-row gap-2">
@@ -21,7 +21,7 @@
     </div>
   </div>
   {{/each}}
-  <div class="d-flex my-0">
+  <div class="d-flex my-0 ">
     <button type="button" class="my-3 btn btn-primary w-lg-25 px-4" {{on 'click' this.handleAddInventory}}>+</button>
     <button type="button" class="my-3 btn btn-success w-lg-25 px-4 mx-2" hidden={{(eq this.inputFieldNumbers.length 0)}} {{on 'click' this.HandleSave}}>Save</button>
     {{!-- for post request spinner  --}}

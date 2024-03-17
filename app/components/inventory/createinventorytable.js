@@ -9,8 +9,8 @@ import { inject as service } from '@ember/service';
 export default class InventoryCreateinventorytableComponent extends Component {
     @service store;
     @tracked items;
-
     @tracked isloading;
+    @tracked selectedTab = this.args.selectedTab
 
 
     inventoryTypeColumns = [
@@ -73,31 +73,11 @@ export default class InventoryCreateinventorytableComponent extends Component {
         super(...arguments);
 
 
-        // XXX
-        // const newInventoryType = this.store.createRecord('inventory/inventory-list',
-        //     // this.formData
-        //     {
-        //         sku: 'skuu',
-        //         inv_name: 'inv_name',
-        //         inv_type: 'inv_type',
-        //         description: 'description',
-        //         full_description: 'full_description',
-        //         manufacturing_date: 'manufacturing_date',
-        //         expire_date: 'expire_date',
-        //         storage_type: 'storage_type',
-        //         category_name: 'category_name',
-        //         category_type: 'category_type',
-        //         alloc_type: 'alloc_type',
-        //         measure_type: 'measure_type',
-        //     }
-        //     // create_inventory: this.formData
-        // );
-        // console.log(newInventoryType);
-
+        // this.selectedTab = '';
 
         // findAll
-
         this.isloading = true;
+
         const inventoryType = this.store.findAll('inventory/inventory-list');
         // console.log(inventoryType);
         this.items = inventoryType;
@@ -110,29 +90,7 @@ export default class InventoryCreateinventorytableComponent extends Component {
             this.items = data;
             this.isloading = false;
         })
-        // this.items = A([
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        //     { sku: 'skuu', inv_name: 'sdfasdf', description: 'sdfsad', full_description: 'sdfasdf', manufacturing_date: '08/02/24', expire_date: '07/03/24', storage_type: 'sdfasda', category_name: 'gasba', category_type: 'vabqsb', inv_type: 'basbas', alloc_type: 'fbdabv', measure_type: 'sbabas' },
-        // ]);
+
     }
 }
 

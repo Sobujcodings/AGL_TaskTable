@@ -1,24 +1,96 @@
 {{!-- same data again insert korle update data violation dekhabe response e, tokhon akta alert show kore dite hobe j
 cant insert same data twice --}}
 {{!-- !edit/active/inactive korle akta loader dekhate hobe wheather its a overlay loader or inside a btn use loader --}}
-{{!-- check validation for inventory catagory, parent e data na thakle child create hobe na, ager child e na thakle porer tay add hobe nah
+{{!-- check validation for inventory catagory, parent e data na thakle child create hobe na, ager child e na thakle
+porer tay add hobe nah
 akta parent e data na thakle arekta parent create korbo na alert dibo, return dibo amon! --}}
-{{!-- use fontawesome icon in add, remove, X,  --}}
-{{!-- catagory te loader dibo borota untill data findAll found from the server and save r shomoy o choto loader dibo --}}
+{{!-- use fontawesome icon in add, remove, X, --}}
+{{!-- catagory te loader dibo borota untill data findAll found from the server and save r shomoy o choto loader dibo
+--}}
 {{!-- create inv table e active status btn dibo and functionalities--}}
+{{!-- catagory dropdown e first r tay placeholder thakbe bakigula nah! --}}
 
+
+{{!-- --}}
+<nav>
+  <div class="nav nav-tabs border-bottom-0 mx-auto my-5 d-flex justify-content-center" id="nav-tab" role="tablist">
+    {{#each this.TabNames as |tab index|}}
+    <button class="nav-item nav-link {{if (eq index 0) 'active'}} px-3" id="nav-srd-product-{{index}}" data-toggle="tab"
+      data-target="#nav-srd-product-target-{{index}}" type="button" role="tab" 
+      {{on 'click' (fn this.handleTabName tab)}} aria-controls="nav-srd-product-target-{{index}}" aria-selected="{{if (eq index 0) 'true' 'false'}}">
+      <div class="m-0">
+        {{tab}}
+      </div>
+    </button>
+    {{/each}}
+  </div>
+</nav>
+
+
+
+<div class="tab-content" id="nav-tabContent  {{if (eq this.selectedTab 'Inventory') 'active'}}">
+  {{!-- {{#each this.TabNames as |tabContent index|}} --}}
+    {{!-- <div class="tab-pane fade {{if (eq index 0) 'show active'}} " id="nav-srd-product-target-{{index}}" role="tabpanel" aria-labelledby="nav-srd-product-{{index}}"> --}}
+      {{#if (eq this.selectedTab "Inventory")}}
+        {{! create Inventory Buttons }}
+        <section class="my-4 d-flex justify-content-start container-fluid w-100 table-responsive table-container p-0">
+          <div class="flex">
+            <div class="mx-auto text-center mt-3">
+              <button
+                type="button"
+                class="btn btn-primary btn-lg"
+                onclick={{fn @changeInventoryType "inventory-list"}}
+              >
+                Create Inventory
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <Inventory::Createinventorytable 
+        @selectedTab={{this.selectedTab}}
+        @handlecreateinventoryedit={{@handlecreateinventoryedit}}
+        @columns={{@columns}} @items={{@items}}
+        @handleInventoryStatusEdit={{@handleInventoryStatusEdit}}
+        />
+      {{else if (eq this.selectedTab "Inventory type")}}
+        <Inventory::InventoryType />
+      {{else if (eq this.selectedTab "Inventory Catagory type")}}
+        <Inventory::InventoryCatagoryType />
+      {{else if (eq this.selectedTab "Inventory Catagory")}}
+        <Inventory::InventoryCatagory />
+      {{else if (eq this.selectedTab "Storage type")}}
+        <Inventory::StorageType />
+      {{else if (eq this.selectedTab "Allocation type")}}
+        <Inventory::AllocationType />
+      {{else if (eq this.selectedTab "Unit of Measure")}}
+        <Inventory::UnitOfMeasure />
+      {{/if}}
+    {{!-- </div> --}}
+  {{!-- {{/each}} --}}
+</div>
+
+
+
+{{!-- <Inventory::Createinventorytable
+@handlecreateinventoryedit={{this.HandleCreateInventoryEdit}}
+@columns={{this.CreateInventoryTableColumns}} @items={{this.items}}
+@handleInventoryStatusEdit={{this.handleInventoryStatusEdit}}
+/> --}}
+
+
+
+{{!-- create inventory modal--}}
 <div {{did-insert (fn this.insertForModal this.handleItemsToNull) }} class="modal fade" id="inventoryModalContent"
   tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog" role="document" style="max-width: 90%">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLongTitle">
-          {{!-- {{this.ModalHeader}} --}}
-          {{!-- {{if @isEdit "Edit" "Create"}} --}}
           {{#if (eq @inventoryType 'inventory-list')}}
-              <p>Create Inventory</p>
+          <p>Create Inventory</p>
           {{else}}
-              <p>{{@inventoryType}}</p>
+          <p>{{@inventoryType}}</p>
           {{/if}}
         </h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -28,19 +100,7 @@ akta parent e data na thakle arekta parent create korbo na alert dibo, return di
         </button>
       </div>
       <div class="modal-body">
-        {{#if (eq @inventoryType "Inventory type")}}
-        <Inventory::InventoryType />
-        {{ else if (eq @inventoryType "Inventory Category type")}}
-        <Inventory::InventoryCatagoryType />
-        {{ else if (eq @inventoryType "Catagory")}}
-        <Inventory::InventoryCatagory />
-        {{ else if (eq @inventoryType "Storage type")}}
-        <Inventory::StorageType />
-        {{ else if (eq @inventoryType "Allocation type")}}
-        <Inventory::AllocationType />
-        {{ else if (eq @inventoryType "Unit of Measure")}}
-        <Inventory::UnitOfMeasure />
-        {{ else if (eq @inventoryType "inventory-list")}}
+        {{#if (eq @inventoryType "inventory-list")}}
         <Inventory::CreateInventory @createInventoryEditItem={{@createInventoryEditItem}} />
         {{/if}}
       </div>

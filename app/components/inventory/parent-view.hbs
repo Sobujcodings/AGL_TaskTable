@@ -1,5 +1,5 @@
 {{!-- component parent-view.hbs: --}}
-<div class="d-flex flex-row mb-2">
+<div class="d-flex flex-row mb-2 container p-0">
     <button type="button" class="btn btn-sm btn-primary mr-1" {{on "click" this.addParentCategory}}>Add</button>
     <button type="button" class="btn btn-sm btn-success" {{on 'click' this.onSave}}>Save</button>
     {{!-- for post request spinner --}}
@@ -12,5 +12,5 @@
 </div>
 
 {{#each @items as |category index|}}
-    <Inventory::TreeView class="" @item={{category}} @isRoot={{true}} @categories={{@items}} @postItems={{this.postItems}}/>
+    <Inventory::TreeView class="border" @item={{category}} @isRoot={{true}} @categories={{@items}} @postItems={{this.postItems}}/>
 {{/each}}

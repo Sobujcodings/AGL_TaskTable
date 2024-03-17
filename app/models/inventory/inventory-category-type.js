@@ -7,8 +7,4 @@ export default class InventoryInventoryCategoryTypeModel extends Model {
     @attr('') category_type;
     @attr('boolean') active_status;
     @attr('') created_by;
-    // @attr('string') id;
-    // @attr('date') created_at;
-    // @attr('date') updated_at;
-    // @attr('') updated_by;
 }

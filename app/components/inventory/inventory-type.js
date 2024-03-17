@@ -44,14 +44,23 @@ export default class InventoryInventoryTypeComponent extends Component {
   ];
 
 
-  people = [
-    { name: 'María', surname: 'Murray' },
-    { name: 'Søren', surname: 'Williams' },
-    { name: 'João', surname: 'Jin' },
-    { name: 'Miguel', surname: 'Camba' },
-    { name: 'Marta', surname: 'Stinson' },
-    { name: 'Lisa', surname: 'Simpson' },
-];
+  constructor() {
+    super(...arguments);
+
+    const inventoryType = this.store.findAll('inventory/inventory-type');
+    inventoryType.then(data => {
+      let inventoryTypeObjects = data.map((element) => {
+        return element
+      })
+      this.items = data;
+      // to make it globally accessible set this item data from the server to global and if the modal is closed, set the item to null to set it as previous, after opening that modal it will be fetch again n everything will be as usual. 
+      // this.fetchdata.setItems(this.items);
+      if (data) {
+        this.isloading = !this.isloading;
+      }
+    })
+  }
+
 
 
 
@@ -98,23 +107,6 @@ export default class InventoryInventoryTypeComponent extends Component {
   }
 
 
-
-  constructor() {
-    super(...arguments);
-
-    const inventoryType = this.store.findAll('inventory/inventory-type');
-    inventoryType.then(data => {
-      let inventoryTypeObjects = data.map((element) => {
-        return element
-      })
-      this.items = data;
-      // to make it globally accessible set this item data from the server to global and if the modal is closed, set the item to null to set it as previous, after opening that modal it will be fetch again n everything will be as usual. 
-      // this.fetchdata.setItems(this.items);
-      if (data) {
-        this.isloading = !this.isloading;
-      }
-    })
-  }
 
 
   @action

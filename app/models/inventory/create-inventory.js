@@ -18,5 +18,6 @@ export default class InventoryCreateInventoryModel extends Model {
     @attr() measure_type;   
     @attr() create_inventory;   
     @attr() active_status;   
+    // img video map
 
 }

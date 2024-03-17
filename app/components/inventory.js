@@ -10,23 +10,23 @@ export default class InventoryComponent extends Component {
     @service store;
 
     @tracked inventory;
-    @tracked items;
-
-    @tracked FormArray = A([{ sku: 'skuu', Name: 'sdfasdf', Des: 'sdfsad', FullDes: 'sdfasdf', Manufacture: 'sdfas', Expire: 'asbasb', StorageType: 'sdfasda', Catagory: 'gasba', CategoryType: 'vabqsb', InventoryType: 'basbas', AllocationType: 'fbdabv', UnitMeasure: 'sbabas', edit: 'Edit' }]);
-    @tracked firstObjectKeys = A(['sku', 'Name', 'Des', 'FullDes', 'Manufacture', 'Expire', 'StorageType', 'Catagory', 'CategoryType', 'InventoryType', 'AllocationType', 'UnitMeasure']);
+    
+    // @tracked FormArray = A([{ sku: 'skuu', Name: 'sdfasdf', Des: 'sdfsad', FullDes: 'sdfasdf', Manufacture: 'sdfas', Expire: 'asbasb', StorageType: 'sdfasda', Catagory: 'gasba', CategoryType: 'vabqsb', InventoryType: 'basbas', AllocationType: 'fbdabv', UnitMeasure: 'sbabas', edit: 'Edit' }]);
+    // @tracked firstObjectKeys = A(['sku', 'Name', 'Des', 'FullDes', 'Manufacture', 'Expire', 'StorageType', 'Catagory', 'CategoryType', 'InventoryType', 'AllocationType', 'UnitMeasure']);
     @tracked CreateInventoryEditItem;
-
-
-    @action changeInventoryType(type) {
-        // console.log(type);
-        this.inventory = type;
+    
+    
+    @action changeInventoryType() {
+        this.inventory = "inventory-list";
         $('#inventoryModalContent').modal('show');
     }
 
+    
+    @tracked items;
 
     CreateInventoryTableColumns = [
         {
-            column_name: 'sku',
+            column_name: 'SKU',
             column_property: 'sku',
         },
         {
@@ -34,19 +34,19 @@ export default class InventoryComponent extends Component {
             column_property: 'Name',
         },
         {
-            column_name: 'Desc',
+            column_name: 'Description',
             column_property: 'Desc',
         },
         {
-            column_name: 'Full_Des',
+            column_name: 'Full_Description',
             column_property: 'Full_Des',
         },
         {
-            column_name: 'Manufacture',
+            column_name: 'Manufacture_date',
             column_property: 'Manufacture',
         },
         {
-            column_name: 'Expire',
+            column_name: 'Expire_date',
             column_property: 'Expire',
         },
         {
@@ -81,18 +81,7 @@ export default class InventoryComponent extends Component {
 
 
 
-    people = [
-        { name: 'María', surname: 'Murray' },
-        { name: 'Søren', surname: 'Williams' },
-        { name: 'João', surname: 'Jin' },
-        { name: 'Miguel', surname: 'Camba' },
-        { name: 'Marta', surname: 'Stinson' },
-        { name: 'Lisa', surname: 'Simpson' },
-    ];
-
-
-
-    // edit create inventory, this.modaltabevalue will contains with existed value, with key value pair exact value;
+    // // edit create inventory, this.modaltabevalue will contains with existed value, with key value pair exact value;
     @action
     HandleCreateInventoryEdit(title, item) {
         console.log(item);
@@ -107,7 +96,6 @@ export default class InventoryComponent extends Component {
         // edit e ai function e diye item set kore shei item k model e pass kore dibo!!!
         this.CreateInventoryEditItem = '';
         this.CreateInventoryEditItem = item;
-
 
 
 
@@ -136,11 +124,15 @@ export default class InventoryComponent extends Component {
     }
 
 
+
+    // edit status of inventory table
     @action
-    handlecreateinventoryStatus(name, item) {
+    handleInventoryStatusEdit(item) {
         console.log(item);
-        set(item, 'active_status', true);
+        set(item, 'active_status', !item.active_status);
+        item.save();
     }
+
 
 }
 
